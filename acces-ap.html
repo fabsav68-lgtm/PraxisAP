@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SimAP · Acces</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0a0810">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:#0a0810;color:#f0d8f8;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;}
+.card{background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.08);border-radius:16px;padding:32px 24px;max-width:340px;width:100%;text-align:center;}
+.logo{font-family:Georgia,serif;font-size:32px;font-weight:700;color:#f0d8f8;margin-bottom:4px}
+.logo span{color:#d870f0}
+.badge{display:inline-block;background:rgba(216,112,240,.08);border:1px solid rgba(216,112,240,.22);color:#d870f0;padding:3px 12px;border-radius:20px;font-size:10px;letter-spacing:2px;font-family:monospace;margin-bottom:20px;}
+h2{font-size:18px;margin-bottom:6px;}
+p{font-size:13px;color:#4a3060;margin-bottom:20px;line-height:1.6}
+input{width:100%;padding:12px;background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.1);border-radius:8px;color:#f0d8f8;font-size:16px;text-align:center;font-family:monospace;letter-spacing:2px;text-transform:uppercase;outline:none;margin-bottom:12px;}
+input:focus{border-color:rgba(216,112,240,.4);}
+.btn{width:100%;padding:12px;background:linear-gradient(135deg,#8020a0,#d870f0);color:#0a0810;border:none;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;margin-bottom:8px;}
+.danger{color:#e84040;font-size:12px;margin-top:8px;min-height:18px;}
+.small{font-size:11px;color:#4a3060;margin-top:16px;font-family:monospace;}
+.bar-wrap{height:3px;background:rgba(255,255,255,.06);border-radius:2px;margin-top:16px;overflow:hidden;display:none;}
+.bar-fill{height:100%;width:0%;background:#d870f0;border-radius:2px;}
+.card-success{display:none;}
+.card-success h2{color:#d870f0;}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">Sim<span>AP</span></div>
+  <div class="badge">DEAP - Arrete 10 juin 2021</div>
+  <div id="card-login">
+    <h2>Acces SimAP</h2>
+    <p>Entrez votre code personnel pour acceder a la suite pedagogique Auxiliaire de Puericulture.</p>
+    <input type="text" id="code-input" placeholder="PRAXIS-AP-001" maxlength="20"
+      onkeydown="if(event.key==='Enter')validerCode()"
+      oninput="this.value=this.value.toUpperCase()">
+    <button class="btn" onclick="validerCode()">Acceder</button>
+    <p class="danger" id="error-msg"></p>
+    <div class="bar-wrap" id="bar-wrap"><div class="bar-fill" id="bar-fill"></div></div>
+    <p class="small">Codes : PRAXIS-AP-001 a 050 · PRAXIS-AP-FORM-01</p>
+  </div>
+  <div class="card-success" id="card-success">
+    <h2>Bienvenue !</h2>
+    <p id="success-msg">Redirection en cours...</p>
+    <div class="bar-wrap" id="bar-wrap2" style="display:block"><div class="bar-fill" id="bar-fill2"></div></div>
+  </div>
+</div>
+<script>
+var CODES={};
+for(var i=1;i<=50;i++){
+  var c='PRAXIS-AP-'+(i<10?'00':i<100?'0':'')+i;
+  CODES[c]={promo:'AP 2026'};
+}
+CODES['PRAXIS-AP-FORM-01']={promo:'Formateur AP'};
+
+function validerCode(){
+  var code=document.getElementById('code-input').value.trim().toUpperCase();
+  var err=document.getElementById('error-msg');
+  if(!code){err.textContent='Entrez votre code.';return;}
+  if(!CODES[code]){err.textContent='Code invalide. Verifiez votre code AP.';return;}
+  var info=CODES[code];
+  sessionStorage.setItem('praxisap_code',code);
+  sessionStorage.setItem('praxisap_promo',info.promo);
+  fetch("https://uhbbwtxmsomqhuvzvoxy.supabase.co/rest/v1/praxis",{
+    method:"POST",
+    headers:{"Content-Type":"application/json","apikey":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVoYmJ3dHhtc29tcWh1dnp2b3h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM1MTI2OTIsImV4cCI6MjA5OTA4ODY5Mn0.WsH1qUbwjL8eF0y5vUBqG8lvpE4UgbNd3k2JbBGVyyY","Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVoYmJ3dHhtc29tcWh1dnp2b3h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM1MTI2OTIsImV4cCI6MjA5OTA4ODY5Mn0.WsH1qUbwjL8eF0y5vUBqG8lvpE4UgbNd3k2JbBGVyyY"},
+    body:JSON.stringify({student_code:code,student_name:info.promo,app:"praxisap",module:"login",session_id:code+"_"+Date.now()})
+  });
+  document.getElementById('card-login').style.display='none';
+  document.getElementById('card-success').style.display='block';
+  document.getElementById('success-msg').textContent='Bienvenue '+info.promo+' ! Redirection...';
+  var fill=document.getElementById('bar-fill2'),pct=0;
+  var iv=setInterval(function(){pct+=2;fill.style.width=pct+'%';if(pct>=100){clearInterval(iv);window.location.replace('index.html');}},20);
+}
+</script>
+</body>
+</html>
