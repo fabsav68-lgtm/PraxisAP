@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<title>SimRisques · DEAP</title>
+<style>
+:root{--bg:#0a0810;--card:rgba(255,255,255,.04);--bdr:rgba(255,255,255,.08);--txt:#f0d8f8;--txt2:#4a3060;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--txt);padding:16px;}
+.header{background:linear-gradient(135deg,rgba(232,80,80,.15),rgba(232,80,80,.05));border:1px solid rgba(232,80,80,.2);border-radius:16px;padding:20px;margin-bottom:20px;text-align:center;}
+.module-num{font-family:monospace;font-size:10px;letter-spacing:2px;color:var(--txt2);margin-bottom:6px;}
+h1{font-family:Georgia,serif;font-size:24px;color:#e85050;margin-bottom:4px;}
+.module-info{font-size:12px;color:var(--txt2);font-family:monospace;}
+.section{background:var(--card);border:1px solid var(--bdr);border-radius:12px;padding:16px;margin-bottom:16px;}
+.fiche{background:rgba(255,255,255,.03);border:1px solid var(--bdr);border-radius:10px;padding:14px;margin-bottom:12px;}
+.fiche h3{font-size:13px;margin-bottom:8px;}
+.fiche ul{list-style:none;padding:0;}
+.fiche ul li{font-size:12px;color:var(--txt);padding:4px 0;border-bottom:1px solid rgba(255,255,255,.04);display:flex;gap:8px;}
+.fiche ul li:last-child{border-bottom:none;}
+.fiche ul li::before{content:"→";color:#e85050;flex-shrink:0;}
+.fiche p{font-size:12px;color:var(--txt2);line-height:1.6;}
+.alert{background:rgba(232,64,64,.06);border:1px solid rgba(232,64,64,.2);border-radius:8px;padding:10px 12px;font-size:12px;color:#e84040;margin-top:10px;}
+.norme{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--bdr);font-size:12px;}
+.norme:last-child{border-bottom:none;}
+.norme-val{font-family:monospace;font-weight:700;}
+.tag{display:inline-block;padding:2px 8px;border-radius:12px;font-size:10px;font-family:monospace;margin:2px;}
+.retour-btn{position:fixed;top:12px;left:12px;background:rgba(10,8,16,.9);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:6px 14px;color:var(--txt2);font-size:12px;cursor:pointer;z-index:100;}
+</style></head>
+<body>
+<button class="retour-btn" onclick="window.parent.postMessage({type:'retour'},'*')">← Retour</button>
+<div class="header">
+<div class="module-num">MODULE 02 · BLOC 1</div>
+<h1>SimRisques</h1>
+<div class="module-info">Reperage et prevention des risques specifiques a l'enfant</div>
+</div>
+
+<div class="section"><h2 style="color:#e85050">⚠️ Ce que doit savoir le candidat</h2>
+<div class="fiche"><h3 style="color:#f8a838">Mort subite du nourrisson (MSN)</h3>
+<ul>
+<li>Definition : deces brutal et inexplique d'un enfant de moins d'un an</li>
+<li>Pic de frequence : 2-4 mois</li>
+<li>Facteurs de risque : position ventrale, co-sleeping, tabagisme, literie trop molle</li>
+<li>Prevention : position dorsale obligatoire, chambre a 18-20°C, pas de tabac, allaitement protecteur</li>
+<li>Role AP : s'assurer a chaque fois que l'enfant est installe sur le dos pour dormir</li></ul>
+<div class="alert">⚠️ Si enfant trouve immobile et ne reagissant pas : appeler immediatement, debuter RCP pediatrique, ne pas bouger l'enfant inutilement.</div></div>
+
+<div class="fiche"><h3 style="color:#f8a838">Syndrome du bebe secoue (SBS)</h3>
+<ul>
+<li>Cause : secousse violente de l'enfant (souvent lors de pleurs intenses)</li>
+<li>Consequences : lesions cerebrales graves, deces, handicap permanent</li>
+<li>Signes : enfant mou, regard vague, vomissements, convulsions apres une secousse</li>
+<li>Prevention : ne jamais secouer un bebe meme doucement, informer les parents</li>
+<li>Si pleurs intenses inconsolables : poser l'enfant en securite, s'eloigner 5 min, appeler</li></ul>
+<div class="alert">⚠️ SBS = urgence medicale absolue. Signalement obligatoire aux autorites si suspicion de maltraitance.</div></div>
+
+<div class="fiche"><h3 style="color:#f8a838">Maltraitance de l'enfant - signes d'alerte</h3>
+<ul>
+<li>Physiques : hematomes en zones inhabituelles, brulures, fractures inexpliquees</li>
+<li>Comportementaux : peur des adultes, regression, comportement sexualise</li>
+<li>Negligence : enfant sale, sous-alimente, non vaccine</li>
+<li>Role AP : OBSERVER et SIGNALER sans enqueter ni promettre le secret</li>
+<li>Signaler : IDE, puericultrice, directrice de structure, PMI</li></ul></div>
+
+<div class="fiche"><h3 style="color:#f8a838">Accidents domestiques - prevention</h3>
+<ul>
+<li>Noyade : ne jamais laisser seul pres de l'eau (baignoire, piscine, bassin)</li>
+<li>Chute : ne jamais laisser seul sur une surface en hauteur (table a langer)</li>
+<li>Suffocation : pas de petits objets, cordons, sacs plastiques a portee</li>
+<li>Intoxication : medicaments, produits menagers hors de portee</li>
+<li>Brulure : verifier temperature des aliments et du bain</li></ul></div></div>
+
+<div class="section"><h2 style="color:#e85050">🏷️ Mots cles</h2>
+<div style="padding:8px 0">
+<span class="tag" style="background:rgba(232,80,80,.1);color:#e85050;border:1px solid rgba(232,80,80,.2)">MSN</span>
+<span class="tag" style="background:rgba(232,80,80,.1);color:#e85050;border:1px solid rgba(232,80,80,.2)">Syndrome bebe secoue</span>
+<span class="tag" style="background:rgba(232,80,80,.1);color:#e85050;border:1px solid rgba(232,80,80,.2)">Maltraitance</span>
+<span class="tag" style="background:rgba(232,80,80,.1);color:#e85050;border:1px solid rgba(232,80,80,.2)">Protection enfance</span>
+<span class="tag" style="background:rgba(232,80,80,.1);color:#e85050;border:1px solid rgba(232,80,80,.2)">Signalement</span>
+<span class="tag" style="background:rgba(232,80,80,.1);color:#e85050;border:1px solid rgba(232,80,80,.2)">Accidents domestiques</span></div></div>
+
+<script>document.addEventListener('click',function(){window.parent.postMessage({type:'activite'},'*');});</script>
+</body></html>
