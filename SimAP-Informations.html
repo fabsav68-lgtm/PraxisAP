@@ -1,0 +1,51 @@
+<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"><title>SimInfos AP</title><style>
+:root{--bg:#0a0810;--card:rgba(255,255,255,.04);--bdr:rgba(255,255,255,.08);--txt:#f0d8f8;--txt2:#4a3060;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--txt);padding:16px;}
+.header{border-radius:16px;padding:20px;margin-bottom:20px;text-align:center;}
+.module-num{font-family:monospace;font-size:10px;letter-spacing:2px;color:var(--txt2);margin-bottom:6px;}
+h1{font-family:Georgia,serif;font-size:24px;margin-bottom:4px;}
+.module-info{font-size:12px;color:var(--txt2);font-family:monospace;}
+.section{background:var(--card);border:1px solid var(--bdr);border-radius:12px;padding:16px;margin-bottom:16px;}
+.section h2{font-size:14px;margin-bottom:12px;}
+.fiche{background:rgba(255,255,255,.03);border:1px solid var(--bdr);border-radius:10px;padding:14px;margin-bottom:12px;}
+.fiche h3{font-size:13px;margin-bottom:8px;}
+.fiche ul{list-style:none;padding:0;}
+.fiche ul li{font-size:12px;color:var(--txt);padding:4px 0;border-bottom:1px solid rgba(255,255,255,.04);display:flex;gap:8px;}
+.fiche ul li:last-child{border-bottom:none;}
+.alert{background:rgba(232,64,64,.06);border:1px solid rgba(232,64,64,.2);border-radius:8px;padding:10px 12px;font-size:12px;color:#e84040;margin-top:10px;}
+.memo{border-radius:8px;padding:10px 12px;font-size:12px;margin-top:8px;}
+.tag{display:inline-block;padding:2px 8px;border-radius:12px;font-size:10px;font-family:monospace;margin:2px;}
+.retour-btn{position:fixed;top:12px;left:12px;background:rgba(10,8,16,.9);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:6px 14px;color:var(--txt2);font-size:12px;cursor:pointer;z-index:100;}
+.norme{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--bdr);font-size:12px;}
+.norme:last-child{border-bottom:none;}
+.norme-val{font-family:monospace;font-weight:700;}
+</style></head>
+<body><button class="retour-btn" onclick="window.parent.postMessage({type:'retour'},'*')">← Retour</button>
+<div class="header" style="background:linear-gradient(135deg,rgba(248,168,56,.15),rgba(248,168,56,.05));border:1px solid rgba(248,168,56,.2)">
+<div class="module-num">MODULE 09 · BLOC 5</div><h1 style="color:#f8a838">SimInfos</h1>
+<div class="module-info">Traitement des informations liees aux activites de soins en pediatrie</div></div>
+<div class="section"><h2 style="color:#f8a838">Ce que doit savoir le candidat</h2>
+<div class="fiche"><h3 style="color:#d870f0">Dossier de l'enfant et transmissions aux parents</h3>
+<ul>
+<li>Cahier de liaison creche : transmissions quotidiennes aux parents (repas, sommeil, selles, humeur)</li>
+<li>Dossier pediatrique hospitalier : observations objectives, constantes, soins realises</li>
+<li>Secret professionnel : les informations sur l'enfant et sa famille sont confidentielles</li>
+<li>Partage d'informations : seulement avec les membres de l'equipe de soins</li>
+<li>Ne jamais partager des photos ou informations sur les reseaux sociaux</li></ul></div>
+<div class="fiche"><h3 style="color:#d870f0">Droits des parents et de l'enfant</h3>
+<ul>
+<li>Les deux parents ont en principe les memes droits sur l'enfant (autorite parentale conjointe)</li>
+<li>Verifier qui a l'autorite parentale en cas de separation ou divorce</li>
+<li>Respecter le droit a l'image de l'enfant : photos interdites sans autorisation parentale ecrite</li>
+<li>RGPD : les donnees de l'enfant sont des donnees sensibles a protection renforcee</li></ul></div></div>
+<div class="section"><h2 style="color:#f8a838">Mots cles</h2>
+<div style="padding:8px 0">
+<span class="tag" style="background:rgba(248,168,56,.1);color:#f8a838;border:1px solid rgba(248,168,56,.2)">Cahier de liaison</span>
+<span class="tag" style="background:rgba(248,168,56,.1);color:#f8a838;border:1px solid rgba(248,168,56,.2)">Secret professionnel</span>
+<span class="tag" style="background:rgba(248,168,56,.1);color:#f8a838;border:1px solid rgba(248,168,56,.2)">Autorite parentale</span>
+<span class="tag" style="background:rgba(248,168,56,.1);color:#f8a838;border:1px solid rgba(248,168,56,.2)">Droit a l'image</span>
+<span class="tag" style="background:rgba(248,168,56,.1);color:#f8a838;border:1px solid rgba(248,168,56,.2)">RGPD</span></div></div>
+<script>document.addEventListener('click',function(){window.parent.postMessage({type:'activite'},'*');});</script>
+</body></html>
