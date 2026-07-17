@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<title>SimMobilite · DEAP</title>
+<style>
+:root{--bg:#0a0810;--card:rgba(255,255,255,.04);--bdr:rgba(255,255,255,.08);--txt:#f0d8f8;--txt2:#4a3060;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--txt);padding:16px;}
+.header{background:linear-gradient(135deg,rgba(248,200,64,.15),rgba(248,200,64,.05));border:1px solid rgba(248,200,64,.2);border-radius:16px;padding:20px;margin-bottom:20px;text-align:center;}
+.module-num{font-family:monospace;font-size:10px;letter-spacing:2px;color:var(--txt2);margin-bottom:6px;}
+h1{font-family:Georgia,serif;font-size:24px;color:#f8c840;margin-bottom:4px;}
+.module-info{font-size:12px;color:var(--txt2);font-family:monospace;}
+.section{background:var(--card);border:1px solid var(--bdr);border-radius:12px;padding:16px;margin-bottom:16px;}
+.fiche{background:rgba(255,255,255,.03);border:1px solid var(--bdr);border-radius:10px;padding:14px;margin-bottom:12px;}
+.fiche h3{font-size:13px;margin-bottom:8px;}
+.fiche ul{list-style:none;padding:0;}
+.fiche ul li{font-size:12px;color:var(--txt);padding:4px 0;border-bottom:1px solid rgba(255,255,255,.04);display:flex;gap:8px;}
+.fiche ul li:last-child{border-bottom:none;}
+.fiche ul li::before{content:"→";color:#f8c840;flex-shrink:0;}
+.fiche p{font-size:12px;color:var(--txt2);line-height:1.6;}
+.alert{background:rgba(232,64,64,.06);border:1px solid rgba(232,64,64,.2);border-radius:8px;padding:10px 12px;font-size:12px;color:#e84040;margin-top:10px;}
+.norme{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--bdr);font-size:12px;}
+.norme:last-child{border-bottom:none;}
+.norme-val{font-family:monospace;font-weight:700;}
+.tag{display:inline-block;padding:2px 8px;border-radius:12px;font-size:10px;font-family:monospace;margin:2px;}
+.retour-btn{position:fixed;top:12px;left:12px;background:rgba(10,8,16,.9);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:6px 14px;color:var(--txt2);font-size:12px;cursor:pointer;z-index:100;}
+</style></head>
+<body>
+<button class="retour-btn" onclick="window.parent.postMessage({type:'retour'},'*')">← Retour</button>
+<div class="header">
+<div class="module-num">MODULE 05 · BLOC 2</div>
+<h1>SimMobilite</h1>
+<div class="module-info">Accompagnement de la mobilite et portage de l'enfant</div>
+</div>
+
+<div class="section"><h2 style="color:#f8c840">🚼 Ce que doit savoir le candidat</h2>
+<div class="fiche"><h3 style="color:#f8a838">Portage du nourrisson</h3>
+<ul>
+<li>Toujours soutenir la tete du nouveau-ne (muscles cervicaux immatures jusqu'a 3-4 mois)</li>
+<li>Position : tete dans l'axe du corps, jamais en hyperextension</li>
+<li>Portage en echarpe ou porte-bebe : visage degage, mentonniere si tete non tenue</li>
+<li>Ne jamais laisser la tete ballante (risque de lesion cervicale)</li>
+<li>Portage ventral face au monde : deconseille avant la tenue de tete</li></ul>
+<div class="alert">⚠️ Jamais de nourrisson dans un siege auto face a la route avant 15 mois. Siege dos a la route obligatoire.</div></div>
+
+<div class="fiche"><h3 style="color:#f8a838">Installation et manutention adaptee</h3>
+<ul>
+<li>Table a langer : toujours une main sur l'enfant, ne jamais s'eloigner</li>
+<li>Transat : toujours attache, jamais sur une surface elevee</li>
+<li>Youpala et trotteur : deconseilles (ne favorisent pas la marche, risque de chute dans les escaliers)</li>
+<li>Lit a barreaux : espacement reglementaire entre les barreaux (pas d'ecartement superieur a 6 cm)</li>
+<li>Poussette : harnais toujours attache</li></ul></div>
+
+<div class="fiche"><h3 style="color:#f8a838">Encourager la mobilite selon l'age</h3>
+<ul>
+<li>0-3 mois : temps sur le ventre en eveil (sous surveillance) pour renforcer les muscles du cou</li>
+<li>3-6 mois : encourager a attraper les objets, rouler</li>
+<li>6-12 mois : espace de deplacement securise pour ramper, se hisser</li>
+<li>1-2 ans : encourager la marche avec soutien puis autonome, tapis moelleux</li>
+<li>Role AP : securiser l'environnement et laisser explorer</li></ul></div></div>
+
+<div class="section"><h2 style="color:#f8c840">🏷️ Mots cles</h2>
+<div style="padding:8px 0">
+<span class="tag" style="background:rgba(248,200,64,.1);color:#f8c840;border:1px solid rgba(248,200,64,.2)">Portage</span>
+<span class="tag" style="background:rgba(248,200,64,.1);color:#f8c840;border:1px solid rgba(248,200,64,.2)">Tenue de tete</span>
+<span class="tag" style="background:rgba(248,200,64,.1);color:#f8c840;border:1px solid rgba(248,200,64,.2)">Siege auto</span>
+<span class="tag" style="background:rgba(248,200,64,.1);color:#f8c840;border:1px solid rgba(248,200,64,.2)">Securite</span>
+<span class="tag" style="background:rgba(248,200,64,.1);color:#f8c840;border:1px solid rgba(248,200,64,.2)">Motricite</span>
+<span class="tag" style="background:rgba(248,200,64,.1);color:#f8c840;border:1px solid rgba(248,200,64,.2)">Table a langer</span></div></div>
+
+<script>document.addEventListener('click',function(){window.parent.postMessage({type:'activite'},'*');});</script>
+</body></html>
