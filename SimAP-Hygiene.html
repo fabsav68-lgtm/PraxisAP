@@ -1,0 +1,59 @@
+<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"><title>SimHygiene AP</title><style>
+:root{--bg:#0a0810;--card:rgba(255,255,255,.04);--bdr:rgba(255,255,255,.08);--txt:#f0d8f8;--txt2:#4a3060;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--txt);padding:16px;}
+.header{border-radius:16px;padding:20px;margin-bottom:20px;text-align:center;}
+.module-num{font-family:monospace;font-size:10px;letter-spacing:2px;color:var(--txt2);margin-bottom:6px;}
+h1{font-family:Georgia,serif;font-size:24px;margin-bottom:4px;}
+.module-info{font-size:12px;color:var(--txt2);font-family:monospace;}
+.section{background:var(--card);border:1px solid var(--bdr);border-radius:12px;padding:16px;margin-bottom:16px;}
+.section h2{font-size:14px;margin-bottom:12px;}
+.fiche{background:rgba(255,255,255,.03);border:1px solid var(--bdr);border-radius:10px;padding:14px;margin-bottom:12px;}
+.fiche h3{font-size:13px;margin-bottom:8px;}
+.fiche ul{list-style:none;padding:0;}
+.fiche ul li{font-size:12px;color:var(--txt);padding:4px 0;border-bottom:1px solid rgba(255,255,255,.04);display:flex;gap:8px;}
+.fiche ul li:last-child{border-bottom:none;}
+.alert{background:rgba(232,64,64,.06);border:1px solid rgba(232,64,64,.2);border-radius:8px;padding:10px 12px;font-size:12px;color:#e84040;margin-top:10px;}
+.memo{border-radius:8px;padding:10px 12px;font-size:12px;margin-top:8px;}
+.tag{display:inline-block;padding:2px 8px;border-radius:12px;font-size:10px;font-family:monospace;margin:2px;}
+.retour-btn{position:fixed;top:12px;left:12px;background:rgba(10,8,16,.9);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:6px 14px;color:var(--txt2);font-size:12px;cursor:pointer;z-index:100;}
+.norme{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--bdr);font-size:12px;}
+.norme:last-child{border-bottom:none;}
+.norme-val{font-family:monospace;font-weight:700;}
+</style></head>
+<body><button class="retour-btn" onclick="window.parent.postMessage({type:'retour'},'*')">← Retour</button>
+<div class="header" style="background:linear-gradient(135deg,rgba(64,200,120,.15),rgba(64,200,120,.05));border:1px solid rgba(64,200,120,.2)">
+<div class="module-num">MODULE 08 · BLOC 4</div><h1 style="color:#40c878">SimHygiene</h1>
+<div class="module-info">Entretien des locaux et materiels en structure petite enfance</div></div>
+<div class="section"><h2 style="color:#40c878">Ce que doit savoir le candidat</h2>
+<div class="fiche"><h3 style="color:#f8a838">Hygiene en creche - specificites petite enfance</h3>
+<ul>
+<li>Hygiene des mains : 5 moments OMS, SHA entre chaque enfant</li>
+<li>Lavage au savon obligatoire apres le change, avant la preparation des repas</li>
+<li>Table a langer : desinfecter apres chaque change avec desinfectant adapte</li>
+<li>Jouets : nettoyage quotidien, desinfection hebdomadaire</li>
+<li>Chaussons : obligatoires en creche (pas les chaussures de la rue)</li></ul></div>
+<div class="fiche"><h3 style="color:#f8a838">Sterilisation des biberons</h3>
+<ul>
+<li>Nettoyer a l'eau chaude avec goupillon des que vide</li>
+<li>Steriliser : vapeur (20 min) ou sterilisateur electrique (jusqu'a 6 mois)</li>
+<li>Preparation du lait : eau minerale pauvre en sodium, temperature 37°C</li>
+<li>Lait prepare : utiliser dans l'heure ou conserver au refrigerateur max 1h</li>
+<li>Ne jamais rechauffer au micro-ondes (points chauds dangereux)</li></ul>
+<div class="alert">⚠️ Lait reconstitue non utilise = jeter apres 1h a temperature ambiante. Risque de proliferation bacterienne majeur.</div></div>
+<div class="fiche"><h3 style="color:#f8a838">Prevention infections nosocomiales en pediatrie</h3>
+<ul>
+<li>Isolement si enfant contagieux (bronchiolite, gastro, varicelle)</li>
+<li>Changement des gants entre chaque enfant</li>
+<li>DASRI pediatriques : memes regles que pour adulte</li>
+<li>Signaler toute epidemie a la directrice et PMI</li></ul></div></div>
+<div class="section"><h2 style="color:#40c878">Mots cles</h2>
+<div style="padding:8px 0">
+<span class="tag" style="background:rgba(64,200,120,.1);color:#40c878;border:1px solid rgba(64,200,120,.2)">Sterilisation biberons</span>
+<span class="tag" style="background:rgba(64,200,120,.1);color:#40c878;border:1px solid rgba(64,200,120,.2)">Bionettoyage creche</span>
+<span class="tag" style="background:rgba(64,200,120,.1);color:#40c878;border:1px solid rgba(64,200,120,.2)">SHA</span>
+<span class="tag" style="background:rgba(64,200,120,.1);color:#40c878;border:1px solid rgba(64,200,120,.2)">Isolement</span>
+<span class="tag" style="background:rgba(64,200,120,.1);color:#40c878;border:1px solid rgba(64,200,120,.2)">DASRI</span></div></div>
+<script>document.addEventListener('click',function(){window.parent.postMessage({type:'activite'},'*');});</script>
+</body></html>
