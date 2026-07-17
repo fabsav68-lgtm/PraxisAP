@@ -1,0 +1,92 @@
+<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"><title>SimVieQuotidienne · DEAP</title><style>
+:root{--bg:#0a0810;--card:rgba(255,255,255,.04);--bdr:rgba(255,255,255,.08);--txt:#f0d8f8;--txt2:#4a3060;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--txt);padding:16px;}
+.header{border-radius:16px;padding:20px;margin-bottom:20px;text-align:center;}
+.module-num{font-family:monospace;font-size:10px;letter-spacing:2px;color:var(--txt2);margin-bottom:6px;}
+h1{font-family:Georgia,serif;font-size:24px;margin-bottom:4px;}
+.module-info{font-size:12px;color:var(--txt2);font-family:monospace;}
+.section{background:var(--card);border:1px solid var(--bdr);border-radius:12px;padding:16px;margin-bottom:16px;}
+.section h2{font-size:14px;margin-bottom:12px;}
+.fiche{background:rgba(255,255,255,.03);border:1px solid var(--bdr);border-radius:10px;padding:14px;margin-bottom:12px;}
+.fiche h3{font-size:13px;margin-bottom:8px;}
+.fiche ul{list-style:none;padding:0;}
+.fiche ul li{font-size:12px;color:var(--txt);padding:4px 0;border-bottom:1px solid rgba(255,255,255,.04);display:flex;gap:8px;}
+.fiche ul li:last-child{border-bottom:none;}
+.fiche p{font-size:12px;color:var(--txt2);line-height:1.6;}
+.alert{background:rgba(232,64,64,.06);border:1px solid rgba(232,64,64,.2);border-radius:8px;padding:10px 12px;font-size:12px;color:#e84040;margin-top:10px;}
+.tag{display:inline-block;padding:2px 8px;border-radius:12px;font-size:10px;font-family:monospace;margin:2px;}
+.norme{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--bdr);font-size:12px;}
+.norme:last-child{border-bottom:none;}
+.norme-val{font-family:monospace;font-weight:700;}
+.retour-btn{position:fixed;top:12px;left:12px;background:rgba(10,8,16,.9);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:6px 14px;color:var(--txt2);font-size:12px;cursor:pointer;z-index:100;}
+</style></head>
+<body><button class="retour-btn" onclick="window.parent.postMessage({type:'retour'},'*')">← Retour</button>
+<div class="header" style="background:linear-gradient(135deg,rgba(216,112,240,.15),rgba(216,112,240,.05));border:1px solid rgba(216,112,240,.2)">
+<div class="module-num">MODULE 01 · BLOC 1</div><h1 style="color:#d870f0">SimVieQuotidienne</h1>
+<div class="module-info">Accompagnement de l'enfant dans les actes essentiels de la vie quotidienne</div></div>
+
+<div class="section"><h2 style="color:#d870f0">🍼 Ce que doit savoir le candidat</h2>
+<div class="fiche"><h3 style="color:#f8a838">Developpement de l'enfant - grandes etapes</h3>
+<div class="norme"><span>Nouveau-ne (0-1 mois)</span><span class="norme-val" style="color:#d870f0">Reflexes archaiques, peau a peau, allaitement</span></div>
+<div class="norme"><span>Nourrisson (1-12 mois)</span><span class="norme-val" style="color:#d870f0">Tenue tete a 3 mois, retournement a 6 mois, station assise a 8 mois</span></div>
+<div class="norme"><span>Petit enfant (1-3 ans)</span><span class="norme-val" style="color:#d870f0">Marche a 12-18 mois, premiers mots, acquisition proprete</span></div>
+<div class="norme"><span>Enfant (3-6 ans)</span><span class="norme-val" style="color:#d870f0">Langage elabore, socialisation, jeux symboliques</span></div></div>
+
+<div class="fiche"><h3 style="color:#f8a838">Besoins fondamentaux de l'enfant</h3>
+<ul><li style="flex-direction:column"><strong>Besoins physiologiques</strong> : alimentation adaptee a l'age, sommeil suffisant, hygiene, elimination<br><span style="color:var(--txt2);font-size:11px">→ Comment : evaluer l'age et le stade de developpement, adapter le soin, observer et transmettre</span></li>
+<li style="flex-direction:column"><strong>Besoins affectifs</strong> : securite, attachement, amour, stabilite<br><span style="color:var(--txt2);font-size:11px">→ Comment : parler doucement pendant les soins, respecter les rituels, associer les parents</span></li>
+<li style="flex-direction:column"><strong>Besoins cognitifs</strong> : eveil, stimulation, exploration, jeu<br><span style="color:var(--txt2);font-size:11px">→ Comment : proposer des activites adaptees a l'age, laisser explorer en securite</span></li></ul></div></div>
+
+<div class="section"><h2 style="color:#d870f0">🛁 Comment y parvenir - Soins d'hygiene</h2>
+<div class="fiche"><h3 style="color:#f8a838">Bain du nourrisson - etapes</h3>
+<ul>
+<li>Preparer tout le materiel avant de commencer (ne jamais laisser l'enfant seul)</li>
+<li>Temperature de l'eau : 37°C (verifier avec thermometre ou coude)</li>
+<li>Deshabiller l'enfant en gardant une serviette sur lui pour eviter le refroidissement</li>
+<li>Tenir l'enfant : une main soutient la nuque et la tete, l'autre les fesses</li>
+<li>Laver visage en premier (yeux de l'interieur vers l'exterieur), puis corps</li>
+<li>Parties genitales en dernier : fille = avant vers arriere</li>
+<li>Sortir, secher en tamponnant (notamment les plis), habiller rapidement</li>
+<li>Duree du bain : 5 minutes maximum pour le nouveau-ne</li></ul>
+<div class="alert">⚠️ Ne JAMAIS laisser un enfant seul dans le bain. Meme 2 cm d'eau peuvent noyer un nourrisson en moins de 2 minutes.</div></div>
+
+<div class="fiche"><h3 style="color:#f8a838">Alimentation selon l'age</h3>
+<ul>
+<li>0-6 mois : lait maternel ou lait infantile 1er age exclusivement</li>
+<li>4-6 mois : diversification alimentaire (selon avis pediatre)</li>
+<li>6-12 mois : lait 2e age + legumes, fruits, viande/poisson/oeuf en petites quantites</li>
+<li>1-3 ans : alimentation familiale adaptee (texture, sel, sucre limites)</li>
+<li>Biberons : sterilises jusqu'a 6 mois, eau minerale faible en sodium</li>
+<li>Toujours verifier la temperature du lait : quelques gouttes sur le poignet</li></ul></div>
+
+<div class="fiche"><h3 style="color:#f8a838">Change et hygiene perineal</h3>
+<ul>
+<li>Changer des que la couche est souilee (escarres et infections possibles)</li>
+<li>Nettoyer de l'avant vers l'arriere chez la petite fille</li>
+<li>Observer : rougeurs, eruptions, irregularites cutanees</li>
+<li>Creme protectrice si rougeurs (selon protocole)</li>
+<li>Signaler toute anomalie a l'IDE ou a la puericultrice</li></ul></div></div>
+
+<div class="section"><h2 style="color:#d870f0">😴 Sommeil de l'enfant</h2>
+<div class="fiche"><h3 style="color:#f8a838">Prevention de la mort subite du nourrisson (MSN)</h3>
+<ul>
+<li>Position : toujours sur le DOS pour dormir (jamais sur le ventre)</li>
+<li>Lit adapte : matelas ferme, pas d'oreillers, pas de peluches, pas de tour de lit</li>
+<li>Temperature de la chambre : 18-20°C</li>
+<li>Pas de tabac, pas d'alcool, pas de co-sleeping non securise</li>
+<li>Allaitement maternel = facteur protecteur</li></ul>
+<div class="alert">⚠️ Position sur le dos = OBLIGATOIRE pour dormir jusqu'a 2 ans. Position ventrale = risque x3 de mort subite.</div></div></div>
+
+<div class="section"><h2 style="color:#d870f0">🏷️ Mots cles</h2>
+<div style="padding:8px 0">
+<span class="tag" style="background:rgba(216,112,240,.1);color:#d870f0;border:1px solid rgba(216,112,240,.2)">Developpement psychomoteur</span>
+<span class="tag" style="background:rgba(216,112,240,.1);color:#d870f0;border:1px solid rgba(216,112,240,.2)">Bain nourrisson</span>
+<span class="tag" style="background:rgba(216,112,240,.1);color:#d870f0;border:1px solid rgba(216,112,240,.2)">Diversification alimentaire</span>
+<span class="tag" style="background:rgba(216,112,240,.1);color:#d870f0;border:1px solid rgba(216,112,240,.2)">MSN</span>
+<span class="tag" style="background:rgba(216,112,240,.1);color:#d870f0;border:1px solid rgba(216,112,240,.2)">Position dorsale</span>
+<span class="tag" style="background:rgba(216,112,240,.1);color:#d870f0;border:1px solid rgba(216,112,240,.2)">Sterilisation</span>
+<span class="tag" style="background:rgba(216,112,240,.1);color:#d870f0;border:1px solid rgba(216,112,240,.2)">Autonomie</span></div></div>
+<script>document.addEventListener('click',function(){window.parent.postMessage({type:'activite'},'*');});</script>
+</body></html>
