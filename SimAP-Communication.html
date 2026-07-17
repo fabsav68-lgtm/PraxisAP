@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<title>SimCommunication · DEAP</title>
+<style>
+:root{--bg:#0a0810;--card:rgba(255,255,255,.04);--bdr:rgba(255,255,255,.08);--txt:#f0d8f8;--txt2:#4a3060;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--txt);padding:16px;}
+.header{background:linear-gradient(135deg,rgba(160,120,255,.15),rgba(160,120,255,.05));border:1px solid rgba(160,120,255,.2);border-radius:16px;padding:20px;margin-bottom:20px;text-align:center;}
+.module-num{font-family:monospace;font-size:10px;letter-spacing:2px;color:var(--txt2);margin-bottom:6px;}
+h1{font-family:Georgia,serif;font-size:24px;color:#a078ff;margin-bottom:4px;}
+.module-info{font-size:12px;color:var(--txt2);font-family:monospace;}
+.section{background:var(--card);border:1px solid var(--bdr);border-radius:12px;padding:16px;margin-bottom:16px;}
+.fiche{background:rgba(255,255,255,.03);border:1px solid var(--bdr);border-radius:10px;padding:14px;margin-bottom:12px;}
+.fiche h3{font-size:13px;margin-bottom:8px;}
+.fiche ul{list-style:none;padding:0;}
+.fiche ul li{font-size:12px;color:var(--txt);padding:4px 0;border-bottom:1px solid rgba(255,255,255,.04);display:flex;gap:8px;}
+.fiche ul li:last-child{border-bottom:none;}
+.fiche ul li::before{content:"→";color:#a078ff;flex-shrink:0;}
+.fiche p{font-size:12px;color:var(--txt2);line-height:1.6;}
+.alert{background:rgba(232,64,64,.06);border:1px solid rgba(232,64,64,.2);border-radius:8px;padding:10px 12px;font-size:12px;color:#e84040;margin-top:10px;}
+.norme{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--bdr);font-size:12px;}
+.norme:last-child{border-bottom:none;}
+.norme-val{font-family:monospace;font-weight:700;}
+.tag{display:inline-block;padding:2px 8px;border-radius:12px;font-size:10px;font-family:monospace;margin:2px;}
+.retour-btn{position:fixed;top:12px;left:12px;background:rgba(10,8,16,.9);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:6px 14px;color:var(--txt2);font-size:12px;cursor:pointer;z-index:100;}
+</style></head>
+<body>
+<button class="retour-btn" onclick="window.parent.postMessage({type:'retour'},'*')">← Retour</button>
+<div class="header">
+<div class="module-num">MODULE 06 · BLOC 3</div>
+<h1>SimCommunication</h1>
+<div class="module-info">Relation avec l'enfant, la famille et soutien a la parentalite</div>
+</div>
+
+<div class="section"><h2 style="color:#a078ff">💜 Ce que doit savoir le candidat</h2>
+<div class="fiche"><h3 style="color:#f8a838">Communication avec l'enfant selon l'age</h3>
+<ul>
+<li>Nouveau-ne : voix douce, contact visuel, peau a peau, sourire</li>
+<li>Nourrisson : parler pendant les soins, nommer les objets et les actions</li>
+<li>Tout-petit (1-3 ans) : phrases simples, ecouter les tentatives de communication, ne pas corriger brutalement</li>
+<li>Enfant (3-6 ans) : expliquer ce qu'on va faire, laisser poser des questions, repondre honnêtement</li>
+<li>Toujours se mettre a la hauteur de l'enfant (s'accroupir)</li></ul></div>
+
+<div class="fiche"><h3 style="color:#f8a838">Soutien a la parentalite</h3>
+<ul>
+<li>Reconnaitre la competence parentale : les parents connaissent mieux leur enfant que quiconque</li>
+<li>Ne pas se substituer aux parents : les accompagner, pas les remplacer</li>
+<li>Partager les observations sur l'enfant : transmission des informations aux parents</li>
+<li>Accueillir sans juger les pratiques educatives differentes (culture, religion, choix)</li>
+<li>Alerter si pratiques dangereuses pour l'enfant : signalement a la coordinatrice ou PMI</li></ul></div>
+
+<div class="fiche"><h3 style="color:#f8a838">Accueil et separation enfant/parents</h3>
+<ul>
+<li>Rituel d'accueil : toujours le meme AP si possible (referent), meme ritual chaque matin</li>
+<li>Ne pas minimiser les pleurs de separation : c'est un signe de sante psychique</li>
+<li>Transmissions aux parents le soir : sommeil, repas, jeux, humeur de la journee</li>
+<li>Cahier de liaison creche : outil de communication quotidien</li></ul></div></div>
+
+<div class="section"><h2 style="color:#a078ff">🏷️ Mots cles</h2>
+<div style="padding:8px 0">
+<span class="tag" style="background:rgba(160,120,255,.1);color:#a078ff;border:1px solid rgba(160,120,255,.2)">Parentalite</span>
+<span class="tag" style="background:rgba(160,120,255,.1);color:#a078ff;border:1px solid rgba(160,120,255,.2)">Attachement</span>
+<span class="tag" style="background:rgba(160,120,255,.1);color:#a078ff;border:1px solid rgba(160,120,255,.2)">Separation</span>
+<span class="tag" style="background:rgba(160,120,255,.1);color:#a078ff;border:1px solid rgba(160,120,255,.2)">Referent</span>
+<span class="tag" style="background:rgba(160,120,255,.1);color:#a078ff;border:1px solid rgba(160,120,255,.2)">Transmissions parents</span>
+<span class="tag" style="background:rgba(160,120,255,.1);color:#a078ff;border:1px solid rgba(160,120,255,.2)">PMI</span></div></div>
+
+<script>document.addEventListener('click',function(){window.parent.postMessage({type:'activite'},'*');});</script>
+</body></html>
