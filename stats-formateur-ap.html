@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SimAP · Dashboard Formateur</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:#0a0810;color:#f0d8f8;min-height:100vh;padding:24px}
+h1{font-size:22px;color:#d870f0;margin-bottom:4px}
+.sub{font-size:12px;color:#4a3060;margin-bottom:24px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:24px}
+.card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px}
+.card h3{font-size:11px;color:#4a3060;margin-bottom:8px;text-transform:uppercase;letter-spacing:1px}
+.card strong{font-size:28px;color:#d870f0}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;padding:10px 12px;color:#4a3060;border-bottom:1px solid rgba(255,255,255,.06);font-size:11px;text-transform:uppercase}
+td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.04)}
+.badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;background:rgba(216,112,240,.1);color:#d870f0}
+.login-badge{background:rgba(94,203,122,.1);color:#4ecb71}
+.section{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:16px;margin-bottom:16px}
+.section h2{font-size:14px;color:#f0d8f8;margin-bottom:12px}
+.password-screen{max-width:320px;margin:80px auto;text-align:center}
+.password-screen input{width:100%;padding:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#f0d8f8;font-size:16px;text-align:center;margin:12px 0}
+.btn{background:#d870f0;color:#0a0810;border:none;padding:10px 24px;border-radius:8px;font-weight:700;cursor:pointer;width:100%}
+.error{color:#e84040;font-size:13px;margin-top:8px}
+#main{display:none}
+.refresh{float:right;background:rgba(216,112,240,.1);color:#d870f0;border:1px solid rgba(216,112,240,.2);padding:6px 14px;border-radius:6px;cursor:pointer;font-size:12px}
+</style>
+</head>
+<body>
+<div class="password-screen" id="auth">
+  <h1>🔐 Acces Formateur AP</h1>
+  <p class="sub">Dashboard SimAP - DEAP</p>
+  <input type="password" id="pwd" placeholder="Mot de passe" onkeydown="if(event.key==='Enter')checkPwd()">
+  <button class="btn" onclick="checkPwd()">Entrer</button>
+  <p class="error" id="pwdError"></p>
+</div>
+<div id="main">
+  <h1>📊 Dashboard Formateur AP</h1>
+  <p class="sub">SimAP - DEAP - Donnees en temps reel <button class="refresh" onclick="loadData()">Actualiser</button></p>
+  <div class="grid">
+    <div class="card"><h3>Connexions</h3><strong id="statLogins">-</strong></div>
+    <div class="card"><h3>Etudiants AP</h3><strong id="statStudents">-</strong></div>
+    <div class="card"><h3>Modules ouverts</h3><strong id="statModules">-</strong></div>
+    <div class="card"><h3>Temps moyen</h3><strong id="statTemps" style="font-size:16px;margin-top:4px">-</strong></div>
+    <div class="card"><h3>Derniere activite</h3><strong id="statLast" style="font-size:12px;margin-top:4px">-</strong></div>
+  </div>
+  <div class="section"><h2>📋 Activite recente</h2>
+    <table><thead><tr><th>Date et heure</th><th>Code etudiant</th><th>Module</th><th>Action</th><th>Temps passe</th></tr></thead>
+    <tbody id="tableBody"></tbody></table></div>
+  <div class="section"><h2>👥 Suivi par etudiant AP</h2>
+    <table><thead><tr><th>Code</th><th>Promotion</th><th>Connexions</th><th>Modules vus</th><th>Temps total</th><th>1ere connexion</th><th>Derniere activite</th></tr></thead>
+    <tbody id="studentsBody"></tbody></table></div>
+  <div class="section"><h2>📚 Modules les plus consultes</h2>
+    <table><thead><tr><th>Module</th><th>Ouvertures</th><th>Temps moyen</th></tr></thead>
+    <tbody id="modulesBody"></tbody></table></div>
+</div>
+<script>
+const SB_URL="https://uhbbwtxmsomqhuvzvoxy.supabase.co";
+const SB_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVoYmJ3dHhtc29tcWh1dnp2b3h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM1MTI2OTIsImV4cCI6MjA5OTA4ODY5Mn0.WsH1qUbwjL8eF0y5vUBqG8lvpE4UgbNd3k2JbBGVyyY";
+const PASSWORD="PraxisAP2026";
+window.addEventListener('load',function(){var p=new URLSearchParams(window.location.search);if(p.get('key')===PASSWORD){document.getElementById('auth').style.display='none';document.getElementById('main').style.display='block';loadData();}});
+function checkPwd(){if(document.getElementById('pwd').value===PASSWORD){document.getElementById('auth').style.display='none';document.getElementById('main').style.display='block';loadData();}else{document.getElementById('pwdError').textContent="Mot de passe incorrect.";}}
+function msEnTemps(ms){if(!ms)return'-';var s=Math.round(ms/1000);if(s<60)return s+' sec';return Math.floor(s/60)+' min '+(s%60>0?s%60+' sec':'');}
+async function loadData(){
+  const res=await fetch(SB_URL+"/rest/v1/praxis?order=created_at.desc&limit=500&app=eq.praxisap",{headers:{"apikey":SB_KEY,"Authorization":"Bearer "+SB_KEY}});
+  const data=await res.json();
+  const logins=data.filter(r=>r.module==='login');
+  const ouvertures=data.filter(r=>r.step==='ouverture');
+  const fermetures=data.filter(r=>r.step==='fermeture'&&r.time_spent_ms);
+  const students=[...new Set(data.filter(r=>r.student_code).map(r=>r.student_code))];
+  const tempsMoyen=fermetures.length?Math.round(fermetures.reduce((a,r)=>a+(r.time_spent_ms||0),0)/fermetures.length):0;
+  document.getElementById('statLogins').textContent=logins.length;
+  document.getElementById('statStudents').textContent=students.length;
+  document.getElementById('statModules').textContent=ouvertures.length;
+  document.getElementById('statTemps').textContent=msEnTemps(tempsMoyen);
+  document.getElementById('statLast').textContent=data[0]?new Date(data[0].created_at).toLocaleString('fr-FR'):'-';
+  document.getElementById('tableBody').innerHTML=data.slice(0,50).map(r=>{
+    const h=new Date(r.created_at).toLocaleString('fr-FR');
+    var a=r.module==='login'?'<span class="badge login-badge">Connexion</span>':r.step==='ouverture'?'<span class="badge">Ouverture</span>':r.step==='fermeture'?'<span class="badge" style="background:rgba(64,200,120,.1);color:#40c878">Fermeture</span>':'-';
+    return`<tr><td>${h}</td><td>${r.student_code||'-'}</td><td>${r.module||'-'}</td><td>${a}</td><td>${msEnTemps(r.time_spent_ms)}</td></tr>`;
+  }).join('');
+  const sm={};
+  data.filter(r=>r.student_code).forEach(r=>{
+    if(!sm[r.student_code])sm[r.student_code]={name:r.student_name,first:r.created_at,last:r.created_at,connexions:0,modules:new Set(),tempsTotal:0};
+    if(r.created_at<sm[r.student_code].first)sm[r.student_code].first=r.created_at;
+    if(r.created_at>sm[r.student_code].last)sm[r.student_code].last=r.created_at;
+    if(r.module==='login')sm[r.student_code].connexions++;
+    if(r.step==='ouverture'&&r.module)sm[r.student_code].modules.add(r.module);
+    if(r.time_spent_ms)sm[r.student_code].tempsTotal+=r.time_spent_ms;
+  });
+  document.getElementById('studentsBody').innerHTML=Object.entries(sm).map(([c,i])=>`<tr><td>${c}</td><td>${i.name||'-'}</td><td>${i.connexions}</td><td>${i.modules.size}</td><td>${msEnTemps(i.tempsTotal)}</td><td>${new Date(i.first).toLocaleString('fr-FR')}</td><td>${new Date(i.last).toLocaleString('fr-FR')}</td></tr>`).join('');
+  const mm={};
+  ouvertures.forEach(r=>{if(!mm[r.module])mm[r.module]={o:0,t:0,n:0};mm[r.module].o++;});
+  fermetures.forEach(r=>{if(r.module&&mm[r.module]){mm[r.module].t+=r.time_spent_ms||0;mm[r.module].n++;}});
+  document.getElementById('modulesBody').innerHTML=Object.entries(mm).sort((a,b)=>b[1].o-a[1].o).map(([m,i])=>`<tr><td>${m}</td><td>${i.o}</td><td>${msEnTemps(i.n?Math.round(i.t/i.n):0)}</td></tr>`).join('');
+}
+</script>
+</body>
+</html>
