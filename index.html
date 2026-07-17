@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>SimAP · Suite pedagogique DEAP</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="SimAP">
+<meta name="theme-color" content="#0a0810">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;background:#0a0810}
+#home{position:fixed;inset:0;background:linear-gradient(160deg,#0a0810 0%,#150d20 55%,#0a0810 100%);color:#f0d8f8;overflow-y:auto;-webkit-overflow-scrolling:touch;font-family:system-ui,sans-serif;display:flex;flex-direction:column;}
+#module-frame{position:fixed;inset:0;width:100%;height:100%;border:none;display:none;background:#0a0810;z-index:100;}
+#btn-retour{position:fixed;top:env(safe-area-inset-top,12px);left:16px;z-index:200;display:none;background:rgba(10,8,16,.9);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:8px 16px;color:#f0d8f8;font-size:14px;font-weight:600;cursor:pointer;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);font-family:system-ui,sans-serif;}
+nav{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;border-bottom:1px solid rgba(255,255,255,.07);background:rgba(10,8,16,.9);position:sticky;top:0;z-index:10;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);}
+.nav-logo{font-size:22px;font-weight:700;color:#f0d8f8;font-family:Georgia,serif}
+.nav-logo span{color:#d870f0}
+.nav-tag{font-size:10px;letter-spacing:2px;color:#4a3060;border:1px solid rgba(255,255,255,.07);padding:3px 10px;border-radius:20px;font-family:monospace}
+.hero{text-align:center;padding:48px 24px 36px}
+.hero-badge{display:inline-block;background:rgba(216,112,240,.1);border:1px solid rgba(216,112,240,.25);color:#d870f0;padding:4px 14px;border-radius:20px;font-size:11px;letter-spacing:2px;font-family:monospace;margin-bottom:18px}
+.hero h1{font-family:Georgia,serif;font-size:clamp(32px,7vw,60px);font-weight:300;line-height:1.1;letter-spacing:-1px;margin-bottom:14px}
+.hero h1 em{font-style:italic;color:#d870f0}
+.hero h1 strong{font-weight:700}
+.hero p{font-size:15px;color:#4a3060;line-height:1.75;max-width:440px;margin:0 auto}
+.modules-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 20px 40px;max-width:680px;margin:0 auto;width:100%;}
+@media(max-width:380px){.modules-grid{grid-template-columns:1fr}}
+.module-card{border-radius:16px;padding:18px 16px;border:1.5px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);display:flex;flex-direction:column;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .15s,opacity .15s;user-select:none;-webkit-user-select:none;}
+.module-card:active{transform:scale(.97);opacity:.85}
+.module-num{font-family:monospace;font-size:10px;letter-spacing:2px;color:rgba(255,255,255,.2);margin-bottom:10px}
+.module-icon{font-size:28px;margin-bottom:8px}
+.module-name{font-size:20px;font-weight:700;letter-spacing:-0.5px;margin-bottom:3px;line-height:1}
+.module-sub{font-size:11px;color:#4a3060;margin-bottom:8px}
+.module-desc{font-size:12px;color:#4a3060;line-height:1.6;flex:1;margin-bottom:12px}
+.module-btn{display:block;text-align:center;padding:9px;border-radius:8px;font-size:12px;font-weight:700;border:1.5px solid transparent;}
+footer{border-top:1px solid rgba(255,255,255,.07);padding:24px 20px;text-align:center;font-size:11px;color:#4a3060;font-family:monospace;}
+</style>
+<script>
+(function(){
+  var CODES=['PRAXIS-AP-001','PRAXIS-AP-002','PRAXIS-AP-003','PRAXIS-AP-004','PRAXIS-AP-005',
+    'PRAXIS-AP-006','PRAXIS-AP-007','PRAXIS-AP-008','PRAXIS-AP-009','PRAXIS-AP-010',
+    'PRAXIS-AP-011','PRAXIS-AP-012','PRAXIS-AP-013','PRAXIS-AP-014','PRAXIS-AP-015',
+    'PRAXIS-AP-016','PRAXIS-AP-017','PRAXIS-AP-018','PRAXIS-AP-019','PRAXIS-AP-020',
+    'PRAXIS-AP-021','PRAXIS-AP-022','PRAXIS-AP-023','PRAXIS-AP-024','PRAXIS-AP-025',
+    'PRAXIS-AP-026','PRAXIS-AP-027','PRAXIS-AP-028','PRAXIS-AP-029','PRAXIS-AP-030',
+    'PRAXIS-AP-031','PRAXIS-AP-032','PRAXIS-AP-033','PRAXIS-AP-034','PRAXIS-AP-035',
+    'PRAXIS-AP-036','PRAXIS-AP-037','PRAXIS-AP-038','PRAXIS-AP-039','PRAXIS-AP-040',
+    'PRAXIS-AP-041','PRAXIS-AP-042','PRAXIS-AP-043','PRAXIS-AP-044','PRAXIS-AP-045',
+    'PRAXIS-AP-046','PRAXIS-AP-047','PRAXIS-AP-048','PRAXIS-AP-049','PRAXIS-AP-050',
+    'PRAXIS-AP-FORM-01'];
+  var code=sessionStorage.getItem('praxisap_code');
+  if(!code||CODES.indexOf(code)===-1)window.location.replace('acces-ap.html');
+})();
+document.addEventListener('visibilitychange',function(){
+  if(document.visibilityState==='hidden'){
+    sessionStorage.removeItem('praxisap_code');
+    sessionStorage.removeItem('praxisap_promo');
+  }
+});
+</script>
+</head>
+<body>
+<button id="btn-retour" onclick="retourAccueil()">SimAP</button>
+<iframe id="module-frame" src="" allowfullscreen></iframe>
+<div id="home">
+  <nav>
+    <div class="nav-logo">Sim<span>AP</span></div>
+    <div class="nav-tag">DEAP 2021</div>
+  </nav>
+  <div class="hero">
+    <div class="hero-badge">Suite pedagogique DEAP - 11 modules</div>
+    <h1><em>L'enfant</em> au coeur<br>de <strong>chaque soin</strong></h1>
+    <p>Referentiel DEAP - Arrete du 10 juin 2021 - 5 blocs de competences</p>
+  </div>
+  <div class="modules-grid">
+
+    <div class="module-card" onclick="ouvrirModule('SimAP-VieQuotidienne.html')" style="border-color:rgba(216,112,240,.2)">
+      <div class="module-num">MODULE 01 · BLOC 1</div>
+      <div class="module-icon">👶</div>
+      <div class="module-name" style="color:#d870f0">SimVieQuotidienne</div>
+      <div class="module-sub">Accompagnement vie quotidienne de l'enfant</div>
+      <div class="module-desc">Bain, change, alimentation, sommeil, hygiene - adaptes a l'age et au developpement de l'enfant.</div>
+      <div class="module-btn" style="background:rgba(216,112,240,.1);color:#d870f0;border-color:rgba(216,112,240,.3)">Ouvrir</div>
+    </div>
+
+    <div class="module-card" onclick="ouvrirModule('SimAP-Eveil.html')" style="border-color:rgba(248,168,56,.2)">
+      <div class="module-num">MODULE 01bis · BLOC 1</div>
+      <div class="module-icon">🎨</div>
+      <div class="module-name" style="color:#f8a838">SimEveil</div>
+      <div class="module-sub">Activites d'eveil, jeux et loisirs</div>
+      <div class="module-desc">Developpement psychomoteur, jeux adaptes, eveil sensoriel, activites selon l'age de l'enfant.</div>
+      <div class="module-btn" style="background:rgba(248,168,56,.1);color:#f8a838;border-color:rgba(248,168,56,.3)">Ouvrir</div>
+    </div>
+
+    <div class="module-card" onclick="ouvrirModule('SimAP-Risques.html')" style="border-color:rgba(232,80,80,.2)">
+      <div class="module-num">MODULE 02 · BLOC 1</div>
+      <div class="module-icon">⚠️</div>
+      <div class="module-name" style="color:#e85050">SimRisques</div>
+      <div class="module-sub">Reperage et prevention des risques chez l'enfant</div>
+      <div class="module-desc">Mort subite, syndrome bebe secoue, maltraitance, accidents domestiques, protection de l'enfance.</div>
+      <div class="module-btn" style="background:rgba(232,80,80,.1);color:#e85050;border-color:rgba(232,80,80,.3)">Ouvrir</div>
+    </div>
+
+    <div class="module-card" onclick="ouvrirModule('SimAP-EtatClinique.html')" style="border-color:rgba(80,168,248,.2)">
+      <div class="module-num">MODULE 03 · BLOC 2</div>
+      <div class="module-icon">📊</div>
+      <div class="module-name" style="color:#50a8f8">SimEtatClinique</div>
+      <div class="module-sub">Evaluation de l'etat clinique de l'enfant</div>
+      <div class="module-desc">Constantes pediatriques, douleur chez l'enfant, courbes de croissance, signes d'alerte.</div>
+      <div class="module-btn" style="background:rgba(80,168,248,.1);color:#50a8f8;border-color:rgba(80,168,248,.3)">Ouvrir</div>
+    </div>
+
+    <div class="module-card" onclick="ouvrirModule('SimAP-Soins.html')" style="border-color:rgba(64,200,120,.2);grid-column:span 2">
+      <div class="module-num">MODULE 04 · BLOC 2 · MODULE SPECIFIQUE AP</div>
+      <div class="module-icon">🍼</div>
+      <div class="module-name" style="color:#40c878">SimSoins</div>
+      <div class="module-sub">Soins adaptes a l'enfant - Nouveau-ne, nourrisson, grand enfant</div>
+      <div class="module-desc">Bain du nouveau-ne, soins du cordon, allaitement maternel, alimentation lactee, soins pediatriques specifiques, surveillance post-natale.</div>
+      <div class="module-btn" style="background:rgba(64,200,120,.1);color:#40c878;border-color:rgba(64,200,120,.3)">Ouvrir</div>
+    </div>
+
+    <div class="module-card" onclick="ouvrirModule('SimAP-Mobilite.html')" style="border-color:rgba(248,200,64,.2)">
+      <div class="module-num">MODULE 05 · BLOC 2</div>
+      <div class="module-icon">🚼</div>
+      <div class="module-name" style="color:#f8c840">SimMobilite</div>
+      <div class="module-sub">Accompagnement de la mobilite de l'enfant</div>
+      <div class="module-desc">Portage, installation, manutention adaptee a l'enfant, securite, aides techniques pediatriques.</div>
+      <div class="module-btn" style="background:rgba(248,200,64,.1);color:#f8c840;border-color:rgba(248,200,64,.3)">Ouvrir</div>
+    </div>
+
+    <div class="module-card" onclick="ouvrirModule('SimAP-Communication.html')" style="border-color:rgba(160,120,255,.2)">
+      <div class="module-num">MODULE 06 · BLOC 3</div>
+      <div class="module-icon">💜</div>
+      <div class="module-name" style="color:#a078ff">SimCommunication</div>
+      <div class="module-sub">Relation avec l'enfant, la famille et l'entourage</div>
+      <div class="module-desc">Soutien a la parentalite, communication avec l'enfant selon son age, accompagnement des familles.</div>
+      <div class="module-btn" style="background:rgba(160,120,255,.1);color:#a078ff;border-color:rgba(160,120,255,.3)">Ouvrir</div>
+    </div>
+
+    <div class="module-card" onclick="ouvrirModule('SimAP-Formation.html')" style="border-color:rgba(80,200,248,.2)">
+      <div class="module-num">MODULE 07 · BLOC 3</div>
+      <div class="module-icon">🎓</div>
+      <div class="module-name" style="color:#50c8f8">SimFormation</div>
+      <div class="module-sub">Accompagnement des personnes en formation</div>
+      <div class="module-desc">Tutorat, transmission des savoirs, accueil des stagiaires, SBAR, communication avec les pairs.</div>
+      <div class="module-btn" style="background:rgba(80,200,248,.1);color:#50c8f8;border-color:rgba(80,200,248,.3)">Ouvrir</div>
+    </div>
+
+    <div class="module-card" onclick="ouvrirModule('SimAP-Hygiene.html')" style="border-color:rgba(64,200,120,.2)">
+      <div class="module-num">MODULE 08 · BLOC 4</div>
+      <div class="module-icon">🧹</div>
+      <div class="module-name" style="color:#40c878">SimHygiene</div>
+      <div class="module-sub">Entretien des locaux et materiels en structure petite enfance</div>
+      <div class="module-desc">Bionettoyage en creche, sterilisation des biberons, DASRI, infections nosocomiales, EPI.</div>
+      <div class="module-btn" style="background:rgba(64,200,120,.1);color:#40c878;border-color:rgba(64,200,120,.3)">Ouvrir</div>
+    </div>
+
+    <div class="module-card" onclick="ouvrirModule('SimAP-Informations.html')" style="border-color:rgba(248,168,56,.2)">
+      <div class="module-num">MODULE 09 · BLOC 5</div>
+      <div class="module-icon">📋</div>
+      <div class="module-name" style="color:#f8a838">SimInfos</div>
+      <div class="module-sub">Traitement des informations liees aux activites de soins</div>
+      <div class="module-desc">Dossier de l'enfant, transmissions aux parents, secret professionnel, outils numeriques, RGPD.</div>
+      <div class="module-btn" style="background:rgba(248,168,56,.1);color:#f8a838;border-color:rgba(248,168,56,.3)">Ouvrir</div>
+    </div>
+
+    <div class="module-card" onclick="ouvrirModule('SimAP-Equipe.html')" style="border-color:rgba(216,112,240,.2)">
+      <div class="module-num">MODULE 10 · BLOC 5</div>
+      <div class="module-icon">👥</div>
+      <div class="module-name" style="color:#d870f0">SimEquipe</div>
+      <div class="module-sub">Travail en equipe pluriprofessionnelle</div>
+      <div class="module-desc">Role AP/IDE/puericultrice, AFGSU niveau 2, qualite des soins, gestion des risques.</div>
+      <div class="module-btn" style="background:rgba(216,112,240,.1);color:#d870f0;border-color:rgba(216,112,240,.3)">Ouvrir</div>
+    </div>
+
+    <div class="module-card" onclick="ouvrirModule('SimAP-Tips.html')" style="border-color:rgba(248,168,56,.3);grid-column:span 2">
+      <div class="module-num">MODULE TIPS</div>
+      <div class="module-icon">🎲</div>
+      <div class="module-name" style="color:#f8a838">SimTips AP</div>
+      <div class="module-sub">Loterie examen - Situations - Soins - Communication - Urgences pediatriques</div>
+      <div class="module-desc">Tirage au sort de situations aleatoires pour se preparer aux epreuves DEAP - avec analyse IA de votre reponse.</div>
+      <div class="module-btn" style="background:rgba(248,168,56,.1);color:#f8a838;border-color:rgba(248,168,56,.3)">Tirer un sujet</div>
+    </div>
+
+    <div class="module-card" onclick="ouvrirBinome()" style="border-color:rgba(216,112,240,.4);background:rgba(216,112,240,.05);grid-column:span 2">
+      <div class="module-num">DUETISTE AP</div>
+      <div class="module-icon">🤝</div>
+      <div class="module-name" style="color:#d870f0">Mon Duetiste</div>
+      <div class="module-sub">Apprendre a deux - progresser ensemble</div>
+      <div class="module-desc">Liez-vous a un autre etudiant AP abonne - explorez les memes modules - comparez vos scores en binome.</div>
+      <div class="module-btn" style="background:rgba(216,112,240,.2);color:#d870f0;border-color:rgba(216,112,240,.4)">Choisir mon Duetiste</div>
+    </div>
+
+  </div>
+  <footer>
+    Formateur certifie PRAP 2S - BCI - contact@praxiscare.fr<br>
+    Referentiel DEAP - Arrete du 10 juin 2021 - 5 blocs de competences
+    <br><a href="stats-formateur-ap.html" style="color:rgba(216,112,240,.3);font-size:10px;text-decoration:none">acces formateur</a>
+  </footer>
+</div>
+
+<!-- POPUP BINOME -->
+<div id="binome-overlay" style="display:none;position:fixed;inset:0;background:rgba(10,8,16,.95);z-index:300;align-items:center;justify-content:center;">
+  <div style="background:#150d20;border:1px solid rgba(216,112,240,.2);border-radius:16px;padding:24px;max-width:320px;width:90%;text-align:center">
+    <h2 style="color:#d870f0;font-size:18px;margin-bottom:8px">Mon Duetiste AP</h2>
+    <p style="color:#4a3060;font-size:12px;margin-bottom:16px">Entrez le code de votre binome. Les deux etudiants doivent etre abonnes.</p>
+    <div id="binome-actuel" style="background:rgba(216,112,240,.08);border:1px solid rgba(216,112,240,.15);border-radius:8px;padding:10px;margin-bottom:16px;font-size:13px;color:#d870f0"></div>
+    <input id="binome-input" placeholder="PRAXIS-AP-XXX" style="width:100%;padding:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#f0d8f8;font-size:14px;text-align:center;text-transform:uppercase;margin-bottom:8px">
+    <button onclick="lierBinome()" style="width:100%;padding:10px;background:#d870f0;color:#0a0810;border:none;border-radius:8px;font-weight:700;cursor:pointer;margin-bottom:8px">Lier ce binome</button>
+    <button onclick="voirScoreBinome()" style="width:100%;padding:10px;background:rgba(216,112,240,.1);color:#d870f0;border:1px solid rgba(216,112,240,.2);border-radius:8px;font-weight:700;cursor:pointer;margin-bottom:8px">Voir notre score commun</button>
+    <div id="binome-msg" style="font-size:12px;margin-bottom:12px"></div>
+    <div id="binome-score" style="display:none;background:rgba(255,255,255,.04);border-radius:8px;padding:12px;margin-bottom:12px;text-align:left"></div>
+    <button onclick="fermerBinome()" style="background:none;border:1px solid rgba(255,255,255,.1);color:#4a3060;padding:8px 20px;border-radius:8px;cursor:pointer;font-size:12px">Fermer</button>
+  </div>
+</div>
+
+<script>
+var _moduleStart=null,_moduleNom=null;
+const SB_URL="https://uhbbwtxmsomqhuvzvoxy.supabase.co";
+const SB_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVoYmJ3dHhtc29tcWh1dnp2b3h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM1MTI2OTIsImV4cCI6MjA5OTA4ODY5Mn0.WsH1qUbwjL8eF0y5vUBqG8lvpE4UgbNd3k2JbBGVyyY";
+
+function sbPost(data){fetch(SB_URL+"/rest/v1/praxis",{method:"POST",headers:{"Content-Type":"application/json","apikey":SB_KEY,"Authorization":"Bearer "+SB_KEY},body:JSON.stringify(data)});}
+
+function trackModule(nom){var s=JSON.parse(localStorage.getItem('praxisap_stats')||'{}');if(!s.modules)s.modules={};s.modules[nom]=(s.modules[nom]||0)+1;localStorage.setItem('praxisap_stats',JSON.stringify(s));}
+
+function ouvrirModule(fichier){
+  var frame=document.getElementById('module-frame');
+  var home=document.getElementById('home');
+  var nomModule=fichier.replace('.html','').replace(/SimAP-/,'');
+  trackModule(nomModule);
+  _moduleStart=Date.now();_moduleNom=nomModule;
+  var code=sessionStorage.getItem('praxisap_code');
+  sbPost({student_code:code,app:"praxisap",module:nomModule,step:"ouverture",session_id:code+"_"+Date.now()});
+  frame.src=fichier;frame.style.display='block';
+  document.getElementById('btn-retour').style.display='block';
+  home.style.display='none';window.scrollTo(0,0);
+}
+
+function envoyerTempsModule(){
+  if(_moduleStart&&_moduleNom){
+    var code=sessionStorage.getItem('praxisap_code');
+    sbPost({student_code:code,app:"praxisap",module:_moduleNom,step:"fermeture",time_spent_ms:Date.now()-_moduleStart,session_id:code+"_"+_moduleStart});
+    _moduleStart=null;_moduleNom=null;
+  }
+}
+
+function retourAccueil(){
+  var frame=document.getElementById('module-frame');
+  frame.style.display='none';envoyerTempsModule();frame.src='about:blank';
+  document.getElementById('btn-retour').style.display='none';
+  document.getElementById('home').style.display='flex';
+}
+
+window.addEventListener('message',function(e){
+  if(e.data&&e.data.type==='navigate')ouvrirModule(e.data.url);
+  if(e.data&&e.data.type==='retour')retourAccueil();
+  if(e.data&&e.data.type==='activite')resetInactivityTimer();
+});
+
+document.getElementById('module-frame').addEventListener('load',function(){
+  try{var u=this.contentWindow.location.href;if(u&&u!=='about:blank')document.getElementById('btn-retour').style.display='block';}catch(e){}
+});
+
+if('serviceWorker'in navigator)navigator.serviceWorker.getRegistrations().then(function(r){r.forEach(function(x){x.unregister();});});
+if('caches'in window)caches.keys().then(function(k){k.forEach(function(x){caches.delete(x);});});
+
+var _inactivityTimer=null;
+function resetInactivityTimer(){
+  clearTimeout(_inactivityTimer);
+  _inactivityTimer=setTimeout(function(){
+    envoyerTempsModule();
+    sessionStorage.removeItem('praxisap_code');
+    sessionStorage.removeItem('praxisap_promo');
+    window.location.replace('acces-ap.html');
+  },5*60*1000);
+}
+document.addEventListener('click',resetInactivityTimer);
+document.addEventListener('touchstart',resetInactivityTimer);
+document.addEventListener('keypress',resetInactivityTimer);
+resetInactivityTimer();
+
+var CODES_AP=['PRAXIS-AP-001','PRAXIS-AP-002','PRAXIS-AP-003','PRAXIS-AP-004','PRAXIS-AP-005',
+  'PRAXIS-AP-006','PRAXIS-AP-007','PRAXIS-AP-008','PRAXIS-AP-009','PRAXIS-AP-010',
+  'PRAXIS-AP-011','PRAXIS-AP-012','PRAXIS-AP-013','PRAXIS-AP-014','PRAXIS-AP-015',
+  'PRAXIS-AP-016','PRAXIS-AP-017','PRAXIS-AP-018','PRAXIS-AP-019','PRAXIS-AP-020',
+  'PRAXIS-AP-021','PRAXIS-AP-022','PRAXIS-AP-023','PRAXIS-AP-024','PRAXIS-AP-025',
+  'PRAXIS-AP-026','PRAXIS-AP-027','PRAXIS-AP-028','PRAXIS-AP-029','PRAXIS-AP-030',
+  'PRAXIS-AP-031','PRAXIS-AP-032','PRAXIS-AP-033','PRAXIS-AP-034','PRAXIS-AP-035',
+  'PRAXIS-AP-036','PRAXIS-AP-037','PRAXIS-AP-038','PRAXIS-AP-039','PRAXIS-AP-040',
+  'PRAXIS-AP-041','PRAXIS-AP-042','PRAXIS-AP-043','PRAXIS-AP-044','PRAXIS-AP-045',
+  'PRAXIS-AP-046','PRAXIS-AP-047','PRAXIS-AP-048','PRAXIS-AP-049','PRAXIS-AP-050'];
+
+function ouvrirBinome(){
+  document.getElementById('binome-overlay').style.display='flex';
+  var b=localStorage.getItem('praxisap_binome');
+  document.getElementById('binome-actuel').textContent=b?'Binome actuel : '+b:'Aucun binome lie pour le moment';
+  document.getElementById('binome-score').style.display='none';
+  document.getElementById('binome-msg').textContent='';
+}
+function fermerBinome(){document.getElementById('binome-overlay').style.display='none';}
+function lierBinome(){
+  var monCode=sessionStorage.getItem('praxisap_code');
+  var cb=document.getElementById('binome-input').value.trim().toUpperCase();
+  var msg=document.getElementById('binome-msg');
+  if(!cb){msg.style.color='#e84040';msg.textContent='Entrez un code binome.';return;}
+  if(cb===monCode){msg.style.color='#e84040';msg.textContent='Vous ne pouvez pas vous lier a vous-meme !';return;}
+  if(CODES_AP.indexOf(cb)===-1){msg.style.color='#e84040';msg.textContent='Ce code n\'est pas un abonne actif.';return;}
+  localStorage.setItem('praxisap_binome',cb);
+  sbPost({student_code:monCode,app:"praxisap",module:"binome",step:cb,session_id:monCode+"_binome_"+Date.now()});
+  msg.style.color='#40c878';msg.textContent='Binome '+cb+' lie avec succes !';
+  document.getElementById('binome-actuel').textContent='Binome actuel : '+cb;
+}
+function voirScoreBinome(){
+  var monCode=sessionStorage.getItem('praxisap_code');
+  var cb=localStorage.getItem('praxisap_binome');
+  var scoreDiv=document.getElementById('binome-score');
+  var msg=document.getElementById('binome-msg');
+  if(!cb){msg.style.color='#e84040';msg.textContent='Liez d\'abord un binome.';return;}
+  msg.style.color='#4a3060';msg.textContent='Chargement...';
+  fetch(SB_URL+"/rest/v1/praxis?student_code=in.("+monCode+","+cb+")&step=eq.ouverture&select=student_code,module",{
+    headers:{"apikey":SB_KEY,"Authorization":"Bearer "+SB_KEY}
+  }).then(function(r){return r.json();}).then(function(data){
+    var moi=data.filter(function(d){return d.student_code===monCode;}).map(function(d){return d.module;});
+    var bin=data.filter(function(d){return d.student_code===cb;}).map(function(d){return d.module;});
+    var communs=[...new Set(moi.filter(function(m){return bin.indexOf(m)!==-1;}))];
+    var badge=communs.length>=8?'Duetiste Expert AP':communs.length>=4?'Duetiste Actif':communs.length>=1?'Duetiste Debutant':'Duetiste Inscrit';
+    scoreDiv.style.display='block';
+    scoreDiv.innerHTML='<div style="text-align:center;font-size:18px;color:#d870f0;margin-bottom:8px">'+badge+'</div>'+
+      '<div style="color:#4a3060;font-size:12px">Modules explores en commun : <strong style="color:#d870f0">'+communs.length+'</strong></div>'+
+      '<div style="color:#4a3060;font-size:12px;margin-top:4px">Binome : <strong style="color:#a078ff">'+cb+'</strong></div>'+
+      (communs.length>0?'<div style="margin-top:8px;font-size:11px;color:#4a3060">'+communs.join(', ')+'</div>':'');
+    msg.textContent='';
+  });
+}
+</script>
+</body>
+</html>
