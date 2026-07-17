@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>SimTips AP · PraxisAP DEAP</title>
+<meta name="theme-color" content="#0a0810">
+<style>
+:root{--bg:#0a0810;--card:rgba(255,255,255,.04);--bdr:rgba(255,255,255,.08);--txt:#f0d8f8;--txt2:#4a3060;--em:#d870f0;--amber:#f8a838;--red:#e84040;--green:#40c878;--blue:#50a8f8;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--txt);padding:16px;}
+h1{font-family:Georgia,serif;font-size:22px;color:var(--em);margin-bottom:4px;}
+.sub{font-size:11px;color:var(--txt2);margin-bottom:20px;font-family:monospace;}
+.loterie{text-align:center;padding:24px 16px;background:var(--card);border:1.5px solid var(--bdr);border-radius:16px;margin-bottom:16px;}
+.loterie h2{font-size:16px;color:var(--txt);margin-bottom:6px;}
+.loterie p{font-size:12px;color:var(--txt2);margin-bottom:16px;}
+.btn-loterie{display:inline-block;padding:12px 28px;background:linear-gradient(135deg,#8020a0,#d870f0);color:#0a0810;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;}
+.btn-small{display:inline-block;padding:7px 14px;background:rgba(255,255,255,.06);color:var(--txt2);border:1px solid var(--bdr);border-radius:8px;font-size:11px;cursor:pointer;margin:3px;}
+.chrono-wrap{text-align:center;margin-bottom:12px;}
+.chrono{font-size:32px;font-weight:700;font-family:monospace;color:var(--em);}
+.chrono.urgent{color:var(--red);}
+.chrono-bar{height:4px;background:rgba(255,255,255,.08);border-radius:2px;margin-bottom:16px;overflow:hidden;}
+.chrono-fill{height:100%;background:var(--em);border-radius:2px;transition:width .5s linear;}
+.chrono-fill.urgent{background:var(--red);}
+.sujet-card{background:var(--card);border:1.5px solid var(--bdr);border-radius:16px;padding:16px;margin-bottom:16px;display:none;}
+.sujet-card.show{display:block;}
+.tip-type{display:inline-block;padding:3px 10px;border-radius:20px;font-size:10px;font-family:monospace;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;}
+.tip-type.quotidien{background:rgba(216,112,240,.1);color:var(--em);border:1px solid rgba(216,112,240,.2);}
+.tip-type.soin{background:rgba(64,200,120,.1);color:var(--green);border:1px solid rgba(64,200,120,.2);}
+.tip-type.communication{background:rgba(160,120,255,.1);color:#a078ff;border:1px solid rgba(160,120,255,.2);}
+.tip-type.urgence{background:rgba(232,64,64,.1);color:var(--red);border:1px solid rgba(232,64,64,.2);}
+.tip-title{font-size:17px;font-weight:700;margin-bottom:10px;line-height:1.3;}
+.tip-situation{background:rgba(255,255,255,.03);border-left:3px solid var(--amber);padding:10px;border-radius:0 8px 8px 0;font-size:13px;color:var(--txt);margin-bottom:16px;line-height:1.6;}
+.reponse-wrap{display:none;}
+.reponse-wrap.show{display:block;}
+textarea{width:100%;padding:12px;background:rgba(255,255,255,.06);border:1.5px solid var(--bdr);border-radius:10px;color:var(--txt);font-size:13px;font-family:system-ui,sans-serif;line-height:1.6;resize:vertical;min-height:120px;outline:none;}
+textarea:focus{border-color:rgba(216,112,240,.4);}
+.btn-correction{width:100%;padding:12px;background:linear-gradient(135deg,#8020a0,#d870f0);color:#0a0810;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;margin-top:10px;}
+.btn-passer{width:100%;padding:10px;background:rgba(255,255,255,.04);color:var(--txt2);border:1px solid var(--bdr);border-radius:10px;font-size:13px;cursor:pointer;margin-top:8px;}
+.correction-wrap{display:none;margin-top:16px;}
+.correction-wrap.show{display:block;}
+.correction-card{border-radius:12px;padding:14px;margin-bottom:12px;}
+.correction-card.ia{background:rgba(216,112,240,.06);border:1px solid rgba(216,112,240,.2);}
+.correction-card.etapes{background:rgba(255,255,255,.03);border:1px solid var(--bdr);}
+.correction-card h3{font-size:13px;font-weight:700;margin-bottom:8px;}
+.correction-card.ia h3{color:var(--em);}
+.correction-card.etapes h3{color:var(--txt2);}
+.correction-texte{font-size:13px;line-height:1.7;color:var(--txt);}
+.etape-item{padding:7px 10px;border-bottom:1px solid rgba(255,255,255,.04);font-size:12px;display:flex;gap:8px;align-items:flex-start;}
+.etape-item:last-child{border-bottom:none;}
+.etape-num{background:rgba(216,112,240,.15);color:var(--em);border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:1px;}
+.etape-num.green{background:rgba(64,200,120,.15);color:var(--green);}
+.etape-num.purple{background:rgba(160,120,255,.15);color:#a078ff;}
+.etape-num.red{background:rgba(232,64,64,.15);color:var(--red);}
+.tip-alert{background:rgba(232,64,64,.06);border:1px solid rgba(232,64,64,.2);border-radius:8px;padding:8px 12px;font-size:11px;color:var(--red);margin-top:10px;}
+.tip-memo{background:rgba(216,112,240,.06);border:1px solid rgba(216,112,240,.15);border-radius:8px;padding:8px 12px;font-size:11px;color:var(--em);margin-top:8px;}
+.btn-nouveau{width:100%;padding:10px;background:linear-gradient(135deg,#8020a0,#d870f0);color:#0a0810;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;margin-top:12px;}
+.loading{text-align:center;padding:20px;color:var(--txt2);font-size:13px;}
+.loading span{display:inline-block;animation:pulse 1.2s infinite;}
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+.liste-wrap{background:var(--card);border:1px solid var(--bdr);border-radius:12px;margin-bottom:16px;overflow:hidden;display:none;}
+.liste-wrap.show{display:block;}
+.liste-item{padding:10px 14px;border-bottom:1px solid var(--bdr);cursor:pointer;display:flex;align-items:center;gap:10px;font-size:12px;}
+.liste-item:last-child{border-bottom:none;}
+</style>
+</head>
+<body>
+<h1>SimTips AP</h1>
+<p class="sub">Preparation aux epreuves DEAP - Tirage aleatoire - Vie quotidienne - Soins - Communication - Urgences pediatriques</p>
+
+<div class="loterie" id="loterie-screen">
+  <h2>Tirage au sort</h2>
+  <p>Comme a l'epreuve - un sujet au hasard, vous repondez, puis Claude analyse votre reponse.</p>
+  <button class="btn-loterie" onclick="tirerAuSort(null)">🎲 Tirer un sujet</button>
+  <br><br>
+  <button class="btn-small" onclick="tirerAuSort('quotidien')">👶 Vie quotidienne</button>
+  <button class="btn-small" onclick="tirerAuSort('soin')">🍼 Soin AP</button>
+  <button class="btn-small" onclick="tirerAuSort('communication')">💬 Communication</button>
+  <button class="btn-small" onclick="tirerAuSort('urgence')">🚨 Urgence pediatrique</button>
+  <br><br>
+  <button class="btn-small" onclick="toggleListe()">📚 Choisir un sujet</button>
+</div>
+
+<div class="liste-wrap" id="tips-liste"></div>
+
+<div class="chrono-wrap" id="chrono-wrap" style="display:none">
+  <div class="chrono" id="chrono-display">3:00</div>
+  <div class="chrono-bar"><div class="chrono-fill" id="chrono-fill" style="width:100%"></div></div>
+</div>
+
+<div class="sujet-card" id="sujet-card">
+  <span class="tip-type" id="tip-type-badge"></span>
+  <div class="tip-title" id="tip-title"></div>
+  <div class="tip-situation" id="tip-situation"></div>
+</div>
+
+<div class="reponse-wrap" id="reponse-wrap">
+  <textarea id="reponse-etudiant" placeholder="Ecrivez votre reponse ici... Decrivez votre demarche, les etapes, ce que vous feriez et diriez."></textarea>
+  <button class="btn-correction" onclick="voirCorrection()">✅ Voir la correction et l'analyse</button>
+  <button class="btn-passer" onclick="passerDirectement()">Passer sans repondre</button>
+</div>
+
+<div class="correction-wrap" id="correction-wrap">
+  <div class="correction-card ia">
+    <h3>🤖 Analyse de votre reponse</h3>
+    <div class="correction-texte" id="analyse-texte"><div class="loading"><span>Analyse en cours...</span></div></div>
+  </div>
+  <div class="correction-card etapes">
+    <h3>📋 Correction complete</h3>
+    <div id="etapes-correction"></div>
+    <div class="tip-alert" id="correction-alert" style="display:none"></div>
+    <div class="tip-memo" id="correction-memo" style="display:none"></div>
+  </div>
+  <button class="btn-nouveau" onclick="nouveauTirage()">🎲 Nouveau sujet</button>
+</div>
+
+<script>
+var TIPS = [
+  // VIE QUOTIDIENNE
+  {type:"quotidien",titre:"Bain du nourrisson de 2 mois",situation:"Vous devez realiser le bain d'un nourrisson de 2 mois en creche. Les parents n'ont laisse aucune consigne particuliere. Decrivez votre demarche complete.",etapes:["Preparer TOUT le materiel avant de commencer - ne jamais quitter l'enfant des yeux","Verifier la temperature de l'eau : 37 degres (thermometre ou coude)","Deshabiller l'enfant en gardant une serviette sur lui pour eviter le refroidissement","Soutien : une main sous la nuque et la tete, l'autre sous les fesses","Laver le visage en premier : yeux de l'interieur vers l'exterieur","Laver le corps du haut vers le bas, parties genitales en dernier","Sortir, secher en tamponnant surtout dans les plis","Habiller rapidement pour eviter l'hypothermie"],alerte:"Ne JAMAIS laisser un nourrisson seul dans le bain. 2 cm d'eau suffisent pour noyer un bebe en moins de 2 minutes.",memo:"37 degres + soutien nuque + yeux interieur vers exterieur + genitaux en dernier + secher les plis."},
+  {type:"quotidien",titre:"Enfant de 18 mois qui refuse de manger",situation:"Lola, 18 mois, refuse son repas depuis 2 jours en creche. Elle detourne la tete, pleure quand on approche la cuillere. Elle n'a pas de fievre. Les parents ne signalent rien de particulier.",etapes:["Observer et evaluer : l'enfant est-elle malade ? Signes cliniques ?","Ne jamais forcer - le refus alimentaire est frequents a cet age (neophobia)","Proposer des petites quantites, varier les textures et les couleurs","Rendre le repas agreable : atmosphere calme, manger avec les autres enfants","Respecter le rythme de l'enfant - proposer sans insister","Signaler a la directrice et transmettre aux parents le soir","Si refus prolonge > 3 jours ou perte de poids : alerter les parents et la puericultrice"],alerte:"Ne jamais forcer un enfant a manger. Risque de fausse route et de traumatisme alimentaire.",memo:"Observer + ne pas forcer + atmosphere agreable + transmettre aux parents."},
+  {type:"quotidien",titre:"Installation pour la sieste - prevention MSN",situation:"Il est 13h en creche. Vous devez installer les enfants de 6 a 18 mois pour la sieste. Une stagiaire vous demande si elle peut mettre un bebe de 4 mois sur le ventre car il s'endort mieux comme ca.",etapes:["Refuser fermement et expliquer : position ventrale = risque de mort subite","Position obligatoire pour dormir : sur le DOS uniquement jusqu'a 2 ans","Literie adaptee : matelas ferme, pas d'oreillers, pas de peluches, pas de tour de lit","Temperature de la piece : 18-20 degres","Pas de couverture epaisse : turbulette adaptee a la saison","Surveillance reguliere des enfants pendant la sieste","Expliquer a la stagiaire l'importance de cette regle et la noter dans le cahier de stage"],alerte:"Position ventrale pour dormir = risque de mort subite x3. Regle ABSOLUE : sur le dos jusqu'a 2 ans.",memo:"Dos obligatoire + matelas ferme + pas d'oreillers/peluches + 18-20 degres + surveiller."},
+  {type:"quotidien",titre:"Change et hygiene perineal - petite fille de 8 mois",situation:"Vous changez Emma, 8 mois. Vous observez une rougeur importante au niveau des fesses et du perinee. Elle pleure au toucher. Decrivez votre demarche.",etapes:["Evaluer la rougeur : localisation, etendue, aspect (plaie ouverte ou non)","Nettoyer delicatement a l'eau tiede et compresses - eviter les lingettes si rougeur","Nettoyer de l'avant vers l'arriere chez la fille - jamais l'inverse","Secher en tamponnant - jamais frotter","Signaler a l'IDE ou la directrice avant d'appliquer toute creme","Appliquer la creme prescrite par le protocole de la structure","Laisser l'air libre quelques minutes si possible","Transmettre aux parents le soir avec l'aspect exact de la rougeur"],alerte:"Ne jamais appliquer une creme sans accord de l'IDE. Toujours nettoyer fille : avant vers arriere (uretral vers anal).",memo:"Avant vers arriere + tamponner + signaler IDE + creme selon protocole + transmettre parents."},
+  {type:"quotidien",titre:"Nourrisson inconsolable - pleurs intenses depuis 2h",situation:"Nathan, 3 mois, pleure sans arret depuis 2 heures en creche. Vous avez verifie : il n'a pas faim, sa couche est propre, il n'a pas de fievre. Il se cambre et semble souffrir.",etapes:["Rester calme - ne jamais secouer l'enfant meme doucement","Essayer les techniques de confort : portage, bercement doux, sucer, bruit blanc","Verifier a nouveau : temperature, couche, faim, inconfort physique (cheveu autour du doigt ou orteil)","Si pleurs persistent et semblent douloureux : prendre la temperature","Alerter l'IDE ou la directrice si pleurs > 2h ou aspect inquietant","Prevenir les parents rapidement","Ne pas rester seul avec un enfant inconsolable - appeler un collegue"],alerte:"JAMAIS secouer un bebe qui pleure. SBS (syndrome du bebe secoue) = lesions cerebrales graves ou deces.",memo:"Calme + techniques de confort + verifier cheveu autour doigt/orteil + alerter si > 2h + appeler collegue."},
+
+  // SOINS AP
+  {type:"soin",titre:"Soins du cordon ombilical - J5 de vie",situation:"Vous accueillez en maternite un nouveau-ne de J5. La mere vous signale que le cordon commence a sentir mauvais et qu'il y a une petite rougeur a la base. Que faites-vous ?",etapes:["Observer precisement : rougeur etendue ou limitee, secretion, odeur, chaleur","Signaler IMMEDIATEMENT a l'IDE ou la sage-femme - ne pas attendre","Ne pas appliquer de produit sans prescription","Le cordon normal : seche, de couleur foncee, sans odeur marquee ni rougeur","Omphalite (infection) = urgence neonatale : antibiotiques necessaires","Expliquer a la mere les soins normaux du cordon : secher a l'air, nettoyer si souille","Le clamp peut etre retire apres 48-72h par l'IDE"],alerte:"Rougeur + odeur + chaleur autour du cordon = omphalite = urgence medicale. Signalement IDE immediat.",memo:"Observer + signaler IDE immediat + ne rien appliquer sans prescription + informer la mere."},
+  {type:"soin",titre:"Soutien a l'allaitement maternel - J2 de vie",situation:"Mme Laurent, J2 apres accouchement, vous appelle. Elle dit que son bebe pleure sans arret et qu'elle n'a pas assez de lait. Elle parle d'arreter l'allaitement. Comment reagissez-vous ?",etapes:["Ecouter sans juger - valider son ressenti : 'Je comprends que c'est difficile'","Rassurer : le lait monte progressivement entre J2 et J4 - c'est normal","Verifier la prise du sein : areole entierement en bouche, pas seulement le mamelon","Observer une tetee si possible et transmettre les observations a la puericultrice","Ne jamais decourager ni encourager de facon excessive - respecter le choix de la mere","Alerter la puericultrice ou sage-femme pour un soutien specialise","Ne pas donner de biberon de complement sans prescription medicale"],alerte:"L'AP ne decide pas d'arreter ou de poursuivre l'allaitement. C'est le choix de la mere, soutenu par la puericultrice.",memo:"Ecouter + rassurer + verifier prise du sein + alerter puericultrice + respecter le choix maternel."},
+  {type:"soin",titre:"Surveillance d'un nourrisson sous O2",situation:"Vous surveillez Theo, 3 mois, hospitalise pour bronchiolite severe. Il est sous O2 par lunettes nasales a 1L/min. En passant, vous observez que ses lunettes sont mal positionnees et sa SpO2 est a 91%.",etapes:["Repositionner immediatement les lunettes nasales correctement","Verifier que le debit d'O2 est correct sur le debitmetre","Surveiller la SpO2 apres repositionnement - doit remonter > 94%","Si SpO2 reste basse : appeler l'IDE IMMEDIATEMENT","Observer les signes de detresse respiratoire : FR, tirage, battement ailes du nez, geignement","Ne jamais modifier le debit d'O2 sans prescription de l'IDE","Tracer dans le dossier : heure, SpO2, action realisee, resultat"],alerte:"SpO2 < 94% chez un nourrisson sous O2 = appel IDE immediat. Ne jamais modifier le debit sans prescription.",memo:"Repositionner + verifier debit + surveiller SpO2 + appel IDE si reste basse + tracer."},
+  {type:"soin",titre:"Preparation et sterilisation des biberons en creche",situation:"En creche, vous devez preparer les biberons du repas du midi pour 8 nourrissons entre 3 et 9 mois. Decrivez votre demarche d'hygiene.",etapes:["Hygiene des mains : lavage savon + SHA avant toute manipulation","Utiliser de l'eau minerale pauvre en sodium (sodium < 50 mg/L) pour les < 6 mois","Temperature de l'eau : 37 degres (verifier sur le poignet)","Biberons sterilises : vapeur ou sterilisateur electrique jusqu'a 6 mois","Preparer le biberon au moment du repas - ne pas stocker du lait prepare","Lait non utilise apres 1h a temperature ambiante = jeter","Etiqueter chaque biberon : prenom, date, heure, quantite"],alerte:"Lait reconstitue = perimable en 1h a T ambiante. Ne jamais rechauffer au micro-ondes. Jamais conserver un biberon entame.",memo:"SHA + eau adaptee + sterilisation + preparer au moment + jeter apres 1h + etiqueter."},
+
+  // COMMUNICATION
+  {type:"communication",titre:"Annonce d'un incident a des parents",situation:"Ce matin, Mathis, 2 ans, est tombe de la structure de jeux en creche et s'est fait une bosse sur le front. Il a pleure 5 minutes puis a repris ses activites normalement. Les parents viennent le chercher le soir.",etapes:["Informer les parents des l'arrivee, avant qu'ils voient la bosse","Etre direct et honnete : 'Mathis a eu un accident ce matin, voici ce qui s'est passe'","Expliquer les circonstances : comment, quand, surveillance","Montrer la bosse et decrire son evolution dans la journee","Expliquer les soins realises et la surveillance effectuee","Donner les consignes de surveillance a domicile : signes d'alerte neurologiques","Remettre la fiche d'incident signee par la directrice","Ne jamais minimiser ni dramatiser - rester factuel et bienveillant"],alerte:"Tout incident avec bosse a la tete = consignes de surveillance neurologique aux parents : nausees, vomissements, somnolence excessive = urgences.",memo:"Informer des l'arrivee + etre honnete + fiche incident + consignes surveillance neurologique."},
+  {type:"communication",titre:"Parents qui refusent le protocole de soin",situation:"M. et Mme Dubois refusent que leur fils de 6 mois soit mis sur le dos pour dormir. Ils disent qu'il dort mieux sur le ventre depuis sa naissance et que ce sont eux les parents.",etapes:["Ecouter sans confronter immediatement leur point de vue","Expliquer calmement et avec empathie la raison de la regle : risque de mort subite","Preciser que c'est un protocole national base sur des etudes scientifiques","Indiquer que la creche a l'obligation de respecter ce protocole pour la securite de leur enfant","Proposer d'en parler avec la directrice ou la puericultrice referente","Ne jamais ceder sur cette regle - c'est non negociable pour la securite de l'enfant","Documenter l'echange dans le dossier de l'enfant"],alerte:"La position ventrale pour dormir est une regle de securite NON NEGOCIABLE. L'AP ne peut pas ceder meme sous pression parentale.",memo:"Ecouter + expliquer + regle non negociable + directrice si besoin + documenter."},
+  {type:"communication",titre:"Suspicion de maltraitance - enfant de 3 ans",situation:"Lors de la toilette de Camille, 3 ans, vous observez des hematomes a differents stades sur les fesses et les cuisses. Quand vous lui demandez ce qui s'est passe, elle dit 'papa fait mal'. Elle semble apeuree.",etapes:["Rester calme, ne pas montrer son emotion a l'enfant","Ne pas interroger davantage l'enfant - risque de contamination du temoignage","Rassurer l'enfant sans promettre quoi que ce soit","Signaler IMMEDIATEMENT et confidentiellement a la directrice","La directrice contacte la PMI et les autorites competentes (119 si urgence)","Ne pas confronter les parents - ne pas mentionner le signalement","Documenter les observations de facon objective dans le dossier"],alerte:"Suspicion de maltraitance = signalement immediat obligatoire. L'AP ne gere pas seul. Ne jamais confronter les parents.",memo:"Ne pas interroger + signaler directrice immediat + ne pas confronter parents + documenter objectivement."},
+
+  // URGENCES PEDIATRIQUES
+  {type:"urgence",titre:"Nourrisson en detresse respiratoire",situation:"Vous surveillez les enfants en salle de jeux. Soudainement, Luca, 5 mois, devient pale puis bleuisse au niveau des levres. Il semble avoir du mal a respirer et fait un bruit etrange en inspirant.",etapes:["Appeler a l'aide IMMEDIATEMENT - crier ou sonner","Evaluer rapidement : conscience, respiration, couleur, FR","Position : mettre en position laterale de securite adaptee au nourrisson si inconscient","Appeler le 15 (SAMU) ou le 18 (pompiers) immediatement","Si arret respiratoire : debuter la RCP nourrisson : 2 doigts sur sternum, 30/2","Ne pas laisser l'enfant seul - rester aupres de lui","Un autre adulte gere les autres enfants et accueille les secours"],alerte:"Cyanose (teinte bleue) chez un nourrisson = urgence vitale absolue. Appel 15 IMMEDIAT. RCP si arret.",memo:"Cyanose = urgence = appel 15 + RCP si arret + 2 doigts sternum nourrisson + 30/2."},
+  {type:"urgence",titre:"Convulsions febriles - enfant de 18 mois",situation:"Hugo, 18 mois, presente soudainement des mouvements saccades de tout le corps, les yeux revulses. Sa temperature est a 39,5 degres. C'est la premiere fois.",etapes:["Ne pas retenir l'enfant - ne rien mettre dans la bouche","Chronometrer la crise IMMEDIATEMENT","Proteger la tete avec une couverture pliee, ecarter les objets dangereux","Appeler le 15 si : premiere convulsion, duree > 5 min, ou pas de retour a la normale apres","Apres la crise : position laterale de securite (PLS) adaptee au nourrisson","Surveiller : conscience, respiration, temperature","Prevenir les parents IMMEDIATEMENT","Ne jamais donner de medicaments sans prescription"],alerte:"Convulsion > 5 min = etat de mal epileptique = appel 15 IMMEDIAT. Premiere convulsion = consultation medicale obligatoire.",memo:"Ne pas retenir + chronometrer + appel 15 si > 5 min ou premiere fois + PLS apres + prevenir parents."},
+  {type:"urgence",titre:"Etouffement - enfant de 10 mois avec un raisin",situation:"En salle de repas, Jade, 10 mois, porte un raisin entier a la bouche. Elle commence a tousser, devient rouge, puis cyanosee. Elle ne peut plus respirer ni pleurer.",etapes:["Reconnaître l'obstruction complete : ne peut plus crier ni respirer","Appeler a l'aide immediatement","Position : face vers le bas sur votre avant-bras (tete plus basse que le tronc)","5 claques vigoureuses dans le dos entre les omoplates avec la main","Si echec : retourner, 5 compressions sternales avec 2 doigts","Alterner 5 claques dos / 5 compressions sternales jusqu'a liberation ou perte de conscience","Si perte de conscience : allonger, appel 15, debuter RCP","Apres liberation : consultation medicale obligatoire"],alerte:"Obstruction complete chez nourrisson = claques dans le dos + compressions sternales JAMAIS Heimlich abdominal avant 1 an.",memo:"5 claques dos + 5 compressions sternales (PAS Heimlich avant 1 an) + appel 15 si perte conscience."},
+  {type:"urgence",titre:"Chute de la table a langer",situation:"Vous etes en train de changer Noe, 4 mois, quand le telephone sonne. Un instant d'inattention et Noe tombe de la table a langer. Il pleure fort. Que faites-vous ?",etapes:["Rester calme - evaluer l'etat de l'enfant sans le mobiliser brutalement","Observer : est-il conscient, pleure-t-il, bouge-t-il tous ses membres ?","Ne pas le porter immediatement si suspicion de traumatisme cervical","Appeler le 15 IMMEDIATEMENT - chute d'une table a langer = urgence","Prevenir la directrice et l'IDE","Ne pas donner a manger ou a boire en attendant les secours","Prevenir les parents","Remplir la fiche d'incident - declaration obligatoire"],alerte:"Chute d'une hauteur > 50 cm chez un nourrisson = urgence medicale systematique. Appel 15 obligatoire. Ne pas mobiliser sans avis medical.",memo:"Ne pas mobiliser + appel 15 + directrice + parents + fiche incident + ne pas donner a manger."},
+];
+
+var currentTip = null;
+var chronoInterval = null;
+var chronoTotal = 180;
+var chronoRestant = 180;
+
+function tirerAuSort(filtre){
+  var pool = filtre ? TIPS.filter(function(t){ return t.type === filtre; }) : TIPS;
+  var tip = pool[Math.floor(Math.random() * pool.length)];
+  afficherSujet(tip);
+  document.getElementById('tips-liste').classList.remove('show');
+}
+
+function afficherSujet(tip){
+  currentTip = tip;
+  stopChrono();
+  var labels = {quotidien:'👶 Vie quotidienne', soin:'🍼 Soin AP', communication:'💬 Communication', urgence:'🚨 Urgence pediatrique'};
+  document.getElementById('tip-type-badge').textContent = labels[tip.type];
+  document.getElementById('tip-type-badge').className = 'tip-type ' + tip.type;
+  document.getElementById('tip-title').textContent = tip.titre;
+  document.getElementById('tip-situation').textContent = tip.situation;
+  document.getElementById('reponse-etudiant').value = '';
+  document.getElementById('loterie-screen').style.display = 'none';
+  document.getElementById('sujet-card').className = 'sujet-card show';
+  document.getElementById('reponse-wrap').className = 'reponse-wrap show';
+  document.getElementById('correction-wrap').className = 'correction-wrap';
+  document.getElementById('chrono-wrap').style.display = 'block';
+  demarrerChrono();
+  window.scrollTo(0, 0);
+}
+
+function demarrerChrono(){
+  chronoRestant = chronoTotal;
+  updateChronoDisplay();
+  chronoInterval = setInterval(function(){
+    chronoRestant--;
+    updateChronoDisplay();
+    if(chronoRestant <= 0) stopChrono();
+  }, 1000);
+}
+
+function stopChrono(){
+  if(chronoInterval) clearInterval(chronoInterval);
+  chronoInterval = null;
+}
+
+function updateChronoDisplay(){
+  var min = Math.floor(chronoRestant / 60);
+  var sec = chronoRestant % 60;
+  document.getElementById('chrono-display').textContent = min + ':' + (sec < 10 ? '0' : '') + sec;
+  document.getElementById('chrono-display').className = 'chrono' + (chronoRestant <= 30 ? ' urgent' : '');
+  var pct = Math.round(chronoRestant / chronoTotal * 100);
+  document.getElementById('chrono-fill').style.width = pct + '%';
+  document.getElementById('chrono-fill').className = 'chrono-fill' + (chronoRestant <= 30 ? ' urgent' : '');
+}
+
+async function voirCorrection(){
+  stopChrono();
+  var reponse = document.getElementById('reponse-etudiant').value.trim();
+  document.getElementById('correction-wrap').className = 'correction-wrap show';
+  document.getElementById('reponse-wrap').className = 'reponse-wrap';
+  document.getElementById('chrono-wrap').style.display = 'none';
+  afficherEtapes();
+  document.getElementById('analyse-texte').innerHTML = '<div class="loading"><span>Analyse de votre reponse en cours...</span></div>';
+
+  if(!reponse){
+    document.getElementById('analyse-texte').textContent = "Vous n'avez pas fourni de reponse. Consultez la correction ci-dessous.";
+    return;
+  }
+
+  try {
+    var prompt = "Tu es un formateur expert en formation d'Auxiliaires de Puericulture (DEAP, arrete du 10 juin 2021). " +
+      "Un etudiant AP vient de repondre a un sujet d'entrainement pour son epreuve de certification DEAP. " +
+      "\n\nSujet : " + currentTip.titre +
+      "\nSituation : " + currentTip.situation +
+      "\nReponse attendue : " + currentTip.etapes.join(' / ') +
+      "\n\nReponse de l'etudiant : " + reponse +
+      "\n\nDonne un retour pedagogique en 3 parties :" +
+      "\n1. Ce que l'etudiant a bien identifie (points positifs)" +
+      "\n2. Ce qui manque ou est incorrect selon le referentiel DEAP (points a ameliorer)" +
+      "\n3. Un conseil pratique pour l'epreuve DEAP" +
+      "\nSois bienveillant, precis et concis. Maximum 200 mots. Ecris en francais simple.";
+
+    var response = await fetch("https://uhbbwtxmsomqhuvzvoxy.supabase.co/functions/v1/analyse-reponse", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({prompt: prompt})
+    });
+    var data = await response.json();
+    document.getElementById('analyse-texte').textContent = data.texte || "Analyse indisponible.";
+  } catch(err) {
+    document.getElementById('analyse-texte').textContent = "Analyse indisponible. Consultez la correction ci-dessous.";
+  }
+  window.scrollTo(0, 0);
+}
+
+function passerDirectement(){
+  stopChrono();
+  document.getElementById('correction-wrap').className = 'correction-wrap show';
+  document.getElementById('reponse-wrap').className = 'reponse-wrap';
+  document.getElementById('chrono-wrap').style.display = 'none';
+  document.getElementById('analyse-texte').textContent = "Vous avez choisi de voir directement la correction.";
+  afficherEtapes();
+  window.scrollTo(0, 0);
+}
+
+function afficherEtapes(){
+  var etapesEl = document.getElementById('etapes-correction');
+  etapesEl.innerHTML = '';
+  var colors = {quotidien:'', soin:'green', communication:'purple', urgence:'red'};
+  var color = colors[currentTip.type] || '';
+  currentTip.etapes.forEach(function(e, i){
+    var div = document.createElement('div');
+    div.className = 'etape-item';
+    div.innerHTML = '<span class="etape-num ' + color + '">' + (i+1) + '</span><span>' + e + '</span>';
+    etapesEl.appendChild(div);
+  });
+  var alertEl = document.getElementById('correction-alert');
+  alertEl.textContent = currentTip.alerte ? '⚠️ ' + currentTip.alerte : '';
+  alertEl.style.display = currentTip.alerte ? 'block' : 'none';
+  var memoEl = document.getElementById('correction-memo');
+  memoEl.textContent = currentTip.memo ? '💡 ' + currentTip.memo : '';
+  memoEl.style.display = currentTip.memo ? 'block' : 'none';
+}
+
+function nouveauTirage(){
+  stopChrono();
+  document.getElementById('loterie-screen').style.display = 'block';
+  document.getElementById('sujet-card').className = 'sujet-card';
+  document.getElementById('reponse-wrap').className = 'reponse-wrap';
+  document.getElementById('correction-wrap').className = 'correction-wrap';
+  document.getElementById('chrono-wrap').style.display = 'none';
+  window.scrollTo(0, 0);
+}
+
+function toggleListe(){
+  var liste = document.getElementById('tips-liste');
+  if(liste.classList.contains('show')){ liste.classList.remove('show'); return; }
+  liste.innerHTML = '';
+  var labels = {quotidien:'👶', soin:'🍼', communication:'💬', urgence:'🚨'};
+  TIPS.forEach(function(tip){
+    var item = document.createElement('div');
+    item.className = 'liste-item';
+    item.innerHTML = '<span style="font-size:16px">' + labels[tip.type] + '</span><span>' + tip.titre + '</span>';
+    item.onclick = function(){ afficherSujet(tip); };
+    liste.appendChild(item);
+  });
+  liste.classList.add('show');
+}
+
+document.addEventListener('click', function(){ window.parent.postMessage({type:'activite'}, '*'); });
+document.addEventListener('keypress', function(){ window.parent.postMessage({type:'activite'}, '*'); });
+</script>
+</body>
+</html>
