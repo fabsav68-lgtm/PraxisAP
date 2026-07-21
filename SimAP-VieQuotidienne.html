@@ -1,92 +1,476 @@
-<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"><title>SimVieQuotidienne · DEAP</title><style>
-:root{--bg:#0a0810;--card:rgba(255,255,255,.04);--bdr:rgba(255,255,255,.08);--txt:#f0d8f8;--txt2:#4a3060;}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>PraxisNourrisson · SimAP</title>
+<meta name="theme-color" content="#04090f">
+<style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch;}
-body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--txt);padding:16px;}
-.header{border-radius:16px;padding:20px;margin-bottom:20px;text-align:center;}
-.module-num{font-family:monospace;font-size:10px;letter-spacing:2px;color:var(--txt2);margin-bottom:6px;}
-h1{font-family:Georgia,serif;font-size:24px;margin-bottom:4px;}
-.module-info{font-size:12px;color:var(--txt2);font-family:monospace;}
-.section{background:var(--card);border:1px solid var(--bdr);border-radius:12px;padding:16px;margin-bottom:16px;}
-.section h2{font-size:14px;margin-bottom:12px;}
-.fiche{background:rgba(255,255,255,.03);border:1px solid var(--bdr);border-radius:10px;padding:14px;margin-bottom:12px;}
-.fiche h3{font-size:13px;margin-bottom:8px;}
-.fiche ul{list-style:none;padding:0;}
-.fiche ul li{font-size:12px;color:var(--txt);padding:4px 0;border-bottom:1px solid rgba(255,255,255,.04);display:flex;gap:8px;}
-.fiche ul li:last-child{border-bottom:none;}
-.fiche p{font-size:12px;color:var(--txt2);line-height:1.6;}
-.alert{background:rgba(232,64,64,.06);border:1px solid rgba(232,64,64,.2);border-radius:8px;padding:10px 12px;font-size:12px;color:#e84040;margin-top:10px;}
-.tag{display:inline-block;padding:2px 8px;border-radius:12px;font-size:10px;font-family:monospace;margin:2px;}
-.norme{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--bdr);font-size:12px;}
-.norme:last-child{border-bottom:none;}
-.norme-val{font-family:monospace;font-weight:700;}
-.retour-btn{position:fixed;top:12px;left:12px;background:rgba(10,8,16,.9);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:6px 14px;color:var(--txt2);font-size:12px;cursor:pointer;z-index:100;}
-</style></head>
-<body><button class="retour-btn" onclick="window.parent.postMessage({type:'retour'},'*')">← Retour</button>
-<div class="header" style="background:linear-gradient(135deg,rgba(216,112,240,.15),rgba(216,112,240,.05));border:1px solid rgba(216,112,240,.2)">
-<div class="module-num">MODULE 01 · BLOC 1</div><h1 style="color:#d870f0">SimVieQuotidienne</h1>
-<div class="module-info">Accompagnement de l'enfant dans les actes essentiels de la vie quotidienne</div></div>
+html,body{background:#04090f;color:#e8edf2;font-family:system-ui,sans-serif;-webkit-tap-highlight-color:transparent}
+body{min-height:100%;padding-bottom:60px}
+header{padding:20px 20px 8px;text-align:center;border-bottom:1px solid rgba(255,255,255,.07)}
+header h1{font-family:Georgia,serif;font-size:26px;font-weight:300;letter-spacing:-1px}
+header h1 strong{font-weight:700;color:#4cb8e8}
+header p{font-size:12px;color:#5a7080;margin-top:4px}
+.tabs{display:flex;gap:6px;padding:12px 12px 0;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tab{flex:1;min-width:90px;padding:10px 6px;border-radius:10px 10px 0 0;border:1px solid rgba(255,255,255,.08);border-bottom:none;background:rgba(255,255,255,.03);color:#5a7080;font-size:11px;font-weight:700;text-align:center;cursor:pointer;white-space:nowrap}
+.tab.active{background:rgba(76,184,232,.12);color:#4cb8e8;border-color:rgba(76,184,232,.3)}
+.panel{display:none;padding:16px;max-width:640px;margin:0 auto}
+.panel.active{display:block}
+h2{font-family:Georgia,serif;font-size:19px;font-weight:400;margin:14px 0 10px;color:#4cb8e8}
+h2.rouge{color:#e88a8a}
+.intro{font-size:13px;color:#8fa4b3;line-height:1.7;margin-bottom:14px}
+.niveau{margin-bottom:18px;border-left:3px solid;border-radius:0 12px 12px 0;background:rgba(255,255,255,.03);padding:12px 14px}
+.niveau h3{font-size:14px;margin-bottom:8px}
+.aide{margin-bottom:10px}
+.aide b{font-size:13px;display:block}
+.aide span{font-size:12px;color:#8fa4b3;line-height:1.6}
+.vigilance{font-size:11px;color:#4cb8e8;background:rgba(76,184,232,.08);border-radius:6px;padding:6px 8px;margin-top:4px;display:block}
+.etape{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px;margin-bottom:14px}
+.etape-num{font-family:monospace;font-size:10px;letter-spacing:2px;color:rgba(255,255,255,.25);margin-bottom:6px}
+.etape h3{font-size:15px;color:#e8edf2;margin-bottom:8px}
+.etape svg{display:block;margin:8px auto;background:rgba(255,255,255,.02);border-radius:8px}
+.etape p{font-size:13px;color:#8fa4b3;line-height:1.65}
+.regle{margin-top:8px;font-size:12px;color:#f0c040;background:rgba(240,192,64,.08);border-radius:6px;padding:7px 9px}
+.regle b{color:#f0c040}
+.qcard{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px;margin-bottom:14px}
+.qcard .profil{font-size:13px;line-height:1.65;color:#e8edf2;margin-bottom:12px}
+.qcard .profil b{color:#4cb8e8}
+.opt{display:block;width:100%;text-align:left;padding:11px 12px;margin-bottom:8px;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:#e8edf2;font-size:13px;cursor:pointer}
+.opt.good{background:rgba(94,203,122,.15);border-color:#5ecb7a;color:#5ecb7a}
+.opt.bad{background:rgba(232,64,64,.12);border-color:#e84040;color:#e88a8a}
+.explic{display:none;font-size:12px;line-height:1.65;color:#8fa4b3;background:rgba(255,255,255,.04);border-radius:8px;padding:10px;margin-top:6px}
+.explic.show{display:block}
+.score-bar{position:fixed;bottom:0;left:0;right:0;background:rgba(4,9,15,.95);border-top:1px solid rgba(255,255,255,.1);padding:10px 16px;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.score-bar span{font-size:12px;color:#5a7080}
+.score-bar b{color:#4cb8e8;font-size:15px}
+.btn-retour{background:none;border:1px solid rgba(255,255,255,.15);color:#8fa4b3;padding:6px 14px;border-radius:16px;font-size:12px;cursor:pointer}
+.btn-audio{background:rgba(76,184,232,.1);border:1px solid rgba(76,184,232,.3);color:#4cb8e8;padding:6px 14px;border-radius:16px;font-size:12px;font-weight:700;cursor:pointer}
+.secu-bloc{background:rgba(76,184,232,.06);border:1px solid rgba(76,184,232,.2);border-radius:12px;padding:14px;margin-bottom:14px}
+.secu-bloc h3{font-size:14px;color:#4cb8e8;margin-bottom:8px}
+.secu-bloc ul{list-style:none}
+.secu-bloc li{font-size:13px;color:#c8d2da;line-height:1.7;padding-left:16px;position:relative;margin-bottom:4px}
+.secu-bloc li::before{content:'›';position:absolute;left:0;color:#4cb8e8}
+.jamais{background:rgba(232,64,64,.07);border-color:rgba(232,64,64,.25)}
+.jamais h3{color:#e88a8a}
+.jamais li::before{color:#e88a8a;content:'✕';font-size:10px;top:3px}
+.reset{display:block;margin:10px auto 30px;background:none;border:1px solid rgba(255,255,255,.12);color:#5a7080;padding:8px 18px;border-radius:8px;font-size:12px;cursor:pointer}
+</style>
+</head>
+<body>
 
-<div class="section"><h2 style="color:#d870f0">🍼 Ce que doit savoir le candidat</h2>
-<div class="fiche"><h3 style="color:#f8a838">Developpement de l'enfant - grandes etapes</h3>
-<div class="norme"><span>Nouveau-ne (0-1 mois)</span><span class="norme-val" style="color:#d870f0">Reflexes archaiques, peau a peau, allaitement</span></div>
-<div class="norme"><span>Nourrisson (1-12 mois)</span><span class="norme-val" style="color:#d870f0">Tenue tete a 3 mois, retournement a 6 mois, station assise a 8 mois</span></div>
-<div class="norme"><span>Petit enfant (1-3 ans)</span><span class="norme-val" style="color:#d870f0">Marche a 12-18 mois, premiers mots, acquisition proprete</span></div>
-<div class="norme"><span>Enfant (3-6 ans)</span><span class="norme-val" style="color:#d870f0">Langage elabore, socialisation, jeux symboliques</span></div></div>
+<header>
+  <h1>Praxis<strong>Nourrisson</strong></h1>
+  <p>SimAP · Vie quotidienne du tout-petit · Module 01 · Bloc 1</p>
+</header>
 
-<div class="fiche"><h3 style="color:#f8a838">Besoins fondamentaux de l'enfant</h3>
-<ul><li style="flex-direction:column"><strong>Besoins physiologiques</strong> : alimentation adaptee a l'age, sommeil suffisant, hygiene, elimination<br><span style="color:var(--txt2);font-size:11px">→ Comment : evaluer l'age et le stade de developpement, adapter le soin, observer et transmettre</span></li>
-<li style="flex-direction:column"><strong>Besoins affectifs</strong> : securite, attachement, amour, stabilite<br><span style="color:var(--txt2);font-size:11px">→ Comment : parler doucement pendant les soins, respecter les rituels, associer les parents</span></li>
-<li style="flex-direction:column"><strong>Besoins cognitifs</strong> : eveil, stimulation, exploration, jeu<br><span style="color:var(--txt2);font-size:11px">→ Comment : proposer des activites adaptees a l'age, laisser explorer en securite</span></li></ul></div></div>
+<div class="tabs">
+  <div class="tab active" onclick="go('reperes',this)">🍼 Repères</div>
+  <div class="tab" onclick="go('poste',this)">🧺 Poste de change</div>
+  <div class="tab" onclick="go('scenette',this)">🎬 Scénette</div>
+  <div class="tab" onclick="go('quiz',this)">🎯 Quiz</div>
+  <div class="tab" onclick="go('secu',this)">🚨 Sécurité</div>
+</div>
 
-<div class="section"><h2 style="color:#d870f0">🛁 Comment y parvenir - Soins d'hygiene</h2>
-<div class="fiche"><h3 style="color:#f8a838">Bain du nourrisson - etapes</h3>
-<ul>
-<li>Preparer tout le materiel avant de commencer (ne jamais laisser l'enfant seul)</li>
-<li>Temperature de l'eau : 37°C (verifier avec thermometre ou coude)</li>
-<li>Deshabiller l'enfant en gardant une serviette sur lui pour eviter le refroidissement</li>
-<li>Tenir l'enfant : une main soutient la nuque et la tete, l'autre les fesses</li>
-<li>Laver visage en premier (yeux de l'interieur vers l'exterieur), puis corps</li>
-<li>Parties genitales en dernier : fille = avant vers arriere</li>
-<li>Sortir, secher en tamponnant (notamment les plis), habiller rapidement</li>
-<li>Duree du bain : 5 minutes maximum pour le nouveau-ne</li></ul>
-<div class="alert">⚠️ Ne JAMAIS laisser un enfant seul dans le bain. Meme 2 cm d'eau peuvent noyer un nourrisson en moins de 2 minutes.</div></div>
+<!-- ================= REPERES ================= -->
+<div class="panel active" id="reperes">
+  <p class="intro">Avant le geste, les repères : où en est cet enfant, de quoi a-t-il besoin ? Tout accompagnement commence par situer l'âge et le stade de développement.</p>
 
-<div class="fiche"><h3 style="color:#f8a838">Alimentation selon l'age</h3>
-<ul>
-<li>0-6 mois : lait maternel ou lait infantile 1er age exclusivement</li>
-<li>4-6 mois : diversification alimentaire (selon avis pediatre)</li>
-<li>6-12 mois : lait 2e age + legumes, fruits, viande/poisson/oeuf en petites quantites</li>
-<li>1-3 ans : alimentation familiale adaptee (texture, sel, sucre limites)</li>
-<li>Biberons : sterilises jusqu'a 6 mois, eau minerale faible en sodium</li>
-<li>Toujours verifier la temperature du lait : quelques gouttes sur le poignet</li></ul></div>
+  <div class="niveau" style="border-color:#d870f0">
+    <h3 style="color:#d870f0">Développement — les grandes étapes</h3>
+    <div class="aide"><b>Nouveau-né (0-1 mois)</b>
+      <span>Réflexes archaïques, peau à peau, allaitement.</span></div>
+    <div class="aide"><b>Nourrisson (1-12 mois)</b>
+      <span>Tenue de tête à 3 mois · retournement à 6 mois · station assise à 8 mois.</span>
+      <span class="vigilance">💡 Ces trois repères dictent la vigilance : dès 6 mois, un enfant sur une table à langer peut se retourner seul.</span></div>
+    <div class="aide"><b>Petit enfant (1-3 ans)</b>
+      <span>Marche à 12-18 mois, premiers mots, acquisition de la propreté.</span></div>
+    <div class="aide"><b>Enfant (3-6 ans)</b>
+      <span>Langage élaboré, socialisation, jeux symboliques.</span></div>
+  </div>
 
-<div class="fiche"><h3 style="color:#f8a838">Change et hygiene perineal</h3>
-<ul>
-<li>Changer des que la couche est souilee (escarres et infections possibles)</li>
-<li>Nettoyer de l'avant vers l'arriere chez la petite fille</li>
-<li>Observer : rougeurs, eruptions, irregularites cutanees</li>
-<li>Creme protectrice si rougeurs (selon protocole)</li>
-<li>Signaler toute anomalie a l'IDE ou a la puericultrice</li></ul></div></div>
+  <div class="niveau" style="border-color:#4cb8e8">
+    <h3 style="color:#4cb8e8">Les besoins fondamentaux de l'enfant</h3>
+    <div class="aide"><b>Physiologiques</b>
+      <span>Alimentation adaptée à l'âge, sommeil suffisant, hygiène, élimination. → Évaluer le stade de développement, adapter le soin, observer et transmettre.</span></div>
+    <div class="aide"><b>Affectifs</b>
+      <span>Sécurité, attachement, stabilité. → Parler doucement pendant les soins, respecter les rituels, associer les parents.</span></div>
+    <div class="aide"><b>Cognitifs</b>
+      <span>Éveil, stimulation, exploration, jeu. → Proposer des activités adaptées à l'âge, laisser explorer en sécurité.</span></div>
+  </div>
 
-<div class="section"><h2 style="color:#d870f0">😴 Sommeil de l'enfant</h2>
-<div class="fiche"><h3 style="color:#f8a838">Prevention de la mort subite du nourrisson (MSN)</h3>
-<ul>
-<li>Position : toujours sur le DOS pour dormir (jamais sur le ventre)</li>
-<li>Lit adapte : matelas ferme, pas d'oreillers, pas de peluches, pas de tour de lit</li>
-<li>Temperature de la chambre : 18-20°C</li>
-<li>Pas de tabac, pas d'alcool, pas de co-sleeping non securise</li>
-<li>Allaitement maternel = facteur protecteur</li></ul>
-<div class="alert">⚠️ Position sur le dos = OBLIGATOIRE pour dormir jusqu'a 2 ans. Position ventrale = risque x3 de mort subite.</div></div></div>
+  <div class="niveau" style="border-color:#5ecb7a">
+    <h3 style="color:#5ecb7a">Alimentation selon l'âge</h3>
+    <div class="aide"><b>0-6 mois</b>
+      <span>Lait maternel ou lait infantile 1er âge exclusivement. Biberons stérilisés jusqu'à 6 mois, eau minérale faible en sodium.</span></div>
+    <div class="aide"><b>4-6 mois</b>
+      <span>Début de la diversification alimentaire, sur avis du pédiatre.</span></div>
+    <div class="aide"><b>6-12 mois</b>
+      <span>Lait 2e âge + légumes, fruits, viande/poisson/œuf en petites quantités.</span></div>
+    <div class="aide"><b>1-3 ans</b>
+      <span>Alimentation familiale adaptée : textures progressives, sel et sucre limités.</span>
+      <span class="vigilance">💧 Température du lait vérifiée à chaque biberon : quelques gouttes sur le poignet.</span></div>
+  </div>
+</div>
 
-<div class="section"><h2 style="color:#d870f0">🏷️ Mots cles</h2>
-<div style="padding:8px 0">
-<span class="tag" style="background:rgba(216,112,240,.1);color:#d870f0;border:1px solid rgba(216,112,240,.2)">Developpement psychomoteur</span>
-<span class="tag" style="background:rgba(216,112,240,.1);color:#d870f0;border:1px solid rgba(216,112,240,.2)">Bain nourrisson</span>
-<span class="tag" style="background:rgba(216,112,240,.1);color:#d870f0;border:1px solid rgba(216,112,240,.2)">Diversification alimentaire</span>
-<span class="tag" style="background:rgba(216,112,240,.1);color:#d870f0;border:1px solid rgba(216,112,240,.2)">MSN</span>
-<span class="tag" style="background:rgba(216,112,240,.1);color:#d870f0;border:1px solid rgba(216,112,240,.2)">Position dorsale</span>
-<span class="tag" style="background:rgba(216,112,240,.1);color:#d870f0;border:1px solid rgba(216,112,240,.2)">Sterilisation</span>
-<span class="tag" style="background:rgba(216,112,240,.1);color:#d870f0;border:1px solid rgba(216,112,240,.2)">Autonomie</span></div></div>
-<script>document.addEventListener('click',function(){window.parent.postMessage({type:'activite'},'*');});</script>
-</body></html>
+<!-- ================= POSTE DE CHANGE ================= -->
+<div class="panel" id="poste">
+  <p class="intro">La chute de la table à langer est la <b style="color:#4cb8e8">première cause d'accident</b> en établissement d'accueil du jeune enfant. Elle survient toujours pour la même raison : le matériel n'était pas prêt, et l'adulte s'est retourné. Tout se joue AVANT de poser l'enfant.</p>
+
+  <div class="niveau" style="border-color:#4cb8e8">
+    <h3 style="color:#4cb8e8">Le matériel — tout à portée de main</h3>
+    <div class="aide"><b>Couche propre à la taille de l'enfant</b>
+      <span>Sortie et dépliée avant de commencer.</span></div>
+    <div class="aide"><b>Nettoyage : eau + savon, ou liniment, selon le protocole</b>
+      <span>Coton ou gant à usage unique, préparés en quantité suffisante.</span></div>
+    <div class="aide"><b>Change complet de vêtements</b>
+      <span>Body et tenue de rechange sortis — un débordement se gère sans quitter l'enfant.</span></div>
+    <div class="aide"><b>Sac ou poubelle à couches ouvert</b>
+      <span>À portée immédiate : on jette sans se déplacer.</span>
+      <span class="vigilance">💧 Test avant de commencer : tout ce dont j'ai besoin est-il atteignable avec UNE main, l'autre restant sur l'enfant ?</span></div>
+  </div>
+
+  <div class="niveau" style="border-color:#5ecb7a">
+    <h3 style="color:#5ecb7a">L'hygiène — protéger l'enfant et les autres</h3>
+    <div class="aide"><b>Lavage des mains AVANT et APRÈS chaque change</b>
+      <span>Ou friction hydro-alcoolique selon protocole — les épidémies de gastro-entérite en crèche partent du poste de change.</span></div>
+    <div class="aide"><b>Désinfection du plan de change entre chaque enfant</b>
+      <span>Papier ou support à usage unique changé systématiquement.</span></div>
+    <div class="aide"><b>Tenue : tablier ou surblouse si protocole renforcé</b>
+      <span>Bijoux et montres retirés — griffures et nids à microbes.</span></div>
+  </div>
+
+  <div class="niveau" style="border-color:#f0c040">
+    <h3 style="color:#f0c040">L'environnement</h3>
+    <div class="aide"><b>Table à hauteur, rebords présents</b>
+      <span>Les rebords ralentissent, ils n'empêchent pas la chute : ils ne remplacent jamais la main.</span></div>
+    <div class="aide"><b>Température de la pièce : 22-24 °C</b>
+      <span>Un nourrisson déshabillé se refroidit très vite.</span></div>
+    <div class="aide"><b>Point d'eau à proximité</b>
+      <span>Le poste idéal permet le change complet sans un pas.</span></div>
+  </div>
+</div>
+
+<!-- ================= SCENETTE ================= -->
+<div class="panel" id="scenette">
+  <h2>Le change de Théo, 8 mois</h2>
+  <p class="intro"><b style="color:#e8edf2">Théo, 8 mois</b>, se retourne seul et rampe — l'âge le plus à risque sur une table à langer : mobile, rapide, imprévisible. Règle d'or du début à la fin : <b style="color:#4cb8e8">une main en contact permanent avec lui</b>.</p>
+
+  <div class="etape">
+    <div class="etape-num">ÉTAPE 1 / 5</div>
+    <h3>Préparer le poste — avant d'aller chercher Théo</h3>
+    <svg width="240" height="140" viewBox="0 0 240 140">
+      <line x1="10" y1="122" x2="230" y2="122" stroke="rgba(255,255,255,.15)" stroke-width="2"/>
+      <rect x="40" y="62" width="150" height="12" rx="3" fill="none" stroke="#4cb8e8" stroke-width="2.5"/>
+      <line x1="40" y1="58" x2="40" y2="66" stroke="#4cb8e8" stroke-width="3"/>
+      <line x1="190" y1="58" x2="190" y2="66" stroke="#4cb8e8" stroke-width="3"/>
+      <line x1="52" y1="74" x2="52" y2="121" stroke="#4cb8e8" stroke-width="2.5"/>
+      <line x1="178" y1="74" x2="178" y2="121" stroke="#4cb8e8" stroke-width="2.5"/>
+      <rect x="60" y="86" width="110" height="8" rx="2" fill="none" stroke="rgba(76,184,232,.4)" stroke-width="2"/>
+      <rect x="66" y="46" width="22" height="12" rx="2" fill="none" stroke="#5ecb7a" stroke-width="2"/>
+      <rect x="94" y="46" width="14" height="12" rx="6" fill="none" stroke="#5ecb7a" stroke-width="2"/>
+      <rect x="114" y="42" width="12" height="16" rx="2" fill="none" stroke="#5ecb7a" stroke-width="2"/>
+      <circle cx="150" cy="50" r="8" fill="none" stroke="#5ecb7a" stroke-width="2"/>
+      <text x="120" y="34" fill="#5ecb7a" font-size="9" text-anchor="middle">couche · coton · liniment · sac</text>
+      <text x="120" y="136" fill="#5a7080" font-size="9" text-anchor="middle">Tout est prêt, à portée d'une seule main</text>
+    </svg>
+    <p>Mains lavées, matériel disposé sur le plan : couche dépliée, cotons, liniment, tenue de rechange, sac ouvert. Vérification du support à usage unique. <b style="color:#e8edf2">Ensuite seulement</b>, on va chercher Théo.</p>
+    <div class="regle"><b>Règle d'or ›</b> Si tu dois chercher quelque chose pendant le change, c'est que la préparation a échoué.</div>
+  </div>
+
+  <div class="etape">
+    <div class="etape-num">ÉTAPE 2 / 5</div>
+    <h3>Installer Théo — la main en or</h3>
+    <svg width="240" height="140" viewBox="0 0 240 140">
+      <line x1="10" y1="122" x2="230" y2="122" stroke="rgba(255,255,255,.15)" stroke-width="2"/>
+      <rect x="30" y="72" width="130" height="11" rx="3" fill="none" stroke="#4cb8e8" stroke-width="2.5"/>
+      <line x1="42" y1="83" x2="42" y2="121" stroke="#4cb8e8" stroke-width="2.5"/>
+      <line x1="148" y1="83" x2="148" y2="121" stroke="#4cb8e8" stroke-width="2.5"/>
+      <circle cx="60" cy="62" r="8" fill="none" stroke="#e8edf2" stroke-width="2.5"/>
+      <line x1="68" y1="65" x2="102" y2="67" stroke="#e8edf2" stroke-width="6" stroke-linecap="round"/>
+      <line x1="102" y1="67" x2="112" y2="56" stroke="#e8edf2" stroke-width="4" stroke-linecap="round"/>
+      <line x1="112" y1="56" x2="120" y2="62" stroke="#e8edf2" stroke-width="4" stroke-linecap="round"/>
+      <line x1="98" y1="67" x2="106" y2="52" stroke="#e8edf2" stroke-width="4" stroke-linecap="round"/>
+      <line x1="76" y1="62" x2="82" y2="50" stroke="#e8edf2" stroke-width="3.5" stroke-linecap="round"/>
+      <circle cx="196" cy="24" r="9" fill="none" stroke="#5ecb7a" stroke-width="2.5"/>
+      <line x1="196" y1="33" x2="192" y2="76" stroke="#5ecb7a" stroke-width="6" stroke-linecap="round"/>
+      <line x1="194" y1="46" x2="92" y2="63" stroke="#5ecb7a" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="90" cy="64" r="4" fill="#5ecb7a"/>
+      <line x1="192" y1="76" x2="186" y2="112" stroke="#5ecb7a" stroke-width="5" stroke-linecap="round"/>
+      <line x1="179" y1="118" x2="194" y2="118" stroke="#5ecb7a" stroke-width="5" stroke-linecap="round"/>
+      <line x1="192" y1="76" x2="202" y2="112" stroke="#5ecb7a" stroke-width="5" stroke-linecap="round"/>
+      <line x1="196" y1="118" x2="211" y2="118" stroke="#5ecb7a" stroke-width="5" stroke-linecap="round"/>
+      <text x="120" y="136" fill="#5a7080" font-size="9" text-anchor="middle">La main reste posée sur Théo — sans interruption</text>
+    </svg>
+    <p>Théo est posé au centre du plan, tête côté opposé au vide. Dès qu'il touche la table, <b style="color:#e8edf2">une main se pose sur son ventre ou son thorax</b> — et n'en part plus. On lui parle : « On va changer ta couche, Théo. »</p>
+    <div class="regle"><b>Règle d'or ›</b> Les rebords de la table ne remplacent pas la main. Un enfant de 8 mois se retourne en une seconde.</div>
+  </div>
+
+  <div class="etape">
+    <div class="etape-num">ÉTAPE 3 / 5</div>
+    <h3>Le change — technique et observation</h3>
+    <p>Déshabillage du bas, couche ouverte. Nettoyage <b style="color:#e8edf2">du plus propre vers le plus sale</b>, et pour une petite fille toujours <b style="color:#e8edf2">d'avant en arrière</b>. Un coton = un passage. Séchage par tamponnement, plis compris.</p>
+    <p style="margin-top:8px">Pendant le geste, on observe : rougeurs, érythème fessier, selles inhabituelles, boutons — tout s'enregistre pour les transmissions.</p>
+    <div class="regle"><b>Règle d'or ›</b> Le change est un examen cutané quotidien qui ne dit pas son nom. L'AP est souvent la première à voir ce que personne d'autre ne verra.</div>
+  </div>
+
+  <div class="etape">
+    <div class="etape-num">ÉTAPE 4 / 5</div>
+    <h3>Le change est une rencontre</h3>
+    <p>Regard, sourires, jeu de voix, on nomme ce qu'on fait : « Je lève tes jambes… et voilà la couche propre ! » Théo participe à sa mesure — il tient ses jambes, attrape le body. C'est un moment individuel privilégié dans une journée de collectivité : on ne le bâcle pas, on ne le fait pas en discutant par-dessus l'épaule avec une collègue.</p>
+    <div class="regle"><b>Règle d'or ›</b> Un change silencieux et mécanique est un soin raté, même techniquement parfait (approche Pikler-Lóczy : le soin EST la relation).</div>
+  </div>
+
+  <div class="etape">
+    <div class="etape-num">ÉTAPE 5 / 5</div>
+    <h3>Réinstaller, nettoyer, transmettre</h3>
+    <p>Théo rhabillé est reposé <b style="color:#e8edf2">au sol sur le tapis ou dans son lit</b> — jamais laissé sur la table, même « deux secondes ». Ensuite : couche fermée au sac, désinfection du plan, changement du support, lavage des mains. Enfin, transmissions : heure, selles, état cutané, comportement.</p>
+    <div class="regle"><b>Règle d'or ›</b> Le soin se termine quand l'enfant est en sécurité ailleurs ET que le poste est prêt pour le suivant.</div>
+  </div>
+
+  <div class="etape" style="border-color:rgba(232,64,64,.25)">
+    <div class="etape-num">FOCUS VIGILANCE</div>
+    <h3 style="color:#e88a8a">« Je dois m'éloigner du poste »</h3>
+    <p>Le téléphone sonne, une collègue appelle, le liniment est vide. Deux options, et seulement deux : <b style="color:#e8edf2">prendre Théo dans les bras et l'emmener</b>, ou <b style="color:#e8edf2">le poser au sol / dans son lit avant de bouger</b>. Il n'existe aucune troisième option. Pas « je fais vite », pas « il est calme », pas « les rebords sont hauts ».</p>
+  </div>
+</div>
+
+<!-- ================= QUIZ ================= -->
+<div class="panel" id="quiz">
+  <h2>Bon réflexe ou erreur ?</h2>
+  <p class="intro">Sept situations réelles de section. Une seule réponse par question.</p>
+
+  <div class="qcard">
+    <p class="profil"><b>Le téléphone de la section sonne</b> pendant que vous changez Léa, 10 mois.</p>
+    <button class="opt" onclick="rep(this,false,'q1')">Répondre vite, la table a des rebords</button>
+    <button class="opt" onclick="rep(this,true,'q1')">Ne pas répondre, ou prendre Léa dans les bras pour y aller</button>
+    <button class="opt" onclick="rep(this,false,'q1')">Demander à Léa de ne pas bouger et répondre</button>
+    <div class="explic" id="q1">✅ Le soin en cours est prioritaire. Si l'appel est urgent, Léa vient avec vous. Un enfant de 10 mois « qui ne bouge pas », ça n'existe pas — et les rebords ne retiennent pas un retournement.</div>
+  </div>
+
+  <div class="qcard">
+    <p class="profil"><b>Le liniment est resté</b> sur l'étagère à deux mètres de la table. Nathan, 6 mois, est déjà déshabillé.</p>
+    <button class="opt" onclick="rep(this,false,'q2')">Garder un œil sur lui, deux mètres c'est rien</button>
+    <button class="opt" onclick="rep(this,true,'q2')">Prendre Nathan avec soi pour aller le chercher</button>
+    <button class="opt" onclick="rep(this,false,'q2')">Lui donner un jouet pour l'occuper le temps d'y aller</button>
+    <div class="explic" id="q2">✅ L'enfant vient avec vous, même nu, même pour deux mètres. « Garder un œil » ne rattrape pas une chute — la vitesse de retournement d'un nourrisson dépasse votre temps de réaction à distance.</div>
+  </div>
+
+  <div class="qcard">
+    <p class="profil"><b>Le bain de Jade, 5 mois.</b> Quelle vérification de la température de l'eau ?</p>
+    <button class="opt" onclick="rep(this,true,'q3')">37 °C au thermomètre, contrôlée au coude ou à l'avant-bras</button>
+    <button class="opt" onclick="rep(this,false,'q3')">Tester avec la main, l'habitude suffit</button>
+    <button class="opt" onclick="rep(this,false,'q3')">L'eau du mitigeur est toujours à bonne température</button>
+    <div class="explic" id="q3">✅ Thermomètre à 37 °C PLUS contrôle sur votre peau fine (coude, avant-bras) — la main calleuse sous-estime la chaleur. La peau du nourrisson brûle en quelques secondes à une température qu'un adulte tolère.</div>
+  </div>
+
+  <div class="qcard">
+    <p class="profil"><b>Milo, 3 semaines, pleure sans s'arrêter</b> depuis 40 minutes. Vous sentez l'exaspération monter.</p>
+    <button class="opt" onclick="rep(this,false,'q4')">Le bercer plus vigoureusement pour qu'il s'arrête</button>
+    <button class="opt" onclick="rep(this,true,'q4')">Le poser en sécurité dans son lit, souffler, passer le relais à une collègue</button>
+    <button class="opt" onclick="rep(this,false,'q4')">Le laisser pleurer dans les bras en continuant coûte que coûte</button>
+    <div class="explic" id="q4">✅ Poser l'enfant en sécurité et passer le relais n'est pas un échec, c'est LA conduite professionnelle. Le syndrome du bébé secoué naît d'un adulte épuisé resté seul avec des pleurs — quelques secondes de secousses suffisent à des lésions cérébrales irréversibles.</div>
+  </div>
+
+  <div class="qcard">
+    <p class="profil"><b>Vous couchez Émile, 4 mois,</b> pour la sieste. Quelle installation ?</p>
+    <button class="opt" onclick="rep(this,true,'q5')">Sur le dos, en turbulette, lit vide (ni tour de lit, ni peluche, ni couverture)</button>
+    <button class="opt" onclick="rep(this,false,'q5')">Sur le ventre, il s'endort mieux comme ça</button>
+    <button class="opt" onclick="rep(this,false,'q5')">Sur le dos avec son doudou et une petite couverture</button>
+    <div class="explic" id="q5">✅ Dos, turbulette, lit vide, chambre à 18-20 °C : c'est la prévention de la mort inattendue du nourrisson. Le couchage sur le dos a fait chuter les décès de 75 %. Même si les parents disent qu'« il dort mieux sur le ventre », en structure la consigne ne se négocie pas.</div>
+  </div>
+
+  <div class="qcard">
+    <p class="profil"><b>Le change d'Inès, 7 mois.</b> Dans quel sens nettoyer ?</p>
+    <button class="opt" onclick="rep(this,false,'q6')">D'arrière en avant, c'est plus pratique</button>
+    <button class="opt" onclick="rep(this,true,'q6')">D'avant en arrière, un coton par passage</button>
+    <button class="opt" onclick="rep(this,false,'q6')">Peu importe le sens si on nettoie bien</button>
+    <div class="explic" id="q6">✅ Chez la petite fille, toujours d'avant en arrière pour ne pas ramener les germes des selles vers la vulve et l'urètre — c'est la prévention n°1 des infections urinaires du nourrisson.</div>
+  </div>
+
+  <div class="qcard">
+    <p class="profil"><b>On vous confie Louise, 6 semaines,</b> à porter jusqu'à la biberonnerie.</p>
+    <button class="opt" onclick="rep(this,false,'q7')">La porter à la verticale contre soi, elle tiendra bien</button>
+    <button class="opt" onclick="rep(this,true,'q7')">La soutenir avec la tête et la nuque calées dans le creux du bras</button>
+    <button class="opt" onclick="rep(this,false,'q7')">La porter face au monde pour qu'elle regarde</button>
+    <div class="explic" id="q7">✅ Avant 3-4 mois, un nourrisson ne tient pas sa tête : elle doit être soutenue en permanence — creux du coude ou main derrière la nuque. Une tête qui bascule, c'est un risque cervical et respiratoire.</div>
+  </div>
+</div>
+
+<!-- ================= SECURITE ================= -->
+<div class="panel" id="secu">
+  <h2 class="rouge">Sécurité du tout-petit · Les incontournables</h2>
+  <p class="intro">Quatre dangers concentrent l'essentiel des drames évitables chez le nourrisson. L'AP les connaît par cœur — et les explique aussi aux parents.</p>
+
+  <div class="secu-bloc">
+    <h3>La chute — 1re cause d'accident</h3>
+    <ul>
+      <li>Une main en contact permanent sur toute surface en hauteur (table, plan, canapé)</li>
+      <li>S'éloigner = emmener l'enfant OU le poser au sol / dans son lit — aucune autre option</li>
+      <li>Le transat et le cosy se posent AU SOL, jamais sur une table ou un plan</li>
+      <li>Toute chute, même sans signe visible, se signale et se transmet immédiatement</li>
+    </ul>
+  </div>
+
+  <div class="secu-bloc">
+    <h3>Le syndrome du bébé secoué</h3>
+    <ul>
+      <li>Jamais secouer un bébé — quelques secondes suffisent à des lésions cérébrales définitives</li>
+      <li>Pleurs inconsolables + adulte à bout = poser l'enfant en sécurité, sortir souffler, passer le relais</li>
+      <li>Passer le relais est un réflexe professionnel, pas un aveu de faiblesse</li>
+      <li>Savoir en parler simplement aux parents épuisés : c'est de la prévention directe</li>
+    </ul>
+  </div>
+
+  <div class="secu-bloc">
+    <h3>La mort inattendue du nourrisson (MIN)</h3>
+    <ul>
+      <li>Couchage sur le dos, systématiquement, pour chaque sommeil</li>
+      <li>Turbulette adaptée à la taille — jamais de couverture, oreiller, tour de lit ou peluche</li>
+      <li>Chambre à 18-20 °C, matelas ferme à la taille exacte du lit</li>
+      <li>Jamais de sommeil sur un canapé, un transat non prévu pour, ou contre un adulte endormi</li>
+    </ul>
+  </div>
+
+  <div class="secu-bloc">
+    <h3>Le bain</h3>
+    <ul>
+      <li>Eau à 37 °C : thermomètre PLUS contrôle à l'avant-bras, à chaque bain</li>
+      <li>Une main tient l'enfant en permanence — nuque et tête soutenues, l'autre main sous les fesses</li>
+      <li>Déshabiller en gardant une serviette sur l'enfant pour éviter le refroidissement</li>
+      <li>Ordre : visage en premier (yeux nettoyés de l'intérieur vers l'extérieur), puis corps, parties génitales en dernier (fille : d'avant en arrière)</li>
+      <li>5 minutes maximum pour le nouveau-né · sécher en tamponnant, plis compris, habiller rapidement</li>
+      <li>Tout le matériel préparé avant : on ne quitte JAMAIS un enfant dans l'eau, même 5 cm</li>
+      <li>Un nourrisson peut se noyer en moins d'une minute, en silence total</li>
+    </ul>
+  </div>
+
+  <div class="secu-bloc jamais">
+    <h3>À ne jamais faire</h3>
+    <ul>
+      <li>Laisser un enfant seul en hauteur, « juste deux secondes »</li>
+      <li>Secouer, même « doucement pour jouer » (jeux de projection en l'air inclus)</li>
+      <li>Coucher sur le ventre ou ajouter couverture/peluche dans le lit</li>
+      <li>Laisser un enfant seul dans l'eau ou confier la surveillance du bain à un autre enfant</li>
+      <li>Boire ou porter un liquide chaud avec un enfant dans les bras</li>
+    </ul>
+  </div>
+
+  <button class="reset" onclick="resetQuiz()">Recommencer les quiz</button>
+</div>
+
+<div class="score-bar">
+  <span>Score : <b id="score">0</b> / <b id="total">7</b></span>
+  <button class="btn-audio" id="btn-audio" onclick="lireOnglet()">🔊 Écouter</button>
+  <button class="btn-retour" onclick="retour()">‹ SimAP</button>
+</div>
+
+<script>
+function go(id, tab){
+  stopLecture();
+  document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
+  document.getElementById(id).classList.add('active');
+  tab.classList.add('active');
+  window.scrollTo(0,0);
+}
+
+var _reponses = {};
+function rep(btn, ok, qid){
+  if(_reponses[qid]) return;
+  _reponses[qid] = true;
+  var card = btn.closest('.qcard');
+  card.querySelectorAll('.opt').forEach(function(o){ o.style.pointerEvents='none'; });
+  if(ok){ btn.classList.add('good'); incScore(); }
+  else {
+    btn.classList.add('bad');
+    card.querySelectorAll('.opt').forEach(function(o){
+      if(o.getAttribute('onclick').indexOf('true') !== -1) o.classList.add('good');
+    });
+  }
+  document.getElementById(qid).classList.add('show');
+  sauver();
+}
+
+var _score = 0;
+function incScore(){
+  _score++;
+  document.getElementById('score').textContent = _score;
+}
+
+function sauver(){
+  try {
+    var stats = JSON.parse(localStorage.getItem('simap_nourrisson') || '{}');
+    stats.score = _score;
+    stats.repondues = Object.keys(_reponses).length;
+    stats.date = new Date().toISOString();
+    localStorage.setItem('simap_nourrisson', JSON.stringify(stats));
+  } catch(e){}
+}
+
+function resetQuiz(){
+  _reponses = {};
+  _score = 0;
+  document.getElementById('score').textContent = 0;
+  document.querySelectorAll('.opt').forEach(function(o){
+    o.classList.remove('good','bad');
+    o.style.pointerEvents = 'auto';
+  });
+  document.querySelectorAll('.explic').forEach(function(e){ e.classList.remove('show'); });
+  sauver();
+}
+
+function retour(){
+  if(window.parent !== window){
+    window.parent.postMessage({type:'retour'}, '*');
+  } else {
+    window.location.href = 'index.html';
+  }
+}
+
+// LECTURE AUDIO — lit le contenu de l'onglet actif (speechSynthesis, natif, hors ligne)
+var _enLecture = false;
+function lireOnglet(){
+  if(_enLecture){ stopLecture(); return; }
+  if(!('speechSynthesis' in window)){ alert('Lecture audio non disponible sur ce navigateur.'); return; }
+  var panel = document.querySelector('.panel.active');
+  var textes = [];
+  panel.querySelectorAll('h2, h3, p, li, .aide, .regle, .opt').forEach(function(el){
+    var t = el.innerText.trim();
+    if(t.length > 2) textes.push(t);
+  });
+  if(textes.length === 0) return;
+  _enLecture = true;
+  document.getElementById('btn-audio').textContent = '⏹ Stop';
+  var i = 0;
+  function suivante(){
+    if(!_enLecture || i >= textes.length){ stopLecture(); return; }
+    var u = new SpeechSynthesisUtterance(textes[i++]);
+    u.lang = 'fr-FR';
+    u.rate = 1;
+    u.onend = suivante;
+    u.onerror = suivante;
+    speechSynthesis.speak(u);
+  }
+  speechSynthesis.cancel();
+  suivante();
+}
+function stopLecture(){
+  _enLecture = false;
+  if('speechSynthesis' in window) speechSynthesis.cancel();
+  var btn = document.getElementById('btn-audio');
+  if(btn) btn.textContent = '🔊 Écouter';
+}
+
+// Tracking activite pour les stats formateur SimAP
+document.addEventListener('click', function(){
+  if(window.parent !== window){
+    window.parent.postMessage({type:'activite'}, '*');
+  }
+});
+</script>
+</body>
+</html>
+
+
