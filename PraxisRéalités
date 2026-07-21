@@ -1,1 +1,432 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>PraxisRéalités · SimAs</title>
+<meta name="theme-color" content="#04090f">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#04090f;color:#e8edf2;font-family:system-ui,sans-serif;-webkit-tap-highlight-color:transparent}
+body{min-height:100%;padding-bottom:60px}
+header{padding:20px 20px 8px;text-align:center;border-bottom:1px solid rgba(255,255,255,.07)}
+header h1{font-family:Georgia,serif;font-size:26px;font-weight:300;letter-spacing:-1px}
+header h1 strong{font-weight:700;color:#e8a840}
+header p{font-size:12px;color:#5a7080;margin-top:4px}
+.salut{font-size:12px;color:#e8a840;margin-top:8px}
+.salut button{background:none;border:none;color:#5a7080;font-size:11px;cursor:pointer;text-decoration:underline}
+.tabs{display:flex;gap:6px;padding:12px 12px 0;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tab{flex:1;min-width:88px;padding:10px 6px;border-radius:10px 10px 0 0;border:1px solid rgba(255,255,255,.08);border-bottom:none;background:rgba(255,255,255,.03);color:#5a7080;font-size:11px;font-weight:700;text-align:center;cursor:pointer;white-space:nowrap}
+.tab.active{background:rgba(232,168,64,.12);color:#e8a840;border-color:rgba(232,168,64,.3)}
+.panel{display:none;padding:16px;max-width:640px;margin:0 auto}
+.panel.active{display:block}
+h2{font-family:Georgia,serif;font-size:19px;font-weight:400;margin:14px 0 10px;color:#e8a840}
+.intro{font-size:13px;color:#8fa4b3;line-height:1.7;margin-bottom:14px}
+.bloc{background:rgba(232,168,64,.05);border:1px solid rgba(232,168,64,.18);border-radius:12px;padding:14px;margin-bottom:14px}
+.bloc h3{font-size:14px;color:#e8a840;margin-bottom:8px}
+.bloc ul{list-style:none}
+.bloc li{font-size:13px;color:#c8d2da;line-height:1.7;padding-left:16px;position:relative;margin-bottom:4px}
+.bloc li::before{content:'›';position:absolute;left:0;color:#e8a840}
+.bloc.bleu{background:rgba(76,184,232,.05);border-color:rgba(76,184,232,.2)}
+.bloc.bleu h3{color:#4cb8e8}
+.bloc.bleu li::before{color:#4cb8e8}
+.bloc.vert{background:rgba(94,203,122,.05);border-color:rgba(94,203,122,.2)}
+.bloc.vert h3{color:#5ecb7a}
+.bloc.vert li::before{color:#5ecb7a}
+.bloc.jamais{background:rgba(232,64,64,.07);border-color:rgba(232,64,64,.25)}
+.bloc.jamais h3{color:#e88a8a}
+.bloc.jamais li::before{color:#e88a8a;content:'✕';font-size:10px;top:3px}
+.chiffre{background:rgba(255,255,255,.03);border-left:3px solid #e8a840;border-radius:0 10px 10px 0;padding:10px 12px;margin-bottom:14px;font-size:13px;color:#c8d2da;line-height:1.65}
+.chiffre b{color:#e8a840}
+.qcard{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px;margin-bottom:14px}
+.qcard .profil{font-size:13px;line-height:1.65;color:#e8edf2;margin-bottom:12px}
+.qcard .profil b{color:#e8a840}
+.opt{display:block;width:100%;text-align:left;padding:11px 12px;margin-bottom:8px;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:#e8edf2;font-size:13px;cursor:pointer}
+.opt.good{background:rgba(94,203,122,.15);border-color:#5ecb7a;color:#5ecb7a}
+.opt.bad{background:rgba(232,64,64,.12);border-color:#e84040;color:#e88a8a}
+.explic{display:none;font-size:12px;line-height:1.65;color:#8fa4b3;background:rgba(255,255,255,.04);border-radius:8px;padding:10px;margin-top:6px}
+.explic.show{display:block}
+.score-bar{position:fixed;bottom:0;left:0;right:0;background:rgba(4,9,15,.95);border-top:1px solid rgba(255,255,255,.1);padding:10px 16px;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.score-bar span{font-size:12px;color:#5a7080}
+.score-bar b{color:#e8a840;font-size:15px}
+.btn-retour{background:none;border:1px solid rgba(255,255,255,.15);color:#8fa4b3;padding:6px 14px;border-radius:16px;font-size:12px;cursor:pointer}
+.btn-audio{background:rgba(232,168,64,.1);border:1px solid rgba(232,168,64,.3);color:#e8a840;padding:6px 14px;border-radius:16px;font-size:12px;font-weight:700;cursor:pointer}
+.reset{display:block;margin:10px auto 30px;background:none;border:1px solid rgba(255,255,255,.12);color:#5a7080;padding:8px 18px;border-radius:8px;font-size:12px;cursor:pointer}
+#prenom-overlay{display:none;position:fixed;inset:0;background:rgba(4,9,15,.96);z-index:300;align-items:center;justify-content:center}
+#prenom-overlay .box{background:#141b24;border:1px solid rgba(232,168,64,.25);border-radius:16px;padding:24px;max-width:320px;width:90%;text-align:center}
+#prenom-overlay h2{font-size:18px;margin:0 0 8px}
+#prenom-overlay p{color:#8fa4b3;font-size:13px;line-height:1.6;margin-bottom:16px}
+#prenom-overlay input{width:100%;padding:11px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;color:#e8edf2;font-size:15px;text-align:center;margin-bottom:10px}
+#prenom-overlay button{width:100%;padding:11px;background:#e8a840;color:#04090f;border:none;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer}
+.pn{color:#e8a840;font-weight:700}
+</style>
+</head>
+<body>
 
+<header>
+  <h1>Praxis<strong>Réalités</strong></h1>
+  <p>SimAs · La vraie vie du métier · Santé au travail & prévention</p>
+  <div class="salut">Ces pages sont pour toi, <span class="pn nom-heroine">…</span> <button onclick="changerPrenom()">changer</button></div>
+</header>
+
+<div class="tabs">
+  <div class="tab active" onclick="go('dos',this)">💪 Ton dos</div>
+  <div class="tab" onclick="go('grossesse',this)">🤰 Grossesse</div>
+  <div class="tab" onclick="go('agress',this)">🛡️ Agressivité</div>
+  <div class="tab" onclick="go('emotions',this)">💙 Émotions</div>
+  <div class="tab" onclick="go('quiz',this)">🎯 Quiz</div>
+</div>
+
+<!-- ================= TMS / DOS ================= -->
+<div class="panel active" id="dos">
+  <h2>Ton dos est ton outil de travail — et ton capital</h2>
+  <div class="chiffre">Le secteur du soin et de l'aide à la personne est l'un des <b>plus accidentogènes de France, devant le BTP</b>. Les troubles musculo-squelettiques (TMS) commencent souvent avant 25 ans — et une lombalgie chronique peut mettre fin à une carrière avant 40.</div>
+
+  <div class="bloc">
+    <h3>Les réflexes qui sauvent une carrière</h3>
+    <ul>
+      <li>L'aide technique n'est pas une option « si on a le temps » : elle EST le geste professionnel</li>
+      <li>Régler la hauteur du lit à CHAQUE fois — 3 secondes qui épargnent des milliers de flexions par an</li>
+      <li>Demander de l'aide n'est pas un aveu de faiblesse, c'est une compétence</li>
+      <li>Fente, dos droit, pivot avec les pieds : les principes ALM s'appliquent à chaque geste, pas seulement aux « gros » transferts</li>
+      <li>Chaussures fermées avec bon maintien — tes pieds portent 10 km par jour</li>
+    </ul>
+  </div>
+
+  <div class="bloc bleu">
+    <h3>Les signaux à ne pas ignorer</h3>
+    <ul>
+      <li>Douleur lombaire qui revient chaque fin de service, ou qui réveille la nuit</li>
+      <li>Fourmillements dans les bras ou les mains (canal carpien, cervicales)</li>
+      <li>Épaule douloureuse au moindre geste en hauteur</li>
+      <li>Ces signaux se CONSULTENT (médecin, médecine du travail) — « serrer les dents » transforme une gêne en maladie chronique</li>
+    </ul>
+  </div>
+
+  <div class="bloc vert">
+    <h3>Tes droits et tes alliés</h3>
+    <ul>
+      <li>La médecine du travail peut être sollicitée par TOI, à tout moment, sans passer par l'employeur</li>
+      <li>Un accident en soulevant un résident = accident du travail : à déclarer sous 24 h, même « si ça va »</li>
+      <li>Matériel manquant ou en panne : le signaler par écrit protège ta santé ET ta responsabilité</li>
+      <li>La formation PRAP 2S / ALM peut être demandée à ton employeur</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ================= GROSSESSE ================= -->
+<div class="panel" id="grossesse">
+  <h2>Grossesse et travail de soignante</h2>
+  <p class="intro">Dans un métier physique, majoritairement féminin, la grossesse au travail est une réalité que chaque équipe traverse — et pourtant personne ne t'en parle en formation. Voici l'essentiel.</p>
+
+  <div class="bloc">
+    <h3>Le bon réflexe : en parler tôt</h3>
+    <ul>
+      <li>Tu n'es jamais obligée d'annoncer ta grossesse — mais la protection et les aménagements ne commencent QUE lorsque l'employeur est informé</li>
+      <li>Le premier interlocuteur utile : la médecine du travail, tenue au secret médical</li>
+      <li>Cacher sa grossesse « pour ne pas gêner l'équipe » = continuer les ports de charges à risque : c'est toi et le bébé qui payez</li>
+    </ul>
+  </div>
+
+  <div class="bloc bleu">
+    <h3>Ce qui peut être aménagé</h3>
+    <ul>
+      <li>Limitation ou suppression des ports de charges lourdes et des manutentions à risque</li>
+      <li>Changement temporaire de poste ou de secteur (moins de transferts, plus de tâches relationnelles ou administratives)</li>
+      <li>Aménagement des horaires — les conventions du secteur prévoient souvent des réductions de temps de travail en fin de grossesse</li>
+      <li>Éviction des situations à risque infectieux ou chimique selon l'avis du médecin du travail</li>
+    </ul>
+  </div>
+
+  <div class="bloc vert">
+    <h3>Et dans l'équipe</h3>
+    <ul>
+      <li>Une collègue enceinte qui ne fait plus de transferts n'est pas « une charge » : c'est l'organisation normale d'une équipe professionnelle</li>
+      <li>Un jour, ce sera peut-être toi — la solidarité d'équipe sur ce sujet se construit dans les deux sens</li>
+      <li>Précision utile : les droits précis (durées, indemnités) dépendent de ta convention collective et de ton statut — RH et médecine du travail te donneront les chiffres exacts pour TA situation</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ================= AGRESSIVITE ================= -->
+<div class="panel" id="agress">
+  <h2>Agressivité et violences : jamais « normal »</h2>
+  <p class="intro">Deux situations très différentes, deux réponses différentes : l'agressivité-symptôme du résident atteint de troubles cognitifs, et la violence d'un adulte qui sait ce qu'il fait (famille, visiteur, collègue). La première se désamorce, la seconde se signale.</p>
+
+  <div class="bloc">
+    <h3>Résident avec troubles cognitifs : l'agressivité est un symptôme</h3>
+    <ul>
+      <li>Il ne t'attaque pas TOI : il se défend contre ce qu'il perçoit comme une menace</li>
+      <li>Interrompre le geste, reculer, parler calmement — reprendre plus tard, autrement, ou avec une collègue</li>
+      <li>Chercher la cause : douleur ? peur ? approche trop rapide ? besoin non exprimé ?</li>
+      <li>Se protéger physiquement (distance, dégagement du poignet saisi) sans jamais riposter</li>
+      <li>Transmettre systématiquement : un comportement nouveau est souvent le signe d'un problème médical</li>
+    </ul>
+  </div>
+
+  <div class="bloc bleu">
+    <h3>Famille ou visiteur agressif : tu n'es pas un paillasson</h3>
+    <ul>
+      <li>Rester calme et factuelle, ne pas répondre sur le même ton, ne pas rester seule face à la personne</li>
+      <li>Passer le relais : « Je vais chercher ma responsable » est une phrase professionnelle, pas une fuite</li>
+      <li>Toute agression verbale ou physique se déclare : fiche d'événement indésirable, information de la hiérarchie</li>
+      <li>Les menaces et insultes répétées ne font PAS partie du métier — c'est l'établissement qui doit te protéger</li>
+    </ul>
+  </div>
+
+  <div class="bloc jamais">
+    <h3>À ne jamais faire</h3>
+    <ul>
+      <li>Riposter physiquement ou verbalement, même sous la colère</li>
+      <li>Banaliser (« il est comme ça », « c'est le métier ») — la banalisation use l'équipe entière</li>
+      <li>Garder pour soi une agression « pour ne pas faire d'histoires »</li>
+      <li>Punir un résident dément (soin brusqué, mise à l'écart) : c'est de la maltraitance</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ================= EMOTIONS ================= -->
+<div class="panel" id="emotions">
+  <h2>Les émotions, la mort, et toi</h2>
+  <p class="intro">En EHPAD, tu accompagneras des fins de vie — et des résidents que tu connaissais depuis des mois partiront. Personne ne devrait découvrir ça seule, sans mots. Parlons-en avant.</p>
+
+  <div class="bloc">
+    <h3>Ce que tu as le droit de ressentir</h3>
+    <ul>
+      <li>Être touchée par un décès n'est pas un manque de professionnalisme — c'est la preuve que tu soignes des personnes, pas des chambres</li>
+      <li>Pleurer, être remuée, y penser le soir : normal, surtout les premières fois</li>
+      <li>La bonne distance professionnelle ne veut pas dire l'absence d'émotion : elle veut dire que l'émotion ne t'empêche pas de faire ton travail ni de vivre ta vie</li>
+    </ul>
+  </div>
+
+  <div class="bloc bleu">
+    <h3>L'accompagnement de fin de vie : le rôle de l'AS</h3>
+    <ul>
+      <li>Le confort avant tout : installation, bouche, peau, présence — les « petits » soins deviennent les plus grands</li>
+      <li>Parler à la personne jusqu'au bout : l'ouïe est le dernier sens qui reste</li>
+      <li>Accompagner aussi la famille : un café, une chaise, une parole simple</li>
+      <li>La toilette mortuaire est un dernier soin, fait avec le même respect que tous les autres — souvent à deux, jamais imposée à une débutante seule</li>
+    </ul>
+  </div>
+
+  <div class="bloc vert">
+    <h3>Prendre soin de toi pour durer</h3>
+    <ul>
+      <li>Parler en équipe après un décès ou une situation difficile — les transmissions servent aussi à ça, et certains établissements organisent des temps de parole</li>
+      <li>Repérer l'épuisement qui s'installe : cynisme, détachement (« ce ne sont que des résidents »), sommeil perturbé, boule au ventre avant le service</li>
+      <li>Ces signes se disent : psychologue d'établissement, médecine du travail, ton médecin — en parler tôt n'est jamais exagéré</li>
+      <li>Et si un décès ou l'accumulation te pèse personnellement, au-delà du travail : en parler à un professionnel est une force, pas une fragilité</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ================= QUIZ ================= -->
+<div class="panel" id="quiz">
+  <h2>Et toi, tu ferais quoi ?</h2>
+  <p class="intro">Sept situations vécues par <span class="pn nom-heroine">…</span>, AS en première année d'exercice.</p>
+
+  <div class="qcard">
+    <p class="profil">Depuis deux semaines, <span class="pn nom-heroine">…</span> a <b>mal en bas du dos chaque fin de service</b>. Cette nuit, la douleur l'a réveillée.</p>
+    <button class="opt" onclick="rep(this,false,'q1')">Serrer les dents, ça fait partie du métier</button>
+    <button class="opt" onclick="rep(this,true,'q1')">Consulter, et solliciter la médecine du travail</button>
+    <button class="opt" onclick="rep(this,false,'q1')">Prendre des anti-douleurs et continuer pareil</button>
+    <div class="explic" id="q1">✅ Une douleur qui réveille la nuit a dépassé le stade « courbature ». Consulter tôt + revoir ses pratiques avec la médecine du travail, c'est la différence entre un épisode et une lombalgie chronique à 30 ans.</div>
+  </div>
+
+  <div class="qcard">
+    <p class="profil">Le service est en retard. Pour le transfert de M. B., grabataire, une collègue dit à <span class="pn nom-heroine">…</span> : <b>« Laisse tomber le lève-personne, à deux on le porte, c'est plus rapide. »</b></p>
+    <button class="opt" onclick="rep(this,false,'q2')">Accepter, le retard c'est le retard</button>
+    <button class="opt" onclick="rep(this,true,'q2')">Refuser et installer le lève-personne : 3 minutes qui protègent tout le monde</button>
+    <button class="opt" onclick="rep(this,false,'q2')">Porter seule pour ne pas déranger la collègue</button>
+    <div class="explic" id="q2">✅ Le portage manuel d'une personne dépendante est exactement ce qui remplit les statistiques d'accidents du secteur — et il est inconfortable et risqué pour M. B. aussi. Savoir dire « on prend le matériel » EST une compétence professionnelle.</div>
+  </div>
+
+  <div class="qcard">
+    <p class="profil"><span class="pn nom-heroine">…</span> est <b>enceinte de 2 mois</b>. Elle hésite à le dire : l'équipe est déjà en sous-effectif et elle ne veut « gêner personne ».</p>
+    <button class="opt" onclick="rep(this,false,'q3')">Attendre que ça se voie, vers le 5e mois</button>
+    <button class="opt" onclick="rep(this,true,'q3')">En parler tôt à la médecine du travail pour aménager le poste</button>
+    <button class="opt" onclick="rep(this,false,'q3')">Continuer normalement, les femmes ont toujours travaillé enceintes</button>
+    <div class="explic" id="q3">✅ Les aménagements (moins de ports de charges, changement de secteur) ne commencent que quand c'est su. La médecine du travail est tenue au secret et peut organiser la suite. Les premiers mois sont précisément les plus sensibles.</div>
+  </div>
+
+  <div class="qcard">
+    <p class="profil">Pendant la toilette, M. V., atteint de la maladie d'Alzheimer, <b>saisit brutalement le poignet de <span class="pn nom-heroine">…</span></b> et crie.</p>
+    <button class="opt" onclick="rep(this,false,'q4')">Continuer la toilette, elle sera vite finie</button>
+    <button class="opt" onclick="rep(this,true,'q4')">Dégager sa main calmement, interrompre, revenir plus tard — et transmettre</button>
+    <button class="opt" onclick="rep(this,false,'q4')">Hausser le ton pour qu'il comprenne que ça ne se fait pas</button>
+    <div class="explic" id="q4">✅ On se dégage sans brusquerie, on interrompt, on cherche la cause (douleur ? peur ?) et on transmet — un comportement nouveau est souvent un symptôme. Continuer de force transforme le soin en lutte ; hausser le ton aggrave tout.</div>
+  </div>
+
+  <div class="qcard">
+    <p class="profil">Le fils d'une résidente <b>hurle sur <span class="pn nom-heroine">…</span> dans le couloir</b> : « Ma mère attend depuis une heure, vous êtes des incapables ! »</p>
+    <button class="opt" onclick="rep(this,false,'q5')">S'excuser longuement et encaisser, le client est roi</button>
+    <button class="opt" onclick="rep(this,false,'q5')">Répondre sur le même ton, il n'a pas à crier</button>
+    <button class="opt" onclick="rep(this,true,'q5')">Rester calme, passer le relais à la responsable, et remplir une fiche d'événement</button>
+    <div class="explic" id="q5">✅ Calme, factuelle, jamais seule face à l'escalade : « Je comprends votre inquiétude, je vais chercher ma responsable. » Et l'agression se déclare — c'est ce qui permet à l'établissement de protéger les équipes. Encaisser en silence use ; répondre enflamme.</div>
+  </div>
+
+  <div class="qcard">
+    <p class="profil">Mme H., que <span class="pn nom-heroine">…</span> accompagnait depuis huit mois, <b>est décédée cette nuit</b>. C'est son premier décès. Elle a les larmes aux yeux en arrivant devant la chambre.</p>
+    <button class="opt" onclick="rep(this,false,'q6')">Se cacher pour pleurer, une professionnelle ne craque pas</button>
+    <button class="opt" onclick="rep(this,true,'q6')">S'autoriser l'émotion et en parler à l'équipe — c'est normal, surtout la première fois</button>
+    <button class="opt" onclick="rep(this,false,'q6')">Demander à ne plus jamais s'occuper des résidents en fin de vie</button>
+    <div class="explic" id="q6">✅ L'émotion prouve qu'elle soignait une personne, pas une chambre. En parler à l'équipe, c'est comme ça qu'on apprend à durer dans ce métier. L'évitement total, lui, prive des soins les plus importants du métier — et ne protège pas vraiment.</div>
+  </div>
+
+  <div class="qcard">
+    <p class="profil">Depuis quelques semaines, <span class="pn nom-heroine">…</span> remarque qu'une collègue expérimentée <b>parle des résidents avec cynisme</b>, bâcle les soins et semble épuisée.</p>
+    <button class="opt" onclick="rep(this,false,'q7')">Ne rien dire, chacun gère comme il peut</button>
+    <button class="opt" onclick="rep(this,true,'q7')">Lui en parler avec bienveillance, et alerter si les résidents sont concernés</button>
+    <button class="opt" onclick="rep(this,false,'q7')">La dénoncer directement à la direction</button>
+    <div class="explic" id="q7">✅ Le cynisme et le détachement sont des signes d'épuisement professionnel, pas de méchanceté. Un mot bienveillant peut débloquer beaucoup. Mais si la qualité des soins est touchée, la protection des résidents passe devant : on en parle à l'encadrement — c'est de la protection, pas de la délation.</div>
+  </div>
+
+  <button class="reset" onclick="resetQuiz()">Recommencer les quiz</button>
+</div>
+
+<div class="score-bar">
+  <span>Score : <b id="score">0</b> / <b id="total">7</b></span>
+  <button class="btn-audio" id="btn-audio" onclick="lireOnglet()">🔊 Écouter</button>
+  <button class="btn-retour" onclick="retour()">‹ SimAs</button>
+</div>
+
+<!-- CHOIX DU PRENOM -->
+<div id="prenom-overlay">
+  <div class="box">
+    <h2 style="color:#e8a840;font-family:Georgia,serif">Ton héroïne</h2>
+    <p>Ce module suit une aide-soignante en première année d'exercice, dans des situations bien réelles.<br><b style="color:#e8edf2">Comment s'appelle-t-elle ?</b><br>Ce peut être toi.</p>
+    <input id="prenom-input" placeholder="Son prénom" maxlength="20" autocomplete="off">
+    <button onclick="validerPrenom()">C'est parti</button>
+  </div>
+</div>
+
+<script>
+// ============ PRENOM DE L'HEROINE ============
+function getPrenom(){
+  return localStorage.getItem('praxis_prenom') || '';
+}
+function appliquerPrenom(){
+  var p = getPrenom() || 'notre héroïne';
+  document.querySelectorAll('.nom-heroine').forEach(function(el){ el.textContent = p; });
+}
+function validerPrenom(){
+  var val = document.getElementById('prenom-input').value.trim();
+  if(val){ localStorage.setItem('praxis_prenom', val.charAt(0).toUpperCase() + val.slice(1)); }
+  document.getElementById('prenom-overlay').style.display = 'none';
+  appliquerPrenom();
+}
+function changerPrenom(){
+  document.getElementById('prenom-input').value = getPrenom();
+  document.getElementById('prenom-overlay').style.display = 'flex';
+}
+if(!getPrenom()){
+  document.getElementById('prenom-overlay').style.display = 'flex';
+}
+appliquerPrenom();
+
+// ============ ONGLETS ============
+function go(id, tab){
+  stopLecture();
+  document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
+  document.getElementById(id).classList.add('active');
+  tab.classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// ============ QUIZ ============
+var _reponses = {};
+function rep(btn, ok, qid){
+  if(_reponses[qid]) return;
+  _reponses[qid] = true;
+  var card = btn.closest('.qcard');
+  card.querySelectorAll('.opt').forEach(function(o){ o.style.pointerEvents='none'; });
+  if(ok){ btn.classList.add('good'); incScore(); }
+  else {
+    btn.classList.add('bad');
+    card.querySelectorAll('.opt').forEach(function(o){
+      if(o.getAttribute('onclick').indexOf('true') !== -1) o.classList.add('good');
+    });
+  }
+  document.getElementById(qid).classList.add('show');
+  sauver();
+}
+
+var _score = 0;
+function incScore(){
+  _score++;
+  document.getElementById('score').textContent = _score;
+}
+
+function sauver(){
+  try {
+    var stats = JSON.parse(localStorage.getItem('simas_realites') || '{}');
+    stats.score = _score;
+    stats.repondues = Object.keys(_reponses).length;
+    stats.date = new Date().toISOString();
+    localStorage.setItem('simas_realites', JSON.stringify(stats));
+  } catch(e){}
+}
+
+function resetQuiz(){
+  _reponses = {};
+  _score = 0;
+  document.getElementById('score').textContent = 0;
+  document.querySelectorAll('.opt').forEach(function(o){
+    o.classList.remove('good','bad');
+    o.style.pointerEvents = 'auto';
+  });
+  document.querySelectorAll('.explic').forEach(function(e){ e.classList.remove('show'); });
+  sauver();
+}
+
+// ============ LECTURE AUDIO ============
+var _enLecture = false;
+function lireOnglet(){
+  if(_enLecture){ stopLecture(); return; }
+  if(!('speechSynthesis' in window)){ alert('Lecture audio non disponible sur ce navigateur.'); return; }
+  var panel = document.querySelector('.panel.active');
+  var textes = [];
+  panel.querySelectorAll('h2, h3, p, li, .chiffre, .opt').forEach(function(el){
+    var t = el.innerText.trim();
+    if(t.length > 2) textes.push(t);
+  });
+  if(textes.length === 0) return;
+  _enLecture = true;
+  document.getElementById('btn-audio').textContent = '⏹ Stop';
+  var i = 0;
+  function suivante(){
+    if(!_enLecture || i >= textes.length){ stopLecture(); return; }
+    var u = new SpeechSynthesisUtterance(textes[i++]);
+    u.lang = 'fr-FR';
+    u.rate = 1;
+    u.onend = suivante;
+    u.onerror = suivante;
+    speechSynthesis.speak(u);
+  }
+  speechSynthesis.cancel();
+  suivante();
+}
+function stopLecture(){
+  _enLecture = false;
+  if('speechSynthesis' in window) speechSynthesis.cancel();
+  var btn = document.getElementById('btn-audio');
+  if(btn) btn.textContent = '🔊 Écouter';
+}
+
+// ============ RETOUR + TRACKING ============
+function retour(){
+  if(window.parent !== window){
+    window.parent.postMessage({type:'retour'}, '*');
+  } else {
+    window.location.href = 'index.html';
+  }
+}
+document.addEventListener('click', function(){
+  if(window.parent !== window){
+    window.parent.postMessage({type:'activite'}, '*');
+  }
+});
+</script>
+</body>
+</html>
