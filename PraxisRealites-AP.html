@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>PraxisRéalités · SimAP</title>
+<meta name="theme-color" content="#0a0810">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#0a0810;color:#f0d8f8;font-family:system-ui,sans-serif;-webkit-tap-highlight-color:transparent}
+body{min-height:100%;padding-bottom:60px}
+header{padding:20px 20px 8px;text-align:center;border-bottom:1px solid rgba(255,255,255,.07)}
+header h1{font-family:Georgia,serif;font-size:26px;font-weight:300;letter-spacing:-1px;color:#f0d8f8}
+header h1 strong{font-weight:700;color:#d870f0}
+header p{font-size:12px;color:#4a3060;margin-top:4px}
+.salut{font-size:12px;color:#d870f0;margin-top:8px}
+.salut button{background:none;border:none;color:#4a3060;font-size:11px;cursor:pointer;text-decoration:underline}
+.tabs{display:flex;gap:6px;padding:12px 12px 0;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tab{flex:1;min-width:88px;padding:10px 6px;border-radius:10px 10px 0 0;border:1px solid rgba(255,255,255,.08);border-bottom:none;background:rgba(255,255,255,.03);color:#4a3060;font-size:11px;font-weight:700;text-align:center;cursor:pointer;white-space:nowrap}
+.tab.active{background:rgba(216,112,240,.12);color:#d870f0;border-color:rgba(216,112,240,.3)}
+.panel{display:none;padding:16px;max-width:640px;margin:0 auto}
+.panel.active{display:block}
+h2{font-family:Georgia,serif;font-size:19px;font-weight:400;margin:14px 0 10px;color:#d870f0}
+.intro{font-size:13px;color:#9a80a8;line-height:1.7;margin-bottom:14px}
+.bloc{background:rgba(216,112,240,.05);border:1px solid rgba(216,112,240,.18);border-radius:12px;padding:14px;margin-bottom:14px}
+.bloc h3{font-size:14px;color:#d870f0;margin-bottom:8px}
+.bloc ul{list-style:none}
+.bloc li{font-size:13px;color:#e0d0e8;line-height:1.7;padding-left:16px;position:relative;margin-bottom:4px}
+.bloc li::before{content:'›';position:absolute;left:0;color:#d870f0}
+.bloc.bleu{background:rgba(76,184,232,.05);border-color:rgba(76,184,232,.2)}
+.bloc.bleu h3{color:#4cb8e8}
+.bloc.bleu li::before{color:#4cb8e8}
+.bloc.vert{background:rgba(94,203,122,.05);border-color:rgba(94,203,122,.2)}
+.bloc.vert h3{color:#5ecb7a}
+.bloc.vert li::before{color:#5ecb7a}
+.bloc.jamais{background:rgba(232,64,64,.07);border-color:rgba(232,64,64,.25)}
+.bloc.jamais h3{color:#e88a8a}
+.bloc.jamais li::before{color:#e88a8a;content:'✕';font-size:10px;top:3px}
+.chiffre{background:rgba(255,255,255,.03);border-left:3px solid #d870f0;border-radius:0 10px 10px 0;padding:10px 12px;margin-bottom:14px;font-size:13px;color:#e0d0e8;line-height:1.65}
+.chiffre b{color:#d870f0}
+.qcard{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px;margin-bottom:14px}
+.qcard .profil{font-size:13px;line-height:1.65;color:#f0d8f8;margin-bottom:12px}
+.qcard .profil b{color:#d870f0}
+.opt{display:block;width:100%;text-align:left;padding:11px 12px;margin-bottom:8px;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:#f0d8f8;font-size:13px;cursor:pointer}
+.opt.good{background:rgba(94,203,122,.15);border-color:#5ecb7a;color:#5ecb7a}
+.opt.bad{background:rgba(232,64,64,.12);border-color:#e84040;color:#e88a8a}
+.explic{display:none;font-size:12px;line-height:1.65;color:#9a80a8;background:rgba(255,255,255,.04);border-radius:8px;padding:10px;margin-top:6px}
+.explic.show{display:block}
+.score-bar{position:fixed;bottom:0;left:0;right:0;background:rgba(10,8,16,.95);border-top:1px solid rgba(255,255,255,.1);padding:10px 16px;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.score-bar span{font-size:12px;color:#4a3060}
+.score-bar b{color:#d870f0;font-size:15px}
+.btn-retour{background:none;border:1px solid rgba(255,255,255,.15);color:#9a80a8;padding:6px 14px;border-radius:16px;font-size:12px;cursor:pointer}
+.btn-audio{background:rgba(216,112,240,.1);border:1px solid rgba(216,112,240,.3);color:#d870f0;padding:6px 14px;border-radius:16px;font-size:12px;font-weight:700;cursor:pointer}
+.reset{display:block;margin:10px auto 30px;background:none;border:1px solid rgba(255,255,255,.12);color:#4a3060;padding:8px 18px;border-radius:8px;font-size:12px;cursor:pointer}
+#prenom-overlay{display:none;position:fixed;inset:0;background:rgba(10,8,16,.96);z-index:300;align-items:center;justify-content:center}
+#prenom-overlay .box{background:#171022;border:1px solid rgba(216,112,240,.25);border-radius:16px;padding:24px;max-width:320px;width:90%;text-align:center}
+#prenom-overlay h2{font-size:18px;margin:0 0 8px}
+#prenom-overlay p{color:#9a80a8;font-size:13px;line-height:1.6;margin-bottom:16px}
+#prenom-overlay input{width:100%;padding:11px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;color:#f0d8f8;font-size:15px;text-align:center;margin-bottom:10px}
+#prenom-overlay button{width:100%;padding:11px;background:#d870f0;color:#0a0810;border:none;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer}
+.pn{color:#d870f0;font-weight:700}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Praxis<strong>Réalités</strong></h1>
+  <p>SimAP · La vraie vie du métier · Santé au travail & prévention</p>
+  <div class="salut">Ces pages sont pour toi, <span class="pn nom-heroine">…</span> <button onclick="changerPrenom()">changer</button></div>
+</header>
+
+<div class="tabs">
+  <div class="tab active" onclick="go('dos',this)">💪 Ton dos</div>
+  <div class="tab" onclick="go('grossesse',this)">🤰 Grossesse</div>
+  <div class="tab" onclick="go('parents',this)">👨‍👩‍👧 Parents</div>
+  <div class="tab" onclick="go('emotions',this)">💙 Attachement</div>
+  <div class="tab" onclick="go('quiz',this)">🎯 Quiz</div>
+</div>
+
+<!-- ================= TMS / DOS ================= -->
+<div class="panel active" id="dos">
+  <h2>Ton dos est ton outil de travail — et ton capital</h2>
+  <div class="chiffre">En crèche ou en structure petite enfance, on ne « porte pas des charges » — on porte des enfants, encore et encore, souvent penchée sur une table à langer basse ou accroupie au sol. Les TMS du secteur petite enfance touchent le dos, les épaules ET les genoux, et commencent parfois avant 25 ans.</div>
+
+  <div class="bloc">
+    <h3>Les réflexes qui sauvent une carrière</h3>
+    <ul>
+      <li>Table à langer réglée à hauteur — jamais penchée en avant, dos courbé</li>
+      <li>Pour ramasser un enfant au sol : fléchir les genoux, pas le dos, comme pour n'importe quelle charge</li>
+      <li>Porter un enfant contre soi plutôt que bras tendus devant — plus le poids s'éloigne du corps, plus la charge sur le dos est démultipliée</li>
+      <li>Alterner les bras et les positions dans la journée : ne pas toujours porter du même côté</li>
+      <li>Demander de l'aide pour un enfant lourd ou qui se débat n'est pas un aveu de faiblesse</li>
+    </ul>
+  </div>
+
+  <div class="bloc bleu">
+    <h3>Les signaux à ne pas ignorer</h3>
+    <ul>
+      <li>Douleur lombaire qui revient chaque fin de journée, ou qui réveille la nuit</li>
+      <li>Douleur aux genoux après les activités au sol répétées</li>
+      <li>Épaule douloureuse au moindre geste de portage en hauteur</li>
+      <li>Ces signaux se CONSULTENT (médecin, médecine du travail) — « ça fait partie du métier » transforme une gêne en maladie chronique</li>
+    </ul>
+  </div>
+
+  <div class="bloc vert">
+    <h3>Tes droits et tes alliés</h3>
+    <ul>
+      <li>La médecine du travail peut être sollicitée par TOI, à tout moment, sans passer par l'employeur</li>
+      <li>Un accident en portant un enfant = accident du travail : à déclarer sous 24 h, même « si ça va »</li>
+      <li>Matériel manquant (table non réglable, sol non adapté) : le signaler par écrit protège ta santé ET ta responsabilité</li>
+      <li>Une formation gestes et postures spécifique petite enfance peut être demandée à ton employeur</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ================= GROSSESSE ================= -->
+<div class="panel" id="grossesse">
+  <h2>Grossesse et travail en crèche</h2>
+  <p class="intro">Dans un métier physique, majoritairement féminin, entouré d'enfants et parfois de maladies infantiles très contagieuses, la grossesse au travail pose des questions spécifiques que personne ne t'explique en formation.</p>
+
+  <div class="bloc">
+    <h3>Le bon réflexe : en parler tôt</h3>
+    <ul>
+      <li>Tu n'es jamais obligée d'annoncer ta grossesse — mais la protection et les aménagements ne commencent QUE lorsque l'employeur est informé</li>
+      <li>Le premier interlocuteur utile : la médecine du travail, tenue au secret médical</li>
+      <li>En crèche, il existe un enjeu supplémentaire : certaines maladies infantiles (CMV, cinquième maladie, varicelle...) présentent des risques spécifiques en début de grossesse — c'est un sujet à aborder tôt avec le médecin du travail</li>
+    </ul>
+  </div>
+
+  <div class="bloc bleu">
+    <h3>Ce qui peut être aménagé</h3>
+    <ul>
+      <li>Limitation des ports d'enfants lourds ou des postures accroupies/penchées répétées</li>
+      <li>Éviction temporaire de tâches à risque infectieux selon l'avis du médecin du travail</li>
+      <li>Changement temporaire de section (bébés portés vs grands qui marchent) ou de tâches</li>
+      <li>Aménagement des horaires — les conventions du secteur prévoient souvent des dispositions en fin de grossesse</li>
+    </ul>
+  </div>
+
+  <div class="bloc vert">
+    <h3>Et dans l'équipe</h3>
+    <ul>
+      <li>Une collègue enceinte qui change de tâches n'est pas « une charge » : c'est l'organisation normale d'une équipe professionnelle</li>
+      <li>Un jour, ce sera peut-être toi — la solidarité d'équipe sur ce sujet se construit dans les deux sens</li>
+      <li>Précision utile : les droits précis (durées, indemnités) dépendent de ta convention collective et de ton statut — RH et médecine du travail te donneront les chiffres exacts pour TA situation</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ================= PARENTS ================= -->
+<div class="panel" id="parents">
+  <h2>Les parents : ton premier partenaire, parfois ton premier défi</h2>
+  <p class="intro">Confier son enfant chaque matin est un acte de confiance énorme pour un parent — et l'angoisse, la culpabilité, la fatigue ou les doutes s'expriment parfois de façon abrupte ou blessante. Ce n'est presque jamais dirigé contre toi personnellement : c'est l'angoisse de la séparation et les questions « suis-je un bon parent ? »</p>
+
+  <div class="bloc">
+    <h3>Désamorcer une tension au quotidien</h3>
+    <ul>
+      <li>Un parent pressé, fatigué ou anxieux au dépose peut être sec ou agressif — accueillir sans le prendre pour soi</li>
+      <li>Reformuler ce qu'on entend avant de répondre : « Vous vous inquiétez qu'il n'ait pas assez dormi, c'est ça ? » ou « Vous trouvez qu'il revient trop fatigué ? »</li>
+      <li>Rester factuelle sur les transmissions, sans jugement sur les choix parentaux (sommeil, alimentation, écrans, éducation)</li>
+      <li>Le secret professionnel protège aussi les parents : ce qui se dit à la crèche sur une famille ne se répète pas ailleurs — c'est de la confiance</li>
+    </ul>
+  </div>
+
+  <div class="bloc bleu">
+    <h3>Situations plus délicates</h3>
+    <ul>
+      <li>Parents séparés avec des consignes contradictoires : appliquer le protocole de la structure, ne jamais arbitrer soi-même le conflit parental</li>
+      <li>Un parent qui conteste ouvertement une pratique de l'équipe (sommeil, alimentation, discipline) : écouter, ne pas envenimer, passer le relais à la directrice si besoin</li>
+      <li>Un enfant qui semble avoir peur d'un parent, ou des propos inquiétants tenus par l'enfant (« papa me fait mal », « maman crie beaucoup ») : observer, NE PAS enquêter soi-même, transmettre IMMÉDIATEMENT à la direction/puéricultrice</li>
+      <li>Un parent qui demande des choses hors du cadre de la structure : référer à la direction, ce n'est jamais ta responsabilité personnelle</li>
+    </ul>
+  </div>
+
+  <div class="bloc jamais">
+    <h3>À ne jamais faire</h3>
+    <ul>
+      <li>Répondre à l'agressivité d'un parent par de l'agressivité</li>
+      <li>Donner son avis personnel sur l'éducation, les choix de vie ou la « valeur » d'une famille</li>
+      <li>Promettre le secret à un enfant qui confie quelque chose d'inquiétant — au contraire, dire « je dois en parler à ma responsable pour que tu sois en sécurité »</li>
+      <li>Rester seule à encaisser un parent menaçant ou insultant : passer le relais est professionnel, pas une fuite</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ================= EMOTIONS / ATTACHEMENT ================= -->
+<div class="panel" id="emotions">
+  <h2>S'attacher, se détacher : le cœur du métier petite enfance</h2>
+  <p class="intro">Tu vas t'attacher à des enfants que tu vois grandir pendant trois ans — du bébé qui découvre le monde à l'enfant qui part à l'école. Et un jour, ils partiront. Personne ne devrait découvrir ce vertige sans en avoir parlé avant.</p>
+
+  <div class="bloc">
+    <h3>L'attachement, c'est ta qualité professionnelle</h3>
+    <ul>
+      <li>S'attacher à un enfant n'est pas un manque de professionnalisme — c'est même la BASE d'un accueil de qualité (théorie de l'attachement, Bowlby, Pikler)</li>
+      <li>Un enfant en sécurité affective explore mieux, joue mieux, apprend mieux. C'est une personne de référence stable qui crée cette sécurité</li>
+      <li>La bonne distance professionnelle ne veut pas dire l'absence d'attachement : elle veut dire rester la professionnelle de référence de TOUS les enfants du groupe, pas seulement de ton « préféré »</li>
+      <li>Observer chaque enfant, reconnaître ses progrès (tenue de tête à 3 mois, retournement à 6, premiers pas), c'est de l'attachement en action</li>
+    </ul>
+  </div>
+
+  <div class="bloc bleu">
+    <h3>Les pleurs de séparation : normal et important</h3>
+    <ul>
+      <li>Les pleurs du matin au dépose ne sont pas un signe que « tu fais mal ton travail » — c'est un signe du DÉVELOPPEMENT normal</li>
+      <li>Un enfant qui pleure en se séparant de son parent a construit un attachement secure : c'est excellent</li>
+      <li>Ton rôle : recevoir l'enfant, le rasséréner, créer une transition douce, puis passer le relais au parent pour que ce dernier se sente confiant en partant</li>
+      <li>Les pleurs d'un enfant inconsolable en fin de journée, ou pendant le temps de sieste, épuisent nerveusement — se sentir à bout face à ça n'est pas un échec</li>
+    </ul>
+  </div>
+
+  <div class="bloc vert">
+    <h3>Le départ d'un enfant en fin de crèche</h3>
+    <ul>
+      <li>Être triste quand un enfant suivi pendant trois ans s'en va à l'école est normal — surtout la première fois</li>
+      <li>Proposer une photo, un livre de souvenirs, un moment d'au revoir : l'enfant aussi a besoin de clore cette relation</li>
+      <li>Parler en équipe du départ : c'est une petite perte partagée, et ça se traverse ensemble</li>
+      <li>Et puis un autre arrive, et tu recommences — c'est le cycle normal et beau du métier</li>
+    </ul>
+  </div>
+
+  <div class="bloc" style="border-color:rgba(94,203,122,.2)">
+    <h3 style="color:#5ecb7a">Prendre soin de toi pour durer</h3>
+    <ul>
+      <li>Parler en équipe des moments difficiles (suspicion de maltraitance, deuil dans une famille, situation de crise) — ces temps d'échange existent dans les meilleures structures</li>
+      <li>Repérer l'épuisement qui s'installe : irritabilité avec les enfants, impatience croissante, sensation de ne plus « avoir de cœur »</li>
+      <li>Ces signes se disent sans attendre : psychologue de la structure si présent, médecine du travail, ton médecin — en parler tôt n'est jamais exagéré</li>
+      <li>Et si une situation familiale difficile, l'accumulation, ou un enfant particulier te pèse : en parler à un professionnel est une force, pas une fragilité</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ================= QUIZ ================= -->
+<div class="panel" id="quiz">
+  <h2>Et toi, tu ferais quoi ?</h2>
+  <p class="intro">Sept situations vécues par <span class="pn nom-heroine">…</span>, AP en première année d'exercice.</p>
+
+  <div class="qcard">
+    <p class="profil">Depuis deux semaines, <span class="pn nom-heroine">…</span> a <b>mal aux genoux</b> après chaque journée passée à jouer au sol avec les petits.</p>
+    <button class="opt" onclick="rep(this,false,'q1')">Continuer, c'est normal avec des enfants au sol</button>
+    <button class="opt" onclick="rep(this,true,'q1')">Alterner les postures, s'asseoir sur un tabouret bas plutôt qu'accroupie, et consulter si ça persiste</button>
+    <button class="opt" onclick="rep(this,false,'q1')">Éviter désormais de s'asseoir avec les enfants</button>
+    <div class="explic" id="q1">✅ On adapte la posture (tabouret, coussin, alternance) sans se couper du jeu au sol, et une douleur qui persiste se consulte. L'éviter complètement priverait les enfants d'une interaction essentielle.</div>
+  </div>
+
+  <div class="qcard">
+    <p class="profil">La table à langer de la section est <b>trop basse</b> pour <span class="pn nom-heroine">…</span>, qui se penche en avant à chaque change depuis des semaines.</p>
+    <button class="opt" onclick="rep(this,false,'q2')">S'habituer, on ne change pas le mobilier pour une personne</button>
+    <button class="opt" onclick="rep(this,true,'q2')">Signaler par écrit à la direction : c'est un enjeu de santé au travail</button>
+    <button class="opt" onclick="rep(this,false,'q2')">Se pencher davantage mais faire les changes plus vite</button>
+    <div class="explic" id="q2">✅ Le signalement écrit protège sa santé ET sa responsabilité — et la plupart des tables à langer professionnelles sont réglables. Se taire transforme une gêne quotidienne en lombalgie chronique.</div>
+  </div>
+
+  <div class="qcard">
+    <p class="profil"><span class="pn nom-heroine">…</span> est <b>enceinte de 2 mois</b>. Un enfant du groupe couve une cinquième maladie très contagieuse.</p>
+    <button class="opt" onclick="rep(this,false,'q3')">Continuer normalement, ce n'est qu'un rhume</button>
+    <button class="opt" onclick="rep(this,true,'q3')">En parler rapidement à la médecine du travail pour évaluer le risque</button>
+    <button class="opt" onclick="rep(this,false,'q3')">Attendre d'être malade elle-même pour consulter</button>
+    <div class="explic" id="q3">✅ Certaines maladies infantiles présentent un risque réel en début de grossesse : c'est précisément le genre de situation où la médecine du travail doit être associée vite, pas après coup.</div>
+  </div>
+
+  <div class="qcard">
+    <p class="profil">Au dépose du matin, un père <b>hausse le ton contre <span class="pn nom-heroine">…</span></b> : « Hier ma fille est rentrée avec une couche qui puait, c'est inadmissible ! »</p>
+    <button class="opt" onclick="rep(this,false,'q4')">Répondre sèchement, ce n'est pas sa faute personnellement</button>
+    <button class="opt" onclick="rep(this,true,'q4')">Reformuler calmement son inquiétude et vérifier ce qui s'est passé</button>
+    <button class="opt" onclick="rep(this,false,'q4')">Ignorer et changer de sujet</button>
+    <div class="explic" id="q4">✅ Reformuler désamorce l'agressivité et montre qu'on prend l'inquiétude au sérieux, sans pour autant l'encaisser passivement. La colère d'un parent fatigué vise rarement la personne — mais mérite une vraie réponse factuelle.</div>
+  </div>
+
+  <div class="qcard">
+    <p class="profil">Julia, 3 ans, confie à <span class="pn nom-heroine">…</span> : <b>« Papa me fait mal quand il est fâché, mais faut pas le dire. »</b></p>
+    <button class="opt" onclick="rep(this,false,'q5')">Promettre de garder le secret pour ne pas trahir sa confiance</button>
+    <button class="opt" onclick="rep(this,true,'q5')">Écouter sans enquêter, ne rien promettre, transmettre immédiatement à la direction</button>
+    <button class="opt" onclick="rep(this,false,'q5')">En parler directement au père le soir même</button>
+    <div class="explic" id="q5">✅ On n'enquête jamais soi-même et on ne promet jamais le secret. On transmet immédiatement à la puéricultrice/direction, qui saura orienter (PMI, signalement). Confronter le père seule pourrait mettre l'enfant en danger.</div>
+  </div>
+
+  <div class="qcard">
+    <p class="profil">Théo, que <span class="pn nom-heroine">…</span> accueille depuis son entrée à 4 mois, <b>quitte la crèche</b> car la famille déménage. C'est un enfant auquel elle s'était beaucoup attachée.</p>
+    <button class="opt" onclick="rep(this,false,'q6')">Se forcer à ne rien ressentir, un professionnel ne s'attache pas</button>
+    <button class="opt" onclick="rep(this,true,'q6')">S'autoriser la tristesse, en parler à l'équipe, et rester disponible aux autres enfants</button>
+    <button class="opt" onclick="rep(this,false,'q6')">Éviter désormais de trop s'attacher aux enfants du groupe</button>
+    <div class="explic" id="q6">✅ L'attachement fait partie du métier — la tristesse au départ le prouve. En parler à l'équipe aide à traverser ce moment sans que ça déborde sur les autres enfants, qui ont eux aussi besoin d'une professionnelle pleinement présente.</div>
+  </div>
+
+  <div class="qcard">
+    <p class="profil">Depuis quelques semaines, <span class="pn nom-heroine">…</span> remarque qu'une collègue <b>hausse le ton facilement sur les enfants</b> et semble à bout de nerfs en fin de journée.</p>
+    <button class="opt" onclick="rep(this,false,'q7')">Ne rien dire, chacun gère comme il peut</button>
+    <button class="opt" onclick="rep(this,true,'q7')">Lui en parler avec bienveillance, et alerter la direction si les enfants sont concernés</button>
+    <button class="opt" onclick="rep(this,false,'q7')">La dénoncer directement sans lui parler d'abord</button>
+    <div class="explic" id="q7">✅ Hausser le ton sur des enfants peut être un signe d'épuisement professionnel — un mot bienveillant peut débloquer beaucoup. Mais si la sécurité ou le bien-être des enfants est en jeu, la protection des enfants passe devant : on alerte l'encadrement, c'est de la protection, pas de la délation.</div>
+  </div>
+
+  <button class="reset" onclick="resetQuiz()">Recommencer les quiz</button>
+</div>
+
+<div class="score-bar">
+  <span>Score : <b id="score">0</b> / <b id="total">7</b></span>
+  <button class="btn-audio" id="btn-audio" onclick="lireOnglet()">🔊 Écouter</button>
+  <button class="btn-retour" onclick="retour()">‹ SimAP</button>
+</div>
+
+<!-- CHOIX DU PRENOM -->
+<div id="prenom-overlay">
+  <div class="box">
+    <h2 style="color:#d870f0;font-family:Georgia,serif">Ton héroïne</h2>
+    <p>Ce module suit une auxiliaire de puériculture en première année d'exercice, dans des situations bien réelles.<br><b style="color:#f0d8f8">Comment s'appelle-t-elle ?</b><br>Ce peut être toi.</p>
+    <input id="prenom-input" placeholder="Son prénom" maxlength="20" autocomplete="off">
+    <button onclick="validerPrenom()">C'est parti</button>
+  </div>
+</div>
+
+<script>
+// ============ PRENOM DE L'HEROINE ============
+function getPrenom(){
+  return localStorage.getItem('praxis_prenom') || '';
+}
+function appliquerPrenom(){
+  var p = getPrenom() || 'notre héroïne';
+  document.querySelectorAll('.nom-heroine').forEach(function(el){ el.textContent = p; });
+}
+function validerPrenom(){
+  var val = document.getElementById('prenom-input').value.trim();
+  if(val){ localStorage.setItem('praxis_prenom', val.charAt(0).toUpperCase() + val.slice(1)); }
+  document.getElementById('prenom-overlay').style.display = 'none';
+  appliquerPrenom();
+}
+function changerPrenom(){
+  document.getElementById('prenom-input').value = getPrenom();
+  document.getElementById('prenom-overlay').style.display = 'flex';
+}
+if(!getPrenom()){
+  document.getElementById('prenom-overlay').style.display = 'flex';
+}
+appliquerPrenom();
+
+// ============ ONGLETS ============
+function go(id, tab){
+  stopLecture();
+  document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
+  document.getElementById(id).classList.add('active');
+  tab.classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// ============ QUIZ ============
+var _reponses = {};
+function rep(btn, ok, qid){
+  if(_reponses[qid]) return;
+  _reponses[qid] = true;
+  var card = btn.closest('.qcard');
+  card.querySelectorAll('.opt').forEach(function(o){ o.style.pointerEvents='none'; });
+  if(ok){ btn.classList.add('good'); incScore(); }
+  else {
+    btn.classList.add('bad');
+    card.querySelectorAll('.opt').forEach(function(o){
+      if(o.getAttribute('onclick').indexOf('true') !== -1) o.classList.add('good');
+    });
+  }
+  document.getElementById(qid).classList.add('show');
+  sauver();
+}
+
+var _score = 0;
+function incScore(){
+  _score++;
+  document.getElementById('score').textContent = _score;
+}
+
+function sauver(){
+  try {
+    var stats = JSON.parse(localStorage.getItem('simap_realites') || '{}');
+    stats.score = _score;
+    stats.repondues = Object.keys(_reponses).length;
+    stats.date = new Date().toISOString();
+    localStorage.setItem('simap_realites', JSON.stringify(stats));
+  } catch(e){}
+}
+
+function resetQuiz(){
+  _reponses = {};
+  _score = 0;
+  document.getElementById('score').textContent = 0;
+  document.querySelectorAll('.opt').forEach(function(o){
+    o.classList.remove('good','bad');
+    o.style.pointerEvents = 'auto';
+  });
+  document.querySelectorAll('.explic').forEach(function(e){ e.classList.remove('show'); });
+  sauver();
+}
+
+// ============ LECTURE AUDIO ============
+var _enLecture = false;
+function lireOnglet(){
+  if(_enLecture){ stopLecture(); return; }
+  if(!('speechSynthesis' in window)){ alert('Lecture audio non disponible sur ce navigateur.'); return; }
+  var panel = document.querySelector('.panel.active');
+  var textes = [];
+  panel.querySelectorAll('h2, h3, p, li, .chiffre, .opt').forEach(function(el){
+    var t = el.innerText.trim();
+    if(t.length > 2) textes.push(t);
+  });
+  if(textes.length === 0) return;
+  _enLecture = true;
+  document.getElementById('btn-audio').textContent = '⏹ Stop';
+  var i = 0;
+  function suivante(){
+    if(!_enLecture || i >= textes.length){ stopLecture(); return; }
+    var u = new SpeechSynthesisUtterance(textes[i++]);
+    u.lang = 'fr-FR';
+    u.rate = 1;
+    u.onend = suivante;
+    u.onerror = suivante;
+    speechSynthesis.speak(u);
+  }
+  speechSynthesis.cancel();
+  suivante();
+}
+function stopLecture(){
+  _enLecture = false;
+  if('speechSynthesis' in window) speechSynthesis.cancel();
+  var btn = document.getElementById('btn-audio');
+  if(btn) btn.textContent = '🔊 Écouter';
+}
+
+// ============ RETOUR + TRACKING ============
+function retour(){
+  if(window.parent !== window){
+    window.parent.postMessage({type:'retour'}, '*');
+  } else {
+    window.location.href = 'index.html';
+  }
+}
+document.addEventListener('click', function(){
+  if(window.parent !== window){
+    window.parent.postMessage({type:'activite'}, '*');
+  }
+});
+</script>
+</body>
+</html>
