@@ -63,6 +63,10 @@ textarea:focus{border-color:rgba(216,112,240,.4);}
 .liste-wrap.show{display:block;}
 .liste-item{padding:10px 14px;border-bottom:1px solid var(--bdr);cursor:pointer;display:flex;align-items:center;gap:10px;font-size:12px;}
 .liste-item:last-child{border-bottom:none;}
+
+.btn-audio{display:inline-block;background:rgba(216,112,240,.1);border:1px solid rgba(216,112,240,.3);color:var(--em);padding:6px 14px;border-radius:16px;font-size:12px;font-weight:700;cursor:pointer;margin-top:10px;}
+.btn-audio:disabled{opacity:.4;cursor:default;}
+
 </style>
 </head>
 <body>
@@ -93,6 +97,8 @@ textarea:focus{border-color:rgba(216,112,240,.4);}
   <span class="tip-type" id="tip-type-badge"></span>
   <div class="tip-title" id="tip-title"></div>
   <div class="tip-situation" id="tip-situation"></div>
+  <button class="btn-audio" id="btn-audio-enonce" onclick="lireEnonce()">🔊 Écouter l'énoncé</button>
+
 </div>
 
 <div class="reponse-wrap" id="reponse-wrap">
@@ -112,6 +118,8 @@ textarea:focus{border-color:rgba(216,112,240,.4);}
     <div class="tip-alert" id="correction-alert" style="display:none"></div>
     <div class="tip-memo" id="correction-memo" style="display:none"></div>
   </div>
+  <button class="btn-audio" id="btn-audio-correction" onclick="lireCorrection()">🔊 Écouter la correction</button>
+
   <button class="btn-nouveau" onclick="nouveauTirage()">🎲 Nouveau sujet</button>
 </div>
 
@@ -146,6 +154,7 @@ var currentTip = null;
 var chronoInterval = null;
 var chronoTotal = 180;
 var chronoRestant = 180;
+  var _enonceLectures = 0;
 
 function tirerAuSort(filtre){
   var pool = filtre ? TIPS.filter(function(t){ return t.type === filtre; }) : TIPS;
@@ -156,6 +165,7 @@ function tirerAuSort(filtre){
 
 function afficherSujet(tip){
   currentTip = tip;
+  _enonceLectures=0;
   stopChrono();
   var labels = {quotidien:'👶 Vie quotidienne', soin:'🍼 Soin AP', communication:'💬 Communication', urgence:'🚨 Urgence pediatrique'};
   document.getElementById('tip-type-badge').textContent = labels[tip.type];
@@ -186,6 +196,42 @@ function stopChrono(){
   if(chronoInterval) clearInterval(chronoInterval);
   chronoInterval = null;
 }
+  function lireEnonce(){
+  if(!('speechSynthesis' in window)){ alert('Lecture audio non disponible sur ce navigateur.'); return; }
+  speechSynthesis.cancel();
+  var u = new SpeechSynthesisUtterance(currentTip.titre + '. ' + currentTip.situation);
+  u.lang = 'fr-FR';
+  u.rate = 1;
+  u.onend = function(){
+    if(_enonceLectures < 2){
+      _enonceLectures++;
+      demarrerChrono(); // remet le chrono a 3:00 - gratuit les 2 premieres fois seulement
+    }
+    // a partir de la 3e ecoute : le chrono n'est plus remis a zero, il continue de tourner
+  };
+  speechSynthesis.speak(u);
+}
+
+function lireCorrection(){
+  if(!('speechSynthesis' in window)){ alert('Lecture audio non disponible sur ce navigateur.'); return; }
+  speechSynthesis.cancel();
+  var textes = [];
+  document.querySelectorAll('#correction-wrap .correction-texte, #correction-wrap .etape-item, #correction-wrap .tip-alert, #correction-wrap .tip-memo').forEach(function(el){
+    var t = el.innerText.trim();
+    if(t.length > 2) textes.push(t);
+  });
+  var i = 0;
+  function suivante(){
+    if(i >= textes.length) return;
+    var u = new SpeechSynthesisUtterance(textes[i++]);
+    u.lang = 'fr-FR';
+    u.rate = 1;
+    u.onend = suivante;
+    u.onerror = suivante;
+    speechSynthesis.speak(u);
+  }
+  suivante();
+}
 
 function updateChronoDisplay(){
   var min = Math.floor(chronoRestant / 60);
@@ -205,9 +251,11 @@ async function voirCorrection(){
   document.getElementById('chrono-wrap').style.display = 'none';
   afficherEtapes();
   document.getElementById('analyse-texte').innerHTML = '<div class="loading"><span>Analyse de votre reponse en cours...</span></div>';
+document.getElementById('btn-audio-correction').disabled = true;
 
   if(!reponse){
     document.getElementById('analyse-texte').textContent = "Vous n'avez pas fourni de reponse. Consultez la correction ci-dessous.";
+     document.getElementById('btn-audio-correction').disabled = false;
     return;
   }
 
@@ -234,6 +282,8 @@ async function voirCorrection(){
   } catch(err) {
     document.getElementById('analyse-texte').textContent = "Analyse indisponible. Consultez la correction ci-dessous.";
   }
+   document.getElementById('btn-audio-correction').disabled = false;css
+.btn-audio:disabled{opacity:.4;cursor:default;}
   window.scrollTo(0, 0);
 }
 
