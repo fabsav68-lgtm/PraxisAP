@@ -24,9 +24,11 @@ h1{font-family:Georgia,serif;font-size:24px;color:#50a8f8;margin-bottom:4px;}
 .norme-val{font-family:monospace;font-weight:700;}
 .tag{display:inline-block;padding:2px 8px;border-radius:12px;font-size:10px;font-family:monospace;margin:2px;}
 .retour-btn{position:fixed;top:12px;left:12px;background:rgba(10,8,16,.9);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:6px 14px;color:var(--txt2);font-size:12px;cursor:pointer;z-index:100;}
+.btn-audio{position:fixed;top:12px;right:12px;background:rgba(80,168,248,.1);border:1px solid rgba(80,168,248,.3);color:#50a8f8;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;z-index:100;}
 </style></head>
 <body>
 <button class="retour-btn" onclick="window.parent.postMessage({type:'retour'},'*')">← Retour</button>
+  <button class="btn-audio" id="btn-audio" onclick="lireOnglet()">🔊 Écouter</button>
 <div class="header">
 <div class="module-num">MODULE 03 · BLOC 2</div>
 <h1>SimEtatClinique</h1>
@@ -82,4 +84,6 @@ h1{font-family:Georgia,serif;font-size:24px;color:#50a8f8;margin-bottom:4px;}
 <span class="tag" style="background:rgba(80,168,248,.1);color:#50a8f8;border:1px solid rgba(80,168,248,.2)">Fontanelle</span></div></div>
 
 <script>document.addEventListener('click',function(){window.parent.postMessage({type:'activite'},'*');});</script>
+<script>window.PRAXIS_AUDIO_SELECTOR = "h1, h2, h3, p, li, .norme, .alert, .tag";</script>
+<script src="praxis-audio.js"></script>
 </body></html>
