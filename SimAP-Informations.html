@@ -18,12 +18,14 @@ h1{font-family:Georgia,serif;font-size:24px;margin-bottom:4px;}
 .memo{border-radius:8px;padding:10px 12px;font-size:12px;margin-top:8px;}
 .tag{display:inline-block;padding:2px 8px;border-radius:12px;font-size:10px;font-family:monospace;margin:2px;}
 .retour-btn{position:fixed;top:12px;left:12px;background:rgba(10,8,16,.9);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:6px 14px;color:var(--txt2);font-size:12px;cursor:pointer;z-index:100;}
-.norme{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--bdr);font-size:12px;}
+.btn-audio{position:fixed;bottom:16px;right:16px;background:#f8a838;color:#0a0d0f;padding:10px 18px;border-radius:24px;font-size:13px;font-weight:700;cursor:pointer;z-index:1000;box-shadow:0 4px 16px rgba(0,0,0,.4);}
+  .norme{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--bdr);font-size:12px;}
 .norme:last-child{border-bottom:none;}
 .norme-val{font-family:monospace;font-weight:700;}
 </style></head>
 <body><button class="retour-btn" onclick="window.parent.postMessage({type:'retour'},'*')">← Retour</button>
-<div class="header" style="background:linear-gradient(135deg,rgba(248,168,56,.15),rgba(248,168,56,.05));border:1px solid rgba(248,168,56,.2)">
+<button class="btn-audio" id="btn-audio" onclick="lireOnglet()">🔊 Écouter</button>
+  <div class="header" style="background:linear-gradient(135deg,rgba(248,168,56,.15),rgba(248,168,56,.05));border:1px solid rgba(248,168,56,.2)">
 <div class="module-num">MODULE 09 · BLOC 5</div><h1 style="color:#f8a838">SimInfos</h1>
 <div class="module-info">Traitement des informations liees aux activites de soins en pediatrie</div></div>
 <div class="section"><h2 style="color:#f8a838">Ce que doit savoir le candidat</h2>
@@ -48,4 +50,6 @@ h1{font-family:Georgia,serif;font-size:24px;margin-bottom:4px;}
 <span class="tag" style="background:rgba(248,168,56,.1);color:#f8a838;border:1px solid rgba(248,168,56,.2)">Droit a l'image</span>
 <span class="tag" style="background:rgba(248,168,56,.1);color:#f8a838;border:1px solid rgba(248,168,56,.2)">RGPD</span></div></div>
 <script>document.addEventListener('click',function(){window.parent.postMessage({type:'activite'},'*');});</script>
+<script>window.PRAXIS_AUDIO_SELECTOR = "h1, h2, h3, p, li, .alert, .tag";</script>
+<script src="praxis-audio.js"></script>
 </body></html>
