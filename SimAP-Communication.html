@@ -28,6 +28,7 @@ h1{font-family:Georgia,serif;font-size:24px;color:#a078ff;margin-bottom:4px;}
 </style></head>
 <body>
 <button class="retour-btn" onclick="window.parent.postMessage({type:'retour'},'*')">← Retour</button>
+  <button class="btn-audio" id="btn-audio" onclick="lireOnglet()">🔊 Écouter</button>
 <div class="header">
 <div class="module-num">MODULE 06 · BLOC 3</div>
 <h1>SimCommunication</h1>
@@ -68,4 +69,6 @@ h1{font-family:Georgia,serif;font-size:24px;color:#a078ff;margin-bottom:4px;}
 <span class="tag" style="background:rgba(160,120,255,.1);color:#a078ff;border:1px solid rgba(160,120,255,.2)">PMI</span></div></div>
 
 <script>document.addEventListener('click',function(){window.parent.postMessage({type:'activite'},'*');});</script>
+  <script>window.PRAXIS_AUDIO_SELECTOR = "h1, h2, h3, p, li, .alert, .tag";</script>
+<script src="praxis-audio.js"></script>
 </body></html>
