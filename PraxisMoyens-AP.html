@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>PraxisMoyens · SimAP</title>
+<meta name="theme-color" content="#04090f">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#04090f;color:#e8edf2;font-family:system-ui,sans-serif;-webkit-tap-highlight-color:transparent}
+body{min-height:100%;padding-bottom:60px}
+header{padding:20px 20px 8px;text-align:center;border-bottom:1px solid rgba(255,255,255,.07)}
+header h1{font-family:Georgia,serif;font-size:26px;font-weight:300;letter-spacing:-1px}
+header h1 strong{font-weight:700;color:#5ecb7a}
+header p{font-size:12px;color:#5a7080;margin-top:4px}
+.tabs{display:flex;gap:6px;padding:12px 12px 0;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tab{flex:1;min-width:90px;padding:10px 6px;border-radius:10px 10px 0 0;border:1px solid rgba(255,255,255,.08);border-bottom:none;background:rgba(255,255,255,.03);color:#5a7080;font-size:11px;font-weight:700;text-align:center;cursor:pointer;white-space:nowrap}
+.tab.active{background:rgba(94,203,122,.12);color:#5ecb7a;border-color:rgba(94,203,122,.3)}
+.panel{display:none;padding:16px;max-width:640px;margin:0 auto}
+.panel.active{display:block}
+h2{font-family:Georgia,serif;font-size:19px;font-weight:400;margin:14px 0 10px;color:#5ecb7a}
+h2.rouge{color:#e88a8a}
+.intro{font-size:13px;color:#8fa4b3;line-height:1.7;margin-bottom:14px}
+.niveau{margin-bottom:18px;border-left:3px solid;border-radius:0 12px 12px 0;background:rgba(255,255,255,.03);padding:12px 14px}
+.niveau h3{font-size:14px;margin-bottom:8px}
+.aide{margin-bottom:10px}
+.aide b{font-size:13px;display:block}
+.aide span{font-size:12px;color:#8fa4b3;line-height:1.6}
+.vigilance{font-size:11px;color:#5ecb7a;background:rgba(94,203,122,.08);border-radius:6px;padding:6px 8px;margin-top:4px;display:block}
+.etape{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px;margin-bottom:14px}
+.etape-num{font-family:monospace;font-size:10px;letter-spacing:2px;color:rgba(255,255,255,.25);margin-bottom:6px}
+.etape h3{font-size:15px;color:#e8edf2;margin-bottom:8px}
+.etape svg{display:block;margin:8px auto;background:rgba(255,255,255,.02);border-radius:8px}
+.etape p{font-size:13px;color:#8fa4b3;line-height:1.65}
+.regle{margin-top:8px;font-size:12px;color:#f0c040;background:rgba(240,192,64,.08);border-radius:6px;padding:7px 9px}
+.regle b{color:#f0c040}
+.qcard{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px;margin-bottom:14px}
+.qcard .profil{font-size:13px;line-height:1.65;color:#e8edf2;margin-bottom:12px}
+.qcard .profil b{color:#5ecb7a}
+.opt{display:block;width:100%;text-align:left;padding:11px 12px;margin-bottom:8px;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:#e8edf2;font-size:13px;cursor:pointer}
+.opt.good{background:rgba(94,203,122,.15);border-color:#5ecb7a;color:#5ecb7a}
+.opt.bad{background:rgba(232,64,64,.12);border-color:#e84040;color:#e88a8a}
+.explic{display:none;font-size:12px;line-height:1.65;color:#8fa4b3;background:rgba(255,255,255,.04);border-radius:8px;padding:10px;margin-top:6px}
+.explic.show{display:block}
+.score-bar{position:fixed;bottom:0;left:0;right:0;background:rgba(4,9,15,.95);border-top:1px solid rgba(255,255,255,.1);padding:10px 16px;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.score-bar span{font-size:12px;color:#5a7080}
+.score-bar b{color:#5ecb7a;font-size:15px}
+.btn-retour{background:none;border:1px solid rgba(255,255,255,.15);color:#8fa4b3;padding:6px 14px;border-radius:16px;font-size:12px;cursor:pointer}
+.secu-bloc{background:rgba(94,203,122,.06);border:1px solid rgba(94,203,122,.2);border-radius:12px;padding:14px;margin-bottom:14px}
+.secu-bloc h3{font-size:14px;color:#5ecb7a;margin-bottom:8px}
+.secu-bloc ul{list-style:none}
+.secu-bloc li{font-size:13px;color:#c8d2da;line-height:1.7;padding-left:16px;position:relative;margin-bottom:4px}
+.secu-bloc li::before{content:'›';position:absolute;left:0;color:#5ecb7a}
+.jamais{background:rgba(232,64,64,.07);border-color:rgba(232,64,64,.25)}
+.jamais h3{color:#e88a8a}
+.jamais li::before{color:#e88a8a;content:'✕';font-size:10px;top:3px}
+.reset{display:block;margin:10px auto 30px;background:none;border:1px solid rgba(255,255,255,.12);color:#5a7080;padding:8px 18px;border-radius:8px;font-size:12px;cursor:pointer}
+.btn-audio-fixed{position:fixed;bottom:16px;right:16px;background:#5ecb7a;color:#052008;padding:10px 18px;border-radius:24px;font-size:13px;font-weight:700;cursor:pointer;z-index:1000;box-shadow:0 4px 16px rgba(0,0,0,.4);border:none}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Praxis<strong>Moyens</strong></h1>
+  <p>SimAP · Section des moyens · 12-24 mois · Module 01ter · Bloc 1</p>
+</header>
+
+<div class="tabs">
+  <div class="tab active" onclick="go('reperes',this)">🚶 Repères</div>
+  <div class="tab" onclick="go('repas',this)">🥄 Le repas</div>
+  <div class="tab" onclick="go('scenette',this)">🎬 Scénette</div>
+  <div class="tab" onclick="go('quiz',this)">🎯 Quiz</div>
+  <div class="tab" onclick="go('secu',this)">🚨 Sécurité</div>
+</div>
+
+<!-- ================= REPERES ================= -->
+<div class="panel active" id="reperes">
+  <p class="intro">Entre 12 et 24 mois, l'enfant bascule du nourrisson porté au petit être qui explore debout. C'est la période la plus mouvementée de la petite enfance : chaque semaine apporte une nouvelle conquête motrice.</p>
+
+  <div class="niveau" style="border-color:#5ecb7a">
+    <h3 style="color:#5ecb7a">Développement moteur — la conquête de la verticalité</h3>
+    <div class="aide"><b>12-15 mois</b>
+      <span>Premiers pas autonomes, marche instable, chutes fréquentes sur les fesses.</span></div>
+    <div class="aide"><b>15-18 mois</b>
+      <span>Marche assurée, monte les escaliers à quatre pattes, commence à courir maladroitement.</span>
+      <span class="vigilance">💡 L'enfant qui marche découvre des hauteurs qu'il ne maîtrise pas : escaliers, marches, rebords de piscine.</span></div>
+    <div class="aide"><b>18-24 mois</b>
+      <span>Court, grimpe, tape dans un ballon, monte et descend les escaliers en se tenant à la rampe.</span></div>
+  </div>
+
+  <div class="niveau" style="border-color:#4cb8e8">
+    <h3 style="color:#4cb8e8">Développement du langage et de la motricité fine</h3>
+    <div class="aide"><b>Langage</b>
+      <span>12 mois : premiers mots isolés · 18 mois : 20 à 50 mots, débute les phrases de deux mots · 24 mois : « moi », « non », phrases courtes.</span></div>
+    <div class="aide"><b>Motricité fine</b>
+      <span>Empile 2-3 cubes, gribouille avec un crayon tenu en poing, mange seul à la cuillère (maladroitement), boit au verre avec aide.</span></div>
+    <div class="aide"><b>Compréhension et imitation</b>
+      <span>Comprend des consignes simples, imite les gestes du quotidien (balayer, téléphoner), reconnaît son prénom.</span></div>
+  </div>
+
+  <div class="niveau" style="border-color:#f0c040">
+    <h3 style="color:#f0c040">Autonomie naissante — l'âge du « moi tout seul »</h3>
+    <div class="aide"><b>Alimentation</b>
+      <span>Mange avec les doigts puis la cuillère, veut choisir, refuse parfois pour affirmer son choix.</span></div>
+    <div class="aide"><b>Propreté</b>
+      <span>La propreté n'est pas acquise avant 2 ans en moyenne — aucune pression, le pot se propose sans jamais s'imposer.</span></div>
+    <div class="aide"><b>Affirmation de soi</b>
+      <span>Premiers « non », débuts de l'opposition — normal et nécessaire à la construction de l'identité, pas une provocation.</span>
+      <span class="vigilance">💡 « Non » à cet âge n'est pas de la désobéissance, c'est l'enfant qui teste sa propre volonté face au monde.</span></div>
+  </div>
+</div>
+
+<!-- ================= LE REPAS ================= -->
+<div class="panel" id="repas">
+  <p class="intro">Le repas de la section des moyens est un <b style="color:#5ecb7a">moment d'apprentissage</b> autant qu'un moment nutritionnel : l'enfant apprend à manger seul, à goûter, à refuser — et l'AP accompagne sans jamais forcer.</p>
+
+  <div class="niveau" style="border-color:#5ecb7a">
+    <h3 style="color:#5ecb7a">Installer l'autonomie alimentaire</h3>
+    <div class="aide"><b>La bonne installation</b>
+      <span>Chaise adaptée, pieds soutenus (sur un repose-pied si besoin), tablette à bonne hauteur — un enfant mal installé ne peut pas bien manger.</span></div>
+    <div class="aide"><b>Les bons outils</b>
+      <span>Cuillère courte et large adaptée à la préhension, assiette à rebord, verre à bec ou petit gobelet — le matériel doit permettre la réussite, pas la démontrer.</span></div>
+    <div class="aide"><b>Laisser faire, même si ça déborde</b>
+      <span>Manger seul, même salement, développe la motricité fine et l'estime de soi. Reprendre la cuillère systématiquement envoie le message « tu n'y arrives pas ».</span>
+      <span class="vigilance">💧 Une bavette large et un set de table lavable valent mieux qu'une reprise en main systématique.</span></div>
+  </div>
+
+  <div class="niveau" style="border-color:#e84040">
+    <h3 style="color:#e88a8a">La fausse route — le risque numéro un du repas</h3>
+    <div class="aide"><b>Textures adaptées</b>
+      <span>Morceaux fondants ou écrasables à la langue, jamais d'aliments ronds et durs entiers (raisin, tomate cerise, cacahuète) avant l'âge indiqué par le protocole du service.</span></div>
+    <div class="aide"><b>Surveillance active pendant tout le repas</b>
+      <span>Un enfant qui mange n'est jamais laissé seul, même quelques secondes — la fausse route est silencieuse.</span></div>
+    <div class="aide"><b>Position assise stricte</b>
+      <span>On ne mange jamais allongé, en marchant, ou en pleurant/riant fort avec de la nourriture en bouche.</span>
+      <span class="vigilance">💡 Un enfant qui tousse fort pendant le repas expulse activement — ne pas taper dans le dos tant qu'il tousse efficacement.</span></div>
+  </div>
+
+  <div class="niveau" style="border-color:#4cb8e8">
+    <h3 style="color:#4cb8e8">Gérer le refus sans forcer</h3>
+    <div class="aide"><b>Le refus fait partie de l'apprentissage</b>
+      <span>Néophobie alimentaire normale entre 18 mois et 3 ans : un aliment peut nécessiter 8 à 10 présentations avant acceptation.</span></div>
+    <div class="aide"><b>Ce qu'on ne fait jamais</b>
+      <span>Forcer, gronder, faire du repas un rapport de force, ou au contraire remplacer systématiquement par ce que l'enfant préfère.</span></div>
+    <div class="aide"><b>Ce qu'on fait</b>
+      <span>Représenter sans insister, valoriser ce qui est mangé plutôt que pointer ce qui est refusé, transmettre au parent sans dramatiser.</span></div>
+  </div>
+</div>
+
+<!-- ================= SCENETTE ================= -->
+<div class="panel" id="scenette">
+  <h2>Le repas de Nina, 16 mois</h2>
+  <p class="intro"><b style="color:#e8edf2">Nina, 16 mois</b>, marche depuis six semaines et découvre la cuillère. Elle veut manger seule, mais se fatigue vite et devient distraite — la vigilance doit rester entière du premier au dernier instant.</p>
+
+  <div class="etape">
+    <div class="etape-num">ÉTAPE 1 / 5</div>
+    <h3>Installer Nina — avant toute chose</h3>
+    <svg width="240" height="140" viewBox="0 0 240 140">
+      <line x1="10" y1="122" x2="230" y2="122" stroke="rgba(255,255,255,.15)" stroke-width="2"/>
+      <rect x="70" y="50" width="70" height="8" rx="2" fill="none" stroke="#5ecb7a" stroke-width="2.5"/>
+      <line x1="76" y1="58" x2="76" y2="121" stroke="#5ecb7a" stroke-width="2.5"/>
+      <line x1="134" y1="58" x2="134" y2="121" stroke="#5ecb7a" stroke-width="2.5"/>
+      <line x1="76" y1="90" x2="134" y2="90" stroke="rgba(94,203,122,.4)" stroke-width="2"/>
+      <circle cx="105" cy="34" r="9" fill="none" stroke="#e8edf2" stroke-width="2.5"/>
+      <line x1="98" y1="42" x2="112" y2="42" stroke="#e8edf2" stroke-width="4" stroke-linecap="round"/>
+      <ellipse cx="120" cy="72" rx="14" ry="6" fill="none" stroke="#f0c040" stroke-width="2"/>
+      <text x="120" y="136" fill="#5a7080" font-size="9" text-anchor="middle">Chaise adaptée, pieds soutenus, matériel à hauteur</text>
+    </svg>
+    <p>Nina est installée sur sa chaise, pieds calés sur le repose-pied. Sa cuillère courte et son assiette à rebord sont posées devant elle — bavette large mise avant, pas après le premier débordement.</p>
+    <div class="regle"><b>Règle d'or ›</b> Une bonne installation évite déjà la moitié des accidents et des frustrations du repas.</div>
+  </div>
+
+  <div class="etape">
+    <div class="etape-num">ÉTAPE 2 / 5</div>
+    <h3>Laisser Nina essayer seule</h3>
+    <p>Nina attrape la cuillère à pleine main, rate l'assiette une fois sur deux. L'AP reste assise à sa hauteur, ne reprend pas la cuillère, encourage : « Tu y arrives, continue. » Une aide discrète peut guider la main sans se substituer au geste.</p>
+    <div class="regle"><b>Règle d'or ›</b> Le désordre du repas à cet âge n'est pas un problème à corriger, c'est un apprentissage à accompagner.</div>
+  </div>
+
+  <div class="etape">
+    <div class="etape-num">ÉTAPE 3 / 5</div>
+    <h3>Surveillance active pendant la mastication</h3>
+    <p>Nina a la bouche pleine et commence à se tourner vers sa voisine pour rire. L'AP reste attentive : elle rappelle calmement « On mange assis, on avale d'abord » sans dramatiser, tout en gardant un œil constant sur elle.</p>
+    <div class="regle"><b>Règle d'or ›</b> Le repas ne se surveille jamais « à moitié » — c'est le moment de plus haute vigilance de toute la journée en collectivité.</div>
+  </div>
+
+  <div class="etape">
+    <div class="etape-num">ÉTAPE 4 / 5</div>
+    <h3>Nina refuse les légumes</h3>
+    <p>Nina repousse son assiette de courgettes. L'AP ne force pas, propose calmement une fois « Tu veux réessayer un petit peu ? », et si le refus persiste, passe à la suite sans remarque négative. Le refus est noté pour la transmission, sans jugement.</p>
+    <div class="regle"><b>Règle d'or ›</b> Un repas qui se termine en conflit apprend à l'enfant à redouter les repas, pas à aimer les légumes.</div>
+  </div>
+
+  <div class="etape">
+    <div class="etape-num">ÉTAPE 5 / 5</div>
+    <h3>Fin du repas et transmission</h3>
+    <p>Nina a mangé l'essentiel de son plat, peu de légumes. Visage et mains nettoyés, elle est reposée au sol pour jouer. Sur la feuille de transmission : quantité mangée, refus notés sans dramatisation, aucun incident de fausse route.</p>
+    <div class="regle"><b>Règle d'or ›</b> La transmission alimentaire précise permet aux collègues et aux parents d'ajuster sans redemander sans cesse « comment ça s'est passé ? ».</div>
+  </div>
+
+  <div class="etape" style="border-color:rgba(232,64,64,.25)">
+    <div class="etape-num">FOCUS VIGILANCE</div>
+    <h3 style="color:#e88a8a">« Nina tousse en mangeant du raisin »</h3>
+    <p>Si Nina tousse fort et reste capable de parler ou de pleurer : elle expulse seule, on ne tape pas dans le dos, on reste calme et présent. Si elle ne peut plus tousser, ne peut plus respirer ou parler : c'est l'urgence absolue, gestes de désobstruction immédiats et appel à l'aide. <b style="color:#e8edf2">D'où l'importance de couper le raisin en quatre avant de le servir.</b></p>
+  </div>
+</div>
+
+<!-- ================= QUIZ ================= -->
+<div class="panel" id="quiz">
+  <h2>Bon réflexe ou erreur ?</h2>
+  <p class="intro">Sept situations réelles de section des moyens. Une seule réponse par question.</p>
+
+  <div class="qcard">
+    <p class="profil"><b>Lou, 14 mois, marche depuis peu</b> et se dirige vers l'escalier de la section pendant que vous changez une autre couche.</p>
+    <button class="opt" onclick="rep(this,false,'q1')">Finir le change, Lou marche encore lentement</button>
+    <button class="opt" onclick="rep(this,true,'q1')">Sécuriser Lou immédiatement (barrière, prise en charge par une collègue) avant de continuer</button>
+    <button class="opt" onclick="rep(this,false,'q1')">L'appeler pour qu'elle revienne toute seule</button>
+    <div class="explic" id="q1">✅ Un enfant qui marche depuis peu près d'un escalier est une urgence de sécurité immédiate, pas négociable. La chute dans l'escalier est l'un des accidents les plus graves de cette tranche d'âge.</div>
+  </div>
+
+  <div class="qcard">
+    <p class="profil"><b>Au repas, Malo, 20 mois,</b> refuse catégoriquement de manger ses légumes depuis trois jours.</p>
+    <button class="opt" onclick="rep(this,false,'q2')">Le forcer un peu, sinon il ne mangera jamais de légumes</button>
+    <button class="opt" onclick="rep(this,true,'q2')">Continuer à proposer sans forcer, et transmettre l'information aux parents</button>
+    <button class="opt" onclick="rep(this,false,'q2')">Ne plus jamais lui proposer de légumes</button>
+    <div class="explic" id="q2">✅ La néophobie alimentaire est normale à cet âge et peut durer des semaines. On continue de proposer, sans pression ni élimination définitive — l'acceptation vient souvent après de nombreuses présentations.</div>
+  </div>
+
+  <div class="qcard">
+    <p class="profil"><b>Zoé, 18 mois, dit « non » à tout</b> depuis une semaine : la couche, le manteau, la sieste.</p>
+    <button class="opt" onclick="rep(this,true,'q3')">Comprendre que c'est une étape normale d'affirmation de soi, proposer des choix limités (« ce pull ou celui-là ? »)</button>
+    <button class="opt" onclick="rep(this,false,'q3')">La gronder pour qu'elle arrête de dire non</button>
+    <button class="opt" onclick="rep(this,false,'q3')">Céder systématiquement pour éviter les conflits</button>
+    <div class="explic" id="q3">✅ L'opposition vers 18-24 mois est une étape de développement normale. Offrir des choix limités permet à l'enfant d'exercer sa volonté naissante sans transformer chaque geste du quotidien en conflit.</div>
+  </div>
+
+  <div class="qcard">
+    <p class="profil"><b>Au repas, Adam, 15 mois,</b> a un raisin entier dans son assiette, servi par erreur.</p>
+    <button class="opt" onclick="rep(this,true,'q4')">Retirer le raisin, le couper en quatre dans le sens de la longueur avant de le resservir</button>
+    <button class="opt" onclick="rep(this,false,'q4')">Le laisser, il sait mâcher</button>
+    <button class="opt" onclick="rep(this,false,'q4')">Le couper juste en deux</button>
+    <div class="explic" id="q4">✅ Le raisin entier, même coupé en deux, garde une forme ronde qui peut obstruer complètement les voies aériennes. Il doit être coupé en quatre dans le sens de la longueur jusqu'à un âge avancé.</div>
+  </div>
+
+  <div class="qcard">
+    <p class="profil"><b>Yasmine, 22 mois,</b> insiste pour mettre elle-même ses chaussures, mais s'y prend mal et le groupe doit partir en promenade.</p>
+    <button class="opt" onclick="rep(this,false,'q5')">Lui mettre ses chaussures directement, on n'a pas le temps</button>
+    <button class="opt" onclick="rep(this,true,'q5')">Lui laisser un temps raisonnable pour essayer, en anticipant ce temps dans l'organisation de la sortie</button>
+    <button class="opt" onclick="rep(this,false,'q5')">La laisser sans chaussures pour aller plus vite</button>
+    <div class="explic" id="q5">✅ L'autonomie s'apprend en la pratiquant, pas en l'empêchant par manque de temps. Anticiper ces temps dans l'organisation de la journée est une compétence professionnelle à part entière.</div>
+  </div>
+
+  <div class="qcard">
+    <p class="profil"><b>Au coin jeux, Théo, 17 mois,</b> mord un autre enfant qui lui a pris son jouet.</p>
+    <button class="opt" onclick="rep(this,true,'q6')">Séparer calmement les deux enfants, nommer l'interdit simplement, sans le punir durement</button>
+    <button class="opt" onclick="rep(this,false,'q6')">Le mordre en retour pour qu'il comprenne la douleur</button>
+    <button class="opt" onclick="rep(this,false,'q6')">L'isoler longuement dans un coin</button>
+    <div class="explic" id="q6">✅ Avant 2 ans, mordre est souvent une réponse à la frustration, pas de l'agressivité intentionnelle. On nomme l'interdit calmement et fermement, sans réponse punitive disproportionnée à l'âge.</div>
+  </div>
+
+  <div class="qcard">
+    <p class="profil"><b>Sacha, 19 mois,</b> monte sur une chaise pour attraper un jouet en hauteur pendant un temps calme.</p>
+    <button class="opt" onclick="rep(this,true,'q7')">Intervenir immédiatement pour le faire descendre en sécurité</button>
+    <button class="opt" onclick="rep(this,false,'q7')">Le laisser, il sait ce qu'il fait</button>
+    <button class="opt" onclick="rep(this,false,'q7')">Attendre qu'il descende seul</button>
+    <div class="explic" id="q7">✅ À cet âge, l'enfant n'a aucune conscience du danger de hauteur. Toute escalade sur du mobilier non prévu à cet effet nécessite une intervention immédiate.</div>
+  </div>
+</div>
+
+<!-- ================= SECURITE ================= -->
+<div class="panel" id="secu">
+  <h2 class="rouge">Sécurité du marcheur · Les incontournables</h2>
+  <p class="intro">Dès que l'enfant marche, l'univers des dangers change complètement : il atteint des hauteurs, ouvre des placards, porte tout à la bouche en explorant.</p>
+
+  <div class="secu-bloc">
+    <h3>Chutes et hauteurs</h3>
+    <ul>
+      <li>Barrières d'escalier systématiquement fermées</li>
+      <li>Aucun enfant marcheur laissé sans surveillance visuelle directe, même quelques secondes</li>
+      <li>Mobilier instable (chaises, tabourets) hors de portée en libre accès</li>
+      <li>Fenêtres et balcons sécurisés, jamais de mobilier grimpable placé devant</li>
+    </ul>
+  </div>
+
+  <div class="secu-bloc">
+    <h3>Fausse route et étouffement</h3>
+    <ul>
+      <li>Aliments ronds et durs toujours coupés (raisin, tomate cerise, saucisse)</li>
+      <li>Petits objets (billes, piles bouton, capuchons) hors de portée — un enfant de cet âge porte tout à la bouche</li>
+      <li>Repas toujours en position assise, sous surveillance active constante</li>
+      <li>Ballons de baudruche dégonflés retirés immédiatement de la zone de jeu</li>
+    </ul>
+  </div>
+
+  <div class="secu-bloc">
+    <h3>Exploration et intoxication</h3>
+    <ul>
+      <li>Produits ménagers et médicaments hors de portée, placards sécurisés</li>
+      <li>Plantes potentiellement toxiques absentes des espaces accessibles</li>
+      <li>Prises électriques protégées par des caches</li>
+      <li>Sacs des familles (médicaments, cosmétiques) rangés hors de portée dès l'arrivée</li>
+    </ul>
+  </div>
+
+  <div class="secu-bloc jamais">
+    <h3>À ne jamais faire</h3>
+    <ul>
+      <li>Laisser un enfant marcheur sans surveillance visuelle, même un instant</li>
+      <li>Servir un aliment rond et dur entier</li>
+      <li>Laisser du mobilier grimpable à portée d'une fenêtre ou d'un escalier</li>
+      <li>Négliger le rangement immédiat après un atelier avec petits objets</li>
+      <li>Punir durement une morsure ou un « non » — ce sont des étapes de développement, pas des fautes</li>
+    </ul>
+  </div>
+
+  <button class="reset" onclick="resetQuiz()">Recommencer les quiz</button>
+</div>
+
+<div class="score-bar">
+  <span>Score : <b id="score">0</b> / <b id="total">7</b></span>
+  <button class="btn-retour" onclick="retour()">‹ SimAP</button>
+</div>
+<button class="btn-audio-fixed" id="btn-audio" onclick="lireOnglet()">🔊 Écouter</button>
+
+<script>
+function go(id, tab){
+  stopLecture();
+  document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
+  document.getElementById(id).classList.add('active');
+  tab.classList.add('active');
+  window.scrollTo(0,0);
+}
+
+var _reponses = {};
+function rep(btn, ok, qid){
+  if(_reponses[qid]) return;
+  _reponses[qid] = true;
+  var card = btn.closest('.qcard');
+  card.querySelectorAll('.opt').forEach(function(o){ o.style.pointerEvents='none'; });
+  if(ok){ btn.classList.add('good'); incScore(); }
+  else {
+    btn.classList.add('bad');
+    card.querySelectorAll('.opt').forEach(function(o){
+      if(o.getAttribute('onclick').indexOf('true') !== -1) o.classList.add('good');
+    });
+  }
+  document.getElementById(qid).classList.add('show');
+  sauver();
+}
+
+var _score = 0;
+function incScore(){
+  _score++;
+  document.getElementById('score').textContent = _score;
+}
+
+function sauver(){
+  try {
+    var stats = JSON.parse(localStorage.getItem('simap_moyens') || '{}');
+    stats.score = _score;
+    stats.repondues = Object.keys(_reponses).length;
+    stats.date = new Date().toISOString();
+    localStorage.setItem('simap_moyens', JSON.stringify(stats));
+  } catch(e){}
+}
+
+function resetQuiz(){
+  _reponses = {};
+  _score = 0;
+  document.getElementById('score').textContent = 0;
+  document.querySelectorAll('.opt').forEach(function(o){
+    o.classList.remove('good','bad');
+    o.style.pointerEvents = 'auto';
+  });
+  document.querySelectorAll('.explic').forEach(function(e){ e.classList.remove('show'); });
+  sauver();
+}
+
+function retour(){
+  if(window.parent !== window){
+    window.parent.postMessage({type:'retour'}, '*');
+  } else {
+    window.location.href = 'index.html';
+  }
+}
+
+// LECTURE AUDIO
+var _enLecture = false;
+function meilleureVoixFr(){
+  var voix = speechSynthesis.getVoices().filter(function(v){ return v.lang && v.lang.toLowerCase().indexOf('fr') === 0; });
+  if(voix.length === 0) return null;
+  var bonsNoms = ['amélie','audrey','thomas','daniel'];
+  var meilleure = voix.find(function(v){ return /enhanced|premium|neural/i.test(v.name); });
+  if(!meilleure){
+    meilleure = voix.find(function(v){ var n=v.name.toLowerCase(); return bonsNoms.some(function(bn){ return n.indexOf(bn)!==-1; }); });
+  }
+  return meilleure || voix[0];
+}
+function lireOnglet(){
+  if(_enLecture){ stopLecture(); return; }
+  if(!('speechSynthesis' in window)){ alert('Lecture audio non disponible sur ce navigateur.'); return; }
+  var panel = document.querySelector('.panel.active');
+  var textes = [];
+  panel.querySelectorAll('h2, h3, p, li, .aide, .regle, .opt').forEach(function(el){
+    var t = el.innerText.trim();
+    if(t.length > 2) textes.push(t);
+  });
+  if(textes.length === 0) return;
+  _enLecture = true;
+  document.getElementById('btn-audio').textContent = '⏹ Stop';
+  var voixChoisie = meilleureVoixFr();
+  var i = 0;
+  function suivante(){
+    if(!_enLecture || i >= textes.length){ stopLecture(); return; }
+    var u = new SpeechSynthesisUtterance(textes[i++]);
+    u.lang = 'fr-FR';
+    u.rate = 0.9;
+    if(voixChoisie) u.voice = voixChoisie;
+    u.onend = suivante;
+    u.onerror = suivante;
+    speechSynthesis.speak(u);
+  }
+  speechSynthesis.cancel();
+  setTimeout(suivante, 50);
+}
+function stopLecture(){
+  _enLecture = false;
+  if('speechSynthesis' in window) speechSynthesis.cancel();
+  var btn = document.getElementById('btn-audio');
+  if(btn) btn.textContent = '🔊 Écouter';
+}
+
+// Tracking activite pour les stats formateur SimAP
+document.addEventListener('click', function(){
+  if(window.parent !== window){
+    window.parent.postMessage({type:'activite'}, '*');
+  }
+});
+</script>
+<script>window.PRAXIS_APP='SimAP';</script>
+<script src="praxiscare-feedback.js"></script>
+</body>
+</html>
