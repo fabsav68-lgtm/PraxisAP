@@ -95,7 +95,441 @@ document.addEventListener('visibilitychange',function(){
       <div class="module-desc">Marche, autonomie alimentaire, repas, premiers "non" - accompagner l'enfant qui explore debout.</div>
       <div class="module-btn" style="background:rgba(94,203,122,.1);color:#5ecb7a;border-color:rgba(94,203,122,.3)">Ouvrir</div>
     </div>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>PraxisGrands · SimAP</title>
+<meta name="theme-color" content="#04090f">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#04090f;color:#e8edf2;font-family:system-ui,sans-serif;-webkit-tap-highlight-color:transparent}
+body{min-height:100%;padding-bottom:60px}
+header{padding:20px 20px 8px;text-align:center;border-bottom:1px solid rgba(255,255,255,.07)}
+header h1{font-family:Georgia,serif;font-size:26px;font-weight:300;letter-spacing:-1px}
+header h1 strong{font-weight:700;color:#f0c040}
+header p{font-size:12px;color:#5a7080;margin-top:4px}
+.tabs{display:flex;gap:6px;padding:12px 12px 0;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tab{flex:1;min-width:90px;padding:10px 6px;border-radius:10px 10px 0 0;border:1px solid rgba(255,255,255,.08);border-bottom:none;background:rgba(255,255,255,.03);color:#5a7080;font-size:11px;font-weight:700;text-align:center;cursor:pointer;white-space:nowrap}
+.tab.active{background:rgba(240,192,64,.12);color:#f0c040;border-color:rgba(240,192,64,.3)}
+.panel{display:none;padding:16px;max-width:640px;margin:0 auto}
+.panel.active{display:block}
+h2{font-family:Georgia,serif;font-size:19px;font-weight:400;margin:14px 0 10px;color:#f0c040}
+h2.rouge{color:#e88a8a}
+.intro{font-size:13px;color:#8fa4b3;line-height:1.7;margin-bottom:14px}
+.niveau{margin-bottom:18px;border-left:3px solid;border-radius:0 12px 12px 0;background:rgba(255,255,255,.03);padding:12px 14px}
+.niveau h3{font-size:14px;margin-bottom:8px}
+.aide{margin-bottom:10px}
+.aide b{font-size:13px;display:block}
+.aide span{font-size:12px;color:#8fa4b3;line-height:1.6}
+.vigilance{font-size:11px;color:#f0c040;background:rgba(240,192,64,.08);border-radius:6px;padding:6px 8px;margin-top:4px;display:block}
+.etape{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px;margin-bottom:14px}
+.etape-num{font-family:monospace;font-size:10px;letter-spacing:2px;color:rgba(255,255,255,.25);margin-bottom:6px}
+.etape h3{font-size:15px;color:#e8edf2;margin-bottom:8px}
+.etape svg{display:block;margin:8px auto;background:rgba(255,255,255,.02);border-radius:8px}
+.etape p{font-size:13px;color:#8fa4b3;line-height:1.65}
+.regle{margin-top:8px;font-size:12px;color:#4cb8e8;background:rgba(76,184,232,.08);border-radius:6px;padding:7px 9px}
+.regle b{color:#4cb8e8}
+.qcard{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px;margin-bottom:14px}
+.qcard .profil{font-size:13px;line-height:1.65;color:#e8edf2;margin-bottom:12px}
+.qcard .profil b{color:#f0c040}
+.opt{display:block;width:100%;text-align:left;padding:11px 12px;margin-bottom:8px;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:#e8edf2;font-size:13px;cursor:pointer}
+.opt.good{background:rgba(94,203,122,.15);border-color:#5ecb7a;color:#5ecb7a}
+.opt.bad{background:rgba(232,64,64,.12);border-color:#e84040;color:#e88a8a}
+.explic{display:none;font-size:12px;line-height:1.65;color:#8fa4b3;background:rgba(255,255,255,.04);border-radius:8px;padding:10px;margin-top:6px}
+.explic.show{display:block}
+.score-bar{position:fixed;bottom:0;left:0;right:0;background:rgba(4,9,15,.95);border-top:1px solid rgba(255,255,255,.1);padding:10px 16px;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.score-bar span{font-size:12px;color:#5a7080}
+.score-bar b{color:#f0c040;font-size:15px}
+.btn-retour{background:none;border:1px solid rgba(255,255,255,.15);color:#8fa4b3;padding:6px 14px;border-radius:16px;font-size:12px;cursor:pointer}
+.secu-bloc{background:rgba(240,192,64,.06);border:1px solid rgba(240,192,64,.2);border-radius:12px;padding:14px;margin-bottom:14px}
+.secu-bloc h3{font-size:14px;color:#f0c040;margin-bottom:8px}
+.secu-bloc ul{list-style:none}
+.secu-bloc li{font-size:13px;color:#c8d2da;line-height:1.7;padding-left:16px;position:relative;margin-bottom:4px}
+.secu-bloc li::before{content:'›';position:absolute;left:0;color:#f0c040}
+.jamais{background:rgba(232,64,64,.07);border-color:rgba(232,64,64,.25)}
+.jamais h3{color:#e88a8a}
+.jamais li::before{color:#e88a8a;content:'✕';font-size:10px;top:3px}
+.reset{display:block;margin:10px auto 30px;background:none;border:1px solid rgba(255,255,255,.12);color:#5a7080;padding:8px 18px;border-radius:8px;font-size:12px;cursor:pointer}
+.btn-audio-fixed{position:fixed;bottom:16px;right:16px;background:#f0c040;color:#241a02;padding:10px 18px;border-radius:24px;font-size:13px;font-weight:700;cursor:pointer;z-index:1000;box-shadow:0 4px 16px rgba(0,0,0,.4);border:none}
+</style>
+</head>
+<body>
 
+<header>
+  <h1>Praxis<strong>Grands</strong></h1>
+  <p>SimAP · Section des grands · 24-36 mois · Module 01quater · Bloc 1</p>
+</header>
+
+<div class="tabs">
+  <div class="tab active" onclick="go('reperes',this)">🗣️ Repères</div>
+  <div class="tab" onclick="go('autonomie',this)">🧦 Autonomie</div>
+  <div class="tab" onclick="go('scenette',this)">🎬 Scénette</div>
+  <div class="tab" onclick="go('quiz',this)">🎯 Quiz</div>
+  <div class="tab" onclick="go('secu',this)">🚨 Sécurité</div>
+</div>
+
+<!-- ================= REPERES ================= -->
+<div class="panel active" id="reperes">
+  <p class="intro">Entre 24 et 36 mois, l'enfant devient un petit interlocuteur : il parle, négocie, joue à faire semblant, et se prépare à quitter la crèche pour l'école maternelle.</p>
+
+  <div class="niveau" style="border-color:#f0c040">
+    <h3 style="color:#f0c040">L'explosion du langage</h3>
+    <div class="aide"><b>24-30 mois</b>
+      <span>Vocabulaire de 200 à 300 mots, phrases de 3-4 mots, utilise « je », pose des questions (« pourquoi ? »).</span></div>
+    <div class="aide"><b>30-36 mois</b>
+      <span>Phrases complètes et grammaticalement construites, raconte un événement simple, comprend des consignes en plusieurs étapes.</span>
+      <span class="vigilance">💡 Un langage très en retard à 3 ans (moins de 50 mots, pas de phrases) mérite d'être signalé aux parents pour un avis spécialisé.</span></div>
+  </div>
+
+  <div class="niveau" style="border-color:#5ecb7a">
+    <h3 style="color:#5ecb7a">Motricité et jeu symbolique</h3>
+    <div class="aide"><b>Motricité globale</b>
+      <span>Court, saute à pieds joints, monte les escaliers en alternant les pieds, pédale sur un tricycle.</span></div>
+    <div class="aide"><b>Motricité fine</b>
+      <span>Tient un crayon en pince, trace des ronds, empile 6-8 cubes, commence à utiliser des ciseaux avec aide.</span></div>
+    <div class="aide"><b>Jeu symbolique</b>
+      <span>Fait semblant (nourrir une poupée, téléphoner), imite les adultes, débute le jeu à plusieurs (parallèle puis coopératif).</span></div>
+  </div>
+
+  <div class="niveau" style="border-color:#4cb8e8">
+    <h3 style="color:#4cb8e8">Socialisation et émotions</h3>
+    <div class="aide"><b>Vie de groupe</b>
+      <span>Commence à partager (avec difficulté), attend son tour avec de l'aide, se fait des « copains » de section.</span></div>
+    <div class="aide"><b>Régulation émotionnelle</b>
+      <span>Colères encore fréquentes mais plus courtes, début de la capacité à se calmer avec un adulte présent et rassurant.</span></div>
+    <div class="aide"><b>Identité et propreté</b>
+      <span>Propreté diurne le plus souvent acquise entre 2 et 3 ans (variable selon les enfants), la propreté nocturne vient plus tard.</span>
+      <span class="vigilance">💡 Chaque enfant a son rythme propre pour la propreté — la comparaison entre enfants n'a aucun sens à cet âge.</span></div>
+  </div>
+</div>
+
+<!-- ================= AUTONOMIE ================= -->
+<div class="panel" id="autonomie">
+  <p class="intro">La section des grands prépare activement à l'école maternelle : <b style="color:#f0c040">habillage, toilette, repas</b> deviennent des occasions quotidiennes de gagner en autonomie, à un rythme respectueux de chaque enfant.</p>
+
+  <div class="niveau" style="border-color:#f0c040">
+    <h3 style="color:#f0c040">L'apprentissage de la propreté</h3>
+    <div class="aide"><b>Repérer les signes de maturité</b>
+      <span>Couches sèches plusieurs heures, l'enfant signale ou se cache pour faire ses besoins, montre de l'intérêt pour le pot ou les toilettes.</span></div>
+    <div class="aide"><b>Accompagner sans pression</b>
+      <span>Proposer régulièrement sans forcer, valoriser les réussites sans dramatiser les accidents, respecter le rythme propre à chaque enfant.</span></div>
+    <div class="aide"><b>Cohérence avec la famille</b>
+      <span>Échanger avec les parents pour une approche cohérente entre la maison et la section — un désaccord de méthode ralentit l'apprentissage.</span>
+      <span class="vigilance">💧 Un accident de propreté n'est jamais une régression à punir, c'est une étape normale de l'apprentissage.</span></div>
+  </div>
+
+  <div class="niveau" style="border-color:#5ecb7a">
+    <h3 style="color:#5ecb7a">Habillage et gestes du quotidien</h3>
+    <div class="aide"><b>Encourager sans faire à sa place</b>
+      <span>Enfiler un manteau, retirer ses chaussures, se laver les mains seul — laisser le temps nécessaire, même si l'AP irait plus vite en le faisant elle-même.</span></div>
+    <div class="aide"><b>Adapter le matériel</b>
+      <span>Vêtements faciles à enfiler proposés en priorité, porte-manteaux à hauteur d'enfant, marches d'accès au lavabo.</span></div>
+    <div class="aide"><b>Valoriser chaque petite réussite</b>
+      <span>« Tu as réussi à mettre ta chaussure tout seul ! » renforce la motivation bien plus qu'une simple approbation silencieuse.</span></div>
+  </div>
+
+  <div class="niveau" style="border-color:#4cb8e8">
+    <h3 style="color:#4cb8e8">Préparer la transition vers l'école maternelle</h3>
+    <div class="aide"><b>Ce qui va changer</b>
+      <span>Groupes plus grands, rythme de journée différent, moins de temps individuel — préparer l'enfant progressivement à ces changements.</span></div>
+    <div class="aide"><b>Ce que l'AP peut transmettre</b>
+      <span>Habitudes d'autonomie, capacité à suivre une consigne collective, régulation émotionnelle de base — un vrai travail de fond mené sur plusieurs mois.</span></div>
+  </div>
+</div>
+
+<!-- ================= SCENETTE ================= -->
+<div class="panel" id="scenette">
+  <h2>L'apprentissage du pot d'Elias, 28 mois</h2>
+  <p class="intro"><b style="color:#e8edf2">Elias, 28 mois</b>, montre des signes de maturité depuis quelques semaines. La section commence l'accompagnement vers la propreté, en lien avec les parents.</p>
+
+  <div class="etape">
+    <div class="etape-num">ÉTAPE 1 / 5</div>
+    <h3>Repérer le bon moment</h3>
+    <svg width="240" height="140" viewBox="0 0 240 140">
+      <line x1="10" y1="122" x2="230" y2="122" stroke="rgba(255,255,255,.15)" stroke-width="2"/>
+      <circle cx="120" cy="50" r="10" fill="none" stroke="#e8edf2" stroke-width="2.5"/>
+      <line x1="120" y1="60" x2="120" y2="95" stroke="#e8edf2" stroke-width="4" stroke-linecap="round"/>
+      <line x1="120" y1="70" x2="100" y2="85" stroke="#e8edf2" stroke-width="3.5" stroke-linecap="round"/>
+      <line x1="120" y1="70" x2="140" y2="85" stroke="#e8edf2" stroke-width="3.5" stroke-linecap="round"/>
+      <line x1="120" y1="95" x2="108" y2="118" stroke="#e8edf2" stroke-width="4" stroke-linecap="round"/>
+      <line x1="120" y1="95" x2="132" y2="118" stroke="#e8edf2" stroke-width="4" stroke-linecap="round"/>
+      <ellipse cx="80" cy="118" rx="20" ry="10" fill="none" stroke="#f0c040" stroke-width="2.5"/>
+      <text x="120" y="136" fill="#5a7080" font-size="9" text-anchor="middle">Couches seches, interet pour le pot : signes a observer</text>
+    </svg>
+    <p>Depuis une semaine, Elias a des couches sèches plus de deux heures d'affilée et pointe le pot du doigt. L'AP en discute avec ses parents : le moment semble propice pour débuter en douceur, à la maison comme en section.</p>
+    <div class="regle"><b>Point clé ›</b> On n'impose jamais l'apprentissage de la propreté à date fixe — on suit les signes de l'enfant, pas un calendrier.</div>
+  </div>
+
+  <div class="etape">
+    <div class="etape-num">ÉTAPE 2 / 5</div>
+    <h3>Proposer sans forcer</h3>
+    <p>L'AP propose le pot à Elias à des moments clés (au réveil de la sieste, avant le repas), sans jamais l'y installer de force. « Tu veux essayer le pot ? » — s'il refuse, elle accepte simplement et retente plus tard.</p>
+    <div class="regle"><b>Point clé ›</b> Un enfant assis de force sur le pot associe l'expérience à la contrainte, ce qui ralentit l'apprentissage plutôt que de l'accélérer.</div>
+  </div>
+
+  <div class="etape">
+    <div class="etape-num">ÉTAPE 3 / 5</div>
+    <h3>La réussite</h3>
+    <p>Elias réussit sur le pot pour la première fois en section. L'AP le félicite avec enthousiasme mais sans excès : « Bravo Elias, tu as réussi ! » Il regarde le contenu avec fierté avant que l'AP ne vide le pot.</p>
+    <div class="regle"><b>Point clé ›</b> Une valorisation sincère et proportionnée construit la confiance de l'enfant dans sa propre réussite.</div>
+  </div>
+
+  <div class="etape">
+    <div class="etape-num">ÉTAPE 4 / 5</div>
+    <h3>Gérer un accident sans dramatiser</h3>
+    <p>Le lendemain, Elias a un accident pendant le jeu libre. L'AP réagit calmement, sans reproche : « Ce n'est pas grave, on va se changer. » Elle le change rapidement et reprend l'activité normalement.</p>
+    <div class="regle"><b>Point clé ›</b> Les accidents font partie intégrante de l'apprentissage — une réaction négative peut créer un blocage émotionnel autour de la propreté.</div>
+  </div>
+
+  <div class="etape">
+    <div class="etape-num">ÉTAPE 5 / 5</div>
+    <h3>Assurer la cohérence et transmettre</h3>
+    <p>Le soir, l'AP transmet aux parents d'Elias : « Une réussite ce matin, un petit accident cet après-midi, il progresse bien. » Elle échange sur la méthode utilisée à la maison pour rester cohérente entre les deux lieux de vie.</p>
+    <div class="regle"><b>Point clé ›</b> La cohérence entre la section et la famille est le facteur le plus important de la réussite de l'apprentissage de la propreté.</div>
+  </div>
+
+  <div class="etape" style="border-color:rgba(232,64,64,.25)">
+    <div class="etape-num">FOCUS VIGILANCE</div>
+    <h3 style="color:#e88a8a">« Les parents insistent pour accélérer »</h3>
+    <p>Certains parents, sous pression pour l'entrée à l'école, demandent d'accélérer l'apprentissage. L'AP explique avec tact que forcer produit l'effet inverse, et propose de rester en lien régulier pour ajuster ensemble l'accompagnement au rythme réel d'Elias.</p>
+  </div>
+</div>
+
+<!-- ================= QUIZ ================= -->
+<div class="panel" id="quiz">
+  <h2>Bon réflexe ou erreur ?</h2>
+  <p class="intro">Sept situations réelles de section des grands. Une seule réponse par question.</p>
+
+  <div class="qcard">
+    <p class="profil"><b>Léna, 26 mois,</b> pique une grosse colère au sol parce qu'elle ne peut pas garder le jouet d'un autre enfant.</p>
+    <button class="opt" onclick="rep(this,false,'q1')">La gronder fermement pour qu'elle arrête immédiatement</button>
+    <button class="opt" onclick="rep(this,true,'q1')">Rester calme et présente, la sécuriser, verbaliser son émotion sans céder sur la règle</button>
+    <button class="opt" onclick="rep(this,false,'q1')">L'ignorer complètement jusqu'à ce qu'elle se calme seule</button>
+    <div class="explic" id="q1">✅ À cet âge, l'enfant n'a pas encore les capacités neurologiques pour s'autoréguler seul. La présence calme d'un adulte qui nomme l'émotion (« Tu es en colère parce que tu voulais ce jouet ») aide à traverser la crise sans la renforcer ni l'ignorer.</div>
+  </div>
+
+  <div class="qcard">
+    <p class="profil"><b>Au moment de l'habillage, Noah, 30 mois,</b> veut absolument mettre ses chaussures seul mais se trompe de pied, et le groupe doit sortir.</p>
+    <button class="opt" onclick="rep(this,false,'q2')">Les lui remettre directement dans le bon sens sans explication</button>
+    <button class="opt" onclick="rep(this,true,'q2')">Lui signaler gentiment l'erreur et le laisser corriger lui-même s'il y a le temps</button>
+    <button class="opt" onclick="rep(this,false,'q2')">Le laisser sortir avec les chaussures inversées</button>
+    <div class="explic" id="q2">✅ Signaler l'erreur sans la corriger à sa place respecte son envie d'autonomie tout en l'aidant à progresser. Si le temps manque vraiment, on explique pourquoi on l'aide exceptionnellement aujourd'hui.</div>
+  </div>
+
+  <div class="qcard">
+    <p class="profil"><b>Mia, 32 mois, propre depuis un mois,</b> a un accident pendant une activité qu'elle adore.</p>
+    <button class="opt" onclick="rep(this,false,'q3')">Lui dire qu'elle est « grande » maintenant, ça ne devrait plus arriver</button>
+    <button class="opt" onclick="rep(this,true,'q3')">La changer calmement sans commentaire négatif, continuer l'activité normalement</button>
+    <button class="opt" onclick="rep(this,false,'q3')">L'écarter du groupe le temps qu'elle « comprenne »</button>
+    <div class="explic" id="q3">✅ Les accidents restent fréquents plusieurs mois après l'acquisition initiale, surtout en cas d'activité absorbante. Aucune réaction négative ne doit accompagner un accident de propreté.</div>
+  </div>
+
+  <div class="qcard">
+    <p class="profil"><b>Deux enfants de 3 ans</b> se disputent le même tricycle dans la cour.</p>
+    <button class="opt" onclick="rep(this,true,'q4')">Les aider à négocier un tour de rôle avec un repère simple (sablier, minuteur)</button>
+    <button class="opt" onclick="rep(this,false,'q4')">Trancher immédiatement en donnant le tricycle au premier arrivé sans explication</button>
+    <button class="opt" onclick="rep(this,false,'q4')">Retirer le tricycle aux deux pour couper court</button>
+    <div class="explic" id="q4">✅ Accompagner la négociation avec un repère concret et visible aide les enfants à développer leurs compétences sociales, plus qu'une décision imposée ou une privation collective.</div>
+  </div>
+
+  <div class="qcard">
+    <p class="profil"><b>Au repas, Jules, 34 mois,</b> refuse de goûter un plat qu'il n'a jamais vu.</p>
+    <button class="opt" onclick="rep(this,true,'q5')">L'encourager à y goûter sans forcer, valoriser toute tentative même minime</button>
+    <button class="opt" onclick="rep(this,false,'q5')">Exiger qu'il finisse son assiette avant de sortir de table</button>
+    <button class="opt" onclick="rep(this,false,'q5')">Lui donner systématiquement une alternative plus familière</button>
+    <div class="explic" id="q5">✅ Encourager sans forcer respecte l'enfant tout en l'exposant à la diversité alimentaire. Le chantage ou la contrainte au repas favorisent les blocages alimentaires à long terme.</div>
+  </div>
+
+  <div class="qcard">
+    <p class="profil"><b>Pendant la sortie au parc,</b> le groupe de grands doit traverser un petit chemin fréquenté par des vélos.</p>
+    <button class="opt" onclick="rep(this,true,'q6')">Former une chaîne humaine ou tenir les mains, avec un adulte devant et un derrière</button>
+    <button class="opt" onclick="rep(this,false,'q6')">Laisser les enfants les plus autonomes traverser seuls devant</button>
+    <button class="opt" onclick="rep(this,false,'q6')">Leur dire de faire attention et les laisser traverser en groupe libre</button>
+    <div class="explic" id="q6">✅ Même des enfants de 3 ans autonomes n'ont pas la capacité d'évaluer la vitesse d'un vélo qui approche. Un encadrement structuré (mains tenues, adultes aux deux extrémités) reste indispensable.</div>
+  </div>
+
+  <div class="qcard">
+    <p class="profil"><b>Manon, 29 mois,</b> semble anxieuse depuis l'annonce de son entrée prochaine à l'école maternelle.</p>
+    <button class="opt" onclick="rep(this,true,'q7')">En parler positivement avec elle, proposer des jeux qui préparent aux futures règles (rester assis, lever la main)</button>
+    <button class="opt" onclick="rep(this,false,'q7')">Éviter le sujet pour ne pas la stresser davantage</button>
+    <button class="opt" onclick="rep(this,false,'q7')">Minimiser ses inquiétudes en disant que « ce n'est rien »</button>
+    <div class="explic" id="q7">✅ Préparer positivement et concrètement l'enfant à la transition (jeux de rôle, discussion) réduit l'anxiété bien mieux que le silence ou la minimisation de ses émotions.</div>
+  </div>
+</div>
+
+<!-- ================= SECURITE ================= -->
+<div class="panel" id="secu">
+  <h2 class="rouge">Sécurité du grand · Les incontournables</h2>
+  <p class="intro">Plus autonome et plus mobile, l'enfant de cette tranche d'âge prend des initiatives qui nécessitent une vigilance adaptée à ses nouvelles capacités.</p>
+
+  <div class="secu-bloc">
+    <h3>Extérieur et circulation</h3>
+    <ul>
+      <li>Toujours tenir la main ou former une chaîne en sortie, même pour les enfants les plus autonomes</li>
+      <li>Ne jamais laisser un enfant courir en avant du groupe sans adulte devant lui</li>
+      <li>Vigilance renforcée près des points d'eau (bassins, fontaines) où l'enfant peut désormais grimper seul</li>
+    </ul>
+  </div>
+
+  <div class="secu-bloc">
+    <h3>Jeux et matériel</h3>
+    <ul>
+      <li>Vérifier la hauteur et l'état des jeux de cour avant chaque utilisation</li>
+      <li>Surveillance active aux structures de jeu (toboggan, cage à poules) — l'enfant prend des risques qu'il ne maîtrise pas encore</li>
+      <li>Petits objets et jeux à pièces détachées toujours sous surveillance, certains enfants portent encore à la bouche</li>
+    </ul>
+  </div>
+
+  <div class="secu-bloc">
+    <h3>Autonomie et vigilance partagée</h3>
+    <ul>
+      <li>L'autonomie accordée reste toujours sous supervision visuelle de l'adulte</li>
+      <li>Un enfant « grand » garde les mêmes réflexes de danger qu'un plus petit — l'autonomie ne remplace jamais la surveillance</li>
+      <li>Transmission systématique des observations comportementales inhabituelles (repli, agressivité soudaine)</li>
+    </ul>
+  </div>
+
+  <div class="secu-bloc jamais">
+    <h3>À ne jamais faire</h3>
+    <ul>
+      <li>Considérer qu'un enfant « grand » n'a plus besoin de surveillance rapprochée</li>
+      <li>Forcer l'apprentissage de la propreté ou humilier un accident</li>
+      <li>Laisser un conflit entre enfants dégénérer sans intervention</li>
+      <li>Minimiser l'anxiété liée à un changement (transition école, nouvel enfant, deuil familial)</li>
+    </ul>
+  </div>
+
+  <button class="reset" onclick="resetQuiz()">Recommencer les quiz</button>
+</div>
+
+<div class="score-bar">
+  <span>Score : <b id="score">0</b> / <b id="total">7</b></span>
+  <button class="btn-retour" onclick="retour()">‹ SimAP</button>
+</div>
+<button class="btn-audio-fixed" id="btn-audio" onclick="lireOnglet()">🔊 Écouter</button>
+
+<script>
+function go(id, tab){
+  stopLecture();
+  document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
+  document.getElementById(id).classList.add('active');
+  tab.classList.add('active');
+  window.scrollTo(0,0);
+}
+
+var _reponses = {};
+function rep(btn, ok, qid){
+  if(_reponses[qid]) return;
+  _reponses[qid] = true;
+  var card = btn.closest('.qcard');
+  card.querySelectorAll('.opt').forEach(function(o){ o.style.pointerEvents='none'; });
+  if(ok){ btn.classList.add('good'); incScore(); }
+  else {
+    btn.classList.add('bad');
+    card.querySelectorAll('.opt').forEach(function(o){
+      if(o.getAttribute('onclick').indexOf('true') !== -1) o.classList.add('good');
+    });
+  }
+  document.getElementById(qid).classList.add('show');
+  sauver();
+}
+
+var _score = 0;
+function incScore(){
+  _score++;
+  document.getElementById('score').textContent = _score;
+}
+
+function sauver(){
+  try {
+    var stats = JSON.parse(localStorage.getItem('simap_grands') || '{}');
+    stats.score = _score;
+    stats.repondues = Object.keys(_reponses).length;
+    stats.date = new Date().toISOString();
+    localStorage.setItem('simap_grands', JSON.stringify(stats));
+  } catch(e){}
+}
+
+function resetQuiz(){
+  _reponses = {};
+  _score = 0;
+  document.getElementById('score').textContent = 0;
+  document.querySelectorAll('.opt').forEach(function(o){
+    o.classList.remove('good','bad');
+    o.style.pointerEvents = 'auto';
+  });
+  document.querySelectorAll('.explic').forEach(function(e){ e.classList.remove('show'); });
+  sauver();
+}
+
+function retour(){
+  if(window.parent !== window){
+    window.parent.postMessage({type:'retour'}, '*');
+  } else {
+    window.location.href = 'index.html';
+  }
+}
+
+// LECTURE AUDIO
+var _enLecture = false;
+function meilleureVoixFr(){
+  var voix = speechSynthesis.getVoices().filter(function(v){ return v.lang && v.lang.toLowerCase().indexOf('fr') === 0; });
+  if(voix.length === 0) return null;
+  var bonsNoms = ['amélie','audrey','thomas','daniel'];
+  var meilleure = voix.find(function(v){ return /enhanced|premium|neural/i.test(v.name); });
+  if(!meilleure){
+    meilleure = voix.find(function(v){ var n=v.name.toLowerCase(); return bonsNoms.some(function(bn){ return n.indexOf(bn)!==-1; }); });
+  }
+  return meilleure || voix[0];
+}
+function lireOnglet(){
+  if(_enLecture){ stopLecture(); return; }
+  if(!('speechSynthesis' in window)){ alert('Lecture audio non disponible sur ce navigateur.'); return; }
+  var panel = document.querySelector('.panel.active');
+  var textes = [];
+  panel.querySelectorAll('h2, h3, p, li, .aide, .regle, .opt').forEach(function(el){
+    var t = el.innerText.trim();
+    if(t.length > 2) textes.push(t);
+  });
+  if(textes.length === 0) return;
+  _enLecture = true;
+  document.getElementById('btn-audio').textContent = '⏹ Stop';
+  var voixChoisie = meilleureVoixFr();
+  var i = 0;
+  function suivante(){
+    if(!_enLecture || i >= textes.length){ stopLecture(); return; }
+    var u = new SpeechSynthesisUtterance(textes[i++]);
+    u.lang = 'fr-FR';
+    u.rate = 0.9;
+    if(voixChoisie) u.voice = voixChoisie;
+    u.onend = suivante;
+    u.onerror = suivante;
+    speechSynthesis.speak(u);
+  }
+  speechSynthesis.cancel();
+  setTimeout(suivante, 50);
+}
+function stopLecture(){
+  _enLecture = false;
+  if('speechSynthesis' in window) speechSynthesis.cancel();
+  var btn = document.getElementById('btn-audio');
+  if(btn) btn.textContent = '🔊 Écouter';
+}
+
+// Tracking activite pour les stats formateur SimAP
+document.addEventListener('click', function(){
+  if(window.parent !== window){
+    window.parent.postMessage({type:'activite'}, '*');
+  }
+});
+</script>
+<script>window.PRAXIS_APP='SimAP';</script>
+<script src="praxiscare-feedback.js"></script>
+</body>
+</html>
     <div class="module-card" onclick="ouvrirModule('SimAP-Eveil.html')" style="border-color:rgba(248,168,56,.2)">
       <div class="module-num">MODULE 01bis · BLOC 1</div>
       <div class="module-icon">🎨</div>
