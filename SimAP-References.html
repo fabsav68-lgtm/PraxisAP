@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>PraxisRéférences-SimAP · Bibliographie</title>
+<style>
+:root{
+  --blue:#1a6fb5;--blue-light:#e8f2fb;--blue-mid:#2d87d0;--blue-dark:#124f85;
+  --orange:#e07b2a;--green:#2a9d5c;--purple:#7b52ab;--teal:#0097a7;--pink:#c0396b;
+  --ap:#e84040;--ap-dark:#8a1010;--ap-light:#fdecea;
+  --gray-bg:#f5f7fa;--gray-border:#dde3ec;
+  --text:#1e2a3a;--text-light:#5a6a7e;
+  --radius:10px;--shadow:0 2px 10px rgba(26,111,181,0.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--gray-bg);color:var(--text);min-height:100vh;}
+header{background:linear-gradient(135deg,#6a0d0d,#c03030 60%,#e84040);color:#fff;padding:18px 20px 14px;position:sticky;top:0;z-index:100;box-shadow:0 3px 12px rgba(106,13,13,.3);}
+.header-top{display:flex;align-items:center;gap:12px;margin-bottom:6px;}
+.module-badge{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);border-radius:6px;padding:3px 9px;font-size:.72rem;font-weight:700;letter-spacing:.05em;white-space:nowrap;}
+header h1{font-size:1.05rem;font-weight:700;line-height:1.2;}
+header p.subtitle{font-size:.75rem;opacity:.8;margin-top:2px;}
+.content{max-width:860px;margin:0 auto;padding:20px 16px 80px;}
+
+.intro-banner{background:linear-gradient(135deg,#6a0d0d,#c03030);color:#fff;border-radius:var(--radius);padding:18px 20px;margin-bottom:24px;display:flex;gap:14px;align-items:flex-start;}
+.intro-banner .icon{font-size:2rem;flex-shrink:0;}
+.intro-banner h2{font-size:.95rem;font-weight:700;margin-bottom:6px;}
+.intro-banner p{font-size:.81rem;line-height:1.6;opacity:.9;}
+
+.section-title{font-size:.75rem;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:.1em;margin:24px 0 12px;padding-left:10px;border-left:3px solid var(--ap);}
+
+.ref-card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:20px;margin-bottom:16px;display:grid;grid-template-columns:80px 1fr;gap:18px;align-items:start;border-left:4px solid var(--ap);}
+@media(max-width:480px){.ref-card{grid-template-columns:1fr;}}
+.ref-card.orange{border-left-color:var(--orange);}
+.ref-card.blue{border-left-color:var(--blue);}
+.ref-card.purple{border-left-color:var(--purple);}
+.ref-card.teal{border-left-color:var(--teal);}
+.ref-card.green{border-left-color:var(--green);}
+.ref-card.pink{border-left-color:var(--pink);}
+
+.ref-avatar{width:80px;height:80px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2rem;flex-shrink:0;background:var(--ap-light);border:3px solid var(--ap-light);}
+.ref-avatar.orange{background:#fde8c5;border-color:#fde8c5;}
+.ref-avatar.blue{background:var(--blue-light);border-color:var(--blue-light);}
+.ref-avatar.purple{background:#f0ebff;border-color:#f0ebff;}
+.ref-avatar.teal{background:#e0f7fa;border-color:#e0f7fa;}
+.ref-avatar.green{background:#e6f4ee;border-color:#e6f4ee;}
+.ref-avatar.pink{background:#fce4ec;border-color:#fce4ec;}
+
+.ref-body h3{font-size:.98rem;font-weight:700;color:var(--ap-dark);margin-bottom:3px;}
+.ref-card.orange .ref-body h3{color:#b55f10;}
+.ref-card.blue .ref-body h3{color:var(--blue-dark);}
+.ref-card.purple .ref-body h3{color:#5a3a8a;}
+.ref-card.teal .ref-body h3{color:#006978;}
+.ref-card.green .ref-body h3{color:#1e7a45;}
+.ref-card.pink .ref-body h3{color:#8a1040;}
+
+.ref-meta{font-size:.75rem;color:var(--text-light);margin-bottom:10px;}
+.ref-meta span{display:inline-block;margin-right:12px;}
+.ref-apport{font-size:.83rem;line-height:1.65;color:var(--text);margin-bottom:10px;}
+.ref-oeuvre{font-size:.77rem;color:var(--text-light);margin-bottom:8px;}
+.ref-oeuvre strong{color:var(--text);}
+
+.ref-modules{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;}
+.ref-module{display:inline-block;padding:2px 9px;border-radius:10px;font-size:.72rem;font-weight:600;background:var(--ap-light);color:var(--ap-dark);}
+.ref-card.orange .ref-module{background:#fde8c5;color:#b55f10;}
+.ref-card.blue .ref-module{background:var(--blue-light);color:var(--blue-dark);}
+.ref-card.purple .ref-module{background:#f0ebff;color:#5a3a8a;}
+.ref-card.teal .ref-module{background:#e0f7fa;color:#006978;}
+.ref-card.green .ref-module{background:#e6f4ee;color:#1e7a45;}
+.ref-card.pink .ref-module{background:#fce4ec;color:#8a1040;}
+
+.ref-citation{background:var(--gray-bg);border-radius:7px;padding:10px 14px;margin-bottom:10px;font-size:.8rem;font-style:italic;color:var(--text);border-left:3px solid var(--ap);line-height:1.6;}
+.ref-card.orange .ref-citation{border-left-color:var(--orange);}
+.ref-card.blue .ref-citation{border-left-color:var(--blue);}
+.ref-card.purple .ref-citation{border-left-color:var(--purple);}
+.ref-card.teal .ref-citation{border-left-color:var(--teal);}
+.ref-card.green .ref-citation{border-left-color:var(--green);}
+.ref-card.pink .ref-citation{border-left-color:var(--pink);}
+
+.ref-link{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:7px;background:var(--ap);color:#fff;font-size:.78rem;font-weight:700;text-decoration:none;transition:background .18s;}
+.ref-link:hover{background:var(--ap-dark);}
+.ref-card.orange .ref-link{background:var(--orange);}
+.ref-card.blue .ref-link{background:var(--blue);}
+.ref-card.purple .ref-link{background:var(--purple);}
+.ref-card.teal .ref-link{background:var(--teal);}
+.ref-card.green .ref-link{background:var(--green);}
+.ref-card.pink .ref-link{background:var(--pink);}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <div class="module-badge">RÉFÉRENCES · BIBLIOGRAPHIE · SimAP</div>
+    <div>
+      <h1>PraxisRéférences-SimAP</h1>
+      <p class="subtitle">Les auteurs et théories qui fondent les soins aux enfants</p>
+    </div>
+  </div>
+</header>
+
+<div class="content">
+
+  <div class="intro-banner">
+    <div class="icon">📚</div>
+    <div>
+      <h2>Pourquoi cette page ?</h2>
+      <p>Les soins aux enfants s'appuient sur des théories du développement, de l'attachement et de la communication qui ont profondément transformé la pédiatrie et la puériculture. Cette page présente les auteurs dont les travaux sont cités dans SimAP.</p>
+    </div>
+  </div>
+
+  <!-- DÉVELOPPEMENT DE L'ENFANT -->
+  <div class="section-title">🧠 Développement de l'enfant</div>
+
+  <div class="ref-card blue">
+    <div class="ref-avatar blue">🧩</div>
+    <div class="ref-body">
+      <h3>Jean Piaget</h3>
+      <div class="ref-meta">
+        <span>🇨🇭 Suisse</span>
+        <span>📅 1896 – 1980</span>
+        <span>🎓 Psychologue, épistémologue</span>
+      </div>
+      <p class="ref-apport">Jean Piaget est le fondateur de la <strong>psychologie du développement cognitif</strong>. Il décrit 4 stades du développement intellectuel de l'enfant : sensori-moteur (0-2 ans), préopératoire (2-7 ans), opératoire concret (7-11 ans) et opératoire formel (11 ans et plus). En soins pédiatriques, connaître le stade de développement d'un enfant permet d'adapter la communication, les explications avant un soin, et de comprendre ses réactions face à la maladie ou à l'hospitalisation.</p>
+      <div class="ref-oeuvre"><strong>Œuvre clé :</strong> La naissance de l'intelligence chez l'enfant (1936) · La psychologie de l'enfant (1966, avec Inhelder)</div>
+      <div class="ref-citation">"Le but principal de l'éducation est de créer des hommes capables de faire des choses nouvelles."</div>
+      <div class="ref-modules">
+        <span class="ref-module">Développement cognitif</span>
+        <span class="ref-module">Communication adaptée</span>
+        <span class="ref-module">Préparation aux soins</span>
+      </div>
+      <a class="ref-link" href="https://fr.wikipedia.org/wiki/Jean_Piaget" target="_blank">🔗 Wikipedia</a>
+    </div>
+  </div>
+
+  <div class="ref-card purple">
+    <div class="ref-avatar purple">🌱</div>
+    <div class="ref-body">
+      <h3>Erik Erikson</h3>
+      <div class="ref-meta">
+        <span>🇩🇪 Germano-Américain</span>
+        <span>📅 1902 – 1994</span>
+        <span>🎓 Psychanalyste, psychologue du développement</span>
+      </div>
+      <p class="ref-apport">Erik Erikson est l'auteur de la théorie des <strong>8 stades du développement psychosocial</strong> qui s'étend de la naissance à la vieillesse. Chaque stade est caractérisé par une crise à résoudre (confiance vs méfiance, autonomie vs honte, initiative vs culpabilité…). En soins pédiatriques, ce modèle permet de comprendre pourquoi un nourrisson séparé de sa mère régresse, pourquoi un enfant de 2 ans s'oppose aux soins, ou pourquoi un adolescent hospitalisé souffre dans son identité.</p>
+      <div class="ref-oeuvre"><strong>Œuvre clé :</strong> Childhood and Society (1950) — traduit : Enfance et société</div>
+      <div class="ref-citation">"Les enfants bien-aimés ont bien des façons d'aimer le monde."</div>
+      <div class="ref-modules">
+        <span class="ref-module">Développement psychosocial</span>
+        <span class="ref-module">Hospitalisation de l'enfant</span>
+        <span class="ref-module">Adolescent et soins</span>
+      </div>
+      <a class="ref-link" href="https://fr.wikipedia.org/wiki/Erik_Erikson" target="_blank">🔗 Wikipedia</a>
+    </div>
+  </div>
+
+  <!-- ATTACHEMENT & RELATION MÈRE-ENFANT -->
+  <div class="section-title">💛 Attachement et relation mère-enfant</div>
+
+  <div class="ref-card orange">
+    <div class="ref-avatar orange">🤱</div>
+    <div class="ref-body">
+      <h3>John Bowlby</h3>
+      <div class="ref-meta">
+        <span>🇬🇧 Britannique</span>
+        <span>📅 1907 – 1990</span>
+        <span>🎓 Psychiatre, psychanalyste</span>
+      </div>
+      <p class="ref-apport">John Bowlby est le fondateur de la <strong>théorie de l'attachement</strong>. Il démontre que le lien affectif entre l'enfant et sa figure d'attachement principale (généralement la mère) est un besoin biologique fondamental, aussi vital que la nourriture. La séparation provoque une détresse prévisible en 3 phases : protestation, désespoir, détachement. En soins pédiatriques, cette théorie fonde les pratiques actuelles : parents présents 24h/24, allaitement en soins intensifs, peau à peau, accompagnement des séparations.</p>
+      <div class="ref-oeuvre"><strong>Œuvre clé :</strong> Attachment and Loss, 3 vol. (1969-1980) — traduit : Attachement et perte</div>
+      <div class="ref-citation">"La sécurité émotionnelle de nos enfants est l'un des meilleurs investissements que nous puissions faire."</div>
+      <div class="ref-modules">
+        <span class="ref-module">Théorie de l'attachement</span>
+        <span class="ref-module">Séparation mère-enfant</span>
+        <span class="ref-module">Hospitalisation pédiatrique</span>
+        <span class="ref-module">Peau à peau</span>
+      </div>
+      <a class="ref-link" href="https://fr.wikipedia.org/wiki/John_Bowlby" target="_blank">🔗 Wikipedia</a>
+    </div>
+  </div>
+
+  <!-- COMMUNICATION ENFANT -->
+  <div class="section-title">💬 Communication et psychanalyse de l'enfant</div>
+
+  <div class="ref-card pink">
+    <div class="ref-avatar pink">👶</div>
+    <div class="ref-body">
+      <h3>Françoise Dolto</h3>
+      <div class="ref-meta">
+        <span>🇫🇷 Française</span>
+        <span>📅 1908 – 1988</span>
+        <span>🎓 Pédiatre, psychanalyste</span>
+      </div>
+      <p class="ref-apport">Françoise Dolto est la grande figure française de la <strong>psychanalyse de l'enfant</strong>. Son apport essentiel : l'enfant est un <strong>sujet à part entière</strong> dès la naissance, capable de comprendre ce qu'on lui dit même très jeune, et qui souffre du mensonge et du non-dit. En soins pédiatriques, elle fonde la pratique de <strong>toujours expliquer à l'enfant ce qui se passe</strong>, de ne jamais mentir sur un soin, de nommer la douleur et la peur. Sa "Maison Verte" est un exemple pionnier d'accueil parents-enfants.</p>
+      <div class="ref-oeuvre"><strong>Œuvre clé :</strong> Psychanalyse et pédiatrie (1971) · La cause des enfants (1985) · Tout est langage (1987)</div>
+      <div class="ref-citation">"Tout est langage. Quand un enfant pleure, il parle."</div>
+      <div class="ref-modules">
+        <span class="ref-module">Communication avec l'enfant</span>
+        <span class="ref-module">Préparation aux soins</span>
+        <span class="ref-module">Vérité et soins pédiatriques</span>
+        <span class="ref-module">Douleur de l'enfant</span>
+      </div>
+      <a class="ref-link" href="https://fr.wikipedia.org/wiki/Fran%C3%A7oise_Dolto" target="_blank">🔗 Wikipedia</a>
+    </div>
+  </div>
+
+  <!-- DOULEUR DE L'ENFANT -->
+  <div class="section-title">😣 Douleur et évaluation pédiatrique</div>
+
+  <div class="ref-card teal">
+    <div class="ref-avatar teal">💊</div>
+    <div class="ref-body">
+      <h3>Margo McCaffery</h3>
+      <div class="ref-meta">
+        <span>🇺🇸 Américaine</span>
+        <span>📅 1938 – 2014</span>
+        <span>🎓 Infirmière, experte en gestion de la douleur</span>
+      </div>
+      <p class="ref-apport">La définition de McCaffery — <strong>"La douleur est ce que le patient dit qu'elle est"</strong> — est particulièrement fondamentale en pédiatrie, où la douleur de l'enfant a longtemps été sous-estimée ou niée. Pendant des décennies, on croyait à tort que les nouveau-nés ne ressentaient pas la douleur. Ses travaux ont contribué à l'émergence des échelles pédiatriques d'évaluation de la douleur (FLACC, OPS, EDIN pour les nourrissons) et à la reconnaissance que la douleur de l'enfant doit être prise au sérieux dès la naissance.</p>
+      <div class="ref-oeuvre"><strong>Œuvre clé :</strong> Nursing Practice Theories Related to Cognition, Bodily Pain (1968) · Pain: Clinical Manual (1999)</div>
+      <div class="ref-citation">"La douleur est ce que le patient dit qu'elle est, et elle existe quand il dit qu'elle existe."</div>
+      <div class="ref-modules">
+        <span class="ref-module">Douleur du nourrisson</span>
+        <span class="ref-module">Échelle FLACC</span>
+        <span class="ref-module">Évaluation pédiatrique</span>
+      </div>
+      <a class="ref-link" href="https://en.wikipedia.org/wiki/Margo_McCaffery" target="_blank">🔗 Wikipedia (EN)</a>
+    </div>
+  </div>
+
+  <!-- BESOINS & DÉVELOPPEMENT -->
+  <div class="section-title">🌱 Besoins et développement global</div>
+
+  <div class="ref-card green">
+    <div class="ref-avatar green">🔺</div>
+    <div class="ref-body">
+      <h3>Abraham Maslow</h3>
+      <div class="ref-meta">
+        <span>🇺🇸 Américain</span>
+        <span>📅 1908 – 1970</span>
+        <span>🎓 Psychologue humaniste</span>
+      </div>
+      <p class="ref-apport">La <strong>pyramide des besoins de Maslow</strong> est un outil précieux en pédiatrie pour comprendre pourquoi un enfant qui a faim (besoin physiologique) ou qui a peur (besoin de sécurité) ne peut pas apprendre ou jouer (besoins supérieurs). En soins pédiatriques, assurer les besoins de base (alimentation, chaleur, sécurité, présence parentale) est le préalable indispensable à tout autre soin. La présence des parents répond au besoin d'appartenance — fondamental chez l'enfant hospitalisé.</p>
+      <div class="ref-oeuvre"><strong>Œuvre clé :</strong> A Theory of Human Motivation (1943)</div>
+      <div class="ref-citation">"Un bébé a besoin de sa mère comme il a besoin de nourriture."</div>
+      <div class="ref-modules">
+        <span class="ref-module">Besoins de l'enfant</span>
+        <span class="ref-module">Présence parentale</span>
+        <span class="ref-module">Hospitalisation pédiatrique</span>
+      </div>
+      <a class="ref-link" href="https://fr.wikipedia.org/wiki/Abraham_Maslow" target="_blank">🔗 Wikipedia</a>
+    </div>
+  </div>
+
+  <!-- TEXTES RÉGLEMENTAIRES -->
+  <div class="section-title">📜 Textes réglementaires de référence</div>
+
+  <div class="ref-card">
+    <div class="ref-avatar">📋</div>
+    <div class="ref-body">
+      <h3>Textes officiels SimAP</h3>
+      <div class="ref-meta"><span>🇫🇷 République Française · 🌍 International</span></div>
+      <p class="ref-apport">Les contenus de SimAP sont fondés sur les textes réglementaires suivants :</p>
+      <ul style="font-size:.81rem;line-height:1.9;padding-left:18px;margin-top:8px;">
+        <li><strong>Convention internationale des droits de l'enfant (ONU, 1989)</strong> — ratifiée par la France en 1990</li>
+        <li><strong>Charte européenne de l'enfant hospitalisé (1988)</strong> — droits de l'enfant à l'hôpital</li>
+        <li><strong>Arrêté du 16 janvier 2006</strong> — Référentiel de formation DEAP (Diplôme d'État d'Auxiliaire de Puériculture)</li>
+        <li><strong>Décret n°2004-802 du 29 juillet 2004</strong> — Actes professionnels infirmiers et AP</li>
+        <li><strong>Plan périnatalité 2005-2007</strong> — Humanité, proximité, sécurité, qualité</li>
+        <li><strong>Loi 2002-2 du 2 janvier 2002</strong> — Droits des usagers (applicable aux mineurs)</li>
+        <li><strong>Code de l'action sociale et des familles</strong> — Protection de l'enfance</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
