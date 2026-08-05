@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SimAP · Illustrations pédagogiques</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:#0a0810;color:#f0d8f8;min-height:100vh;}
+header{background:linear-gradient(135deg,#150d20,#1a0d28);padding:18px 20px 14px;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(216,112,240,.15);}
+.module-badge{display:inline-block;background:rgba(216,112,240,.1);border:1px solid rgba(216,112,240,.25);color:#d870f0;padding:3px 10px;border-radius:20px;font-size:11px;letter-spacing:2px;font-family:monospace;margin-bottom:8px;}
+header h1{font-size:1.1rem;font-weight:700;color:#f0d8f8;}
+header p{font-size:.75rem;color:#4a3060;margin-top:4px;}
+.content{max-width:680px;margin:0 auto;padding:20px 16px 80px;}
+.section-title{font-size:.85rem;font-weight:700;color:#d870f0;letter-spacing:2px;font-family:monospace;margin:28px 0 14px;padding-bottom:6px;border-bottom:1px solid rgba(216,112,240,.2);}
+.illus-card{background:rgba(255,255,255,.03);border-radius:12px;border:1px solid rgba(255,255,255,.08);padding:16px;margin-bottom:16px;}
+.illus-card img{width:100%;max-width:480px;display:block;margin:0 auto;border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,.3);}
+.illus-card p{font-size:11px;color:#4a3060;text-align:center;margin-top:10px;font-style:italic;line-height:1.6;}
+.illus-title{font-size:.88rem;font-weight:700;color:#d870f0;margin-bottom:10px;text-align:center;}
+.ref{display:inline-block;background:rgba(216,112,240,.08);border:1px solid rgba(216,112,240,.2);color:#d870f0;padding:2px 8px;border-radius:4px;font-size:.7rem;font-family:monospace;margin-bottom:10px;}
+.warning-box{background:rgba(232,80,80,.08);border:1px solid rgba(232,80,80,.3);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:.78rem;color:#e85050;line-height:1.6;}
+footer{border-top:1px solid rgba(255,255,255,.07);padding:20px;text-align:center;font-size:11px;color:#2a1840;font-family:monospace;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="module-badge">DEAP 2021 · AFGSU Niveau 2</div>
+  <h1>💜 Illustrations pédagogiques SimAP</h1>
+  <p>Protocoles visuels · Gestes d'urgence · Soins du nouveau-né</p>
+</header>
+
+<div class="content">
+
+  <div class="warning-box">
+    🎓 Ces illustrations sont réalisées sur mannequins pédiatriques de simulation — contexte AFGSU Niveau 2. Ne jamais pratiquer ces gestes sans formation certifiée avec formateur.
+  </div>
+
+  <div class="section-title">AFGSU NIVEAU 2 · URGENCES PÉDIATRIQUES</div>
+
+  <div class="illus-card">
+    <div class="illus-title">RCP Nourrisson — Formation AFGSU Niveau 2</div>
+    <span class="ref">DEAP 2021 · AFGSU Niveau 2 · Mannequin pédiatrique</span>
+    <img src="rcp-nourrisson.webp" alt="RCP nourrisson formation AFGSU niveau 2">
+    <p>⚠️ Support de mémorisation des étapes.<br>
+    Les gestes techniques précis sont validés en formation AFGSU avec votre formateur certifié.<br>
+    Réf. DEAP 2021 · AFGSU Niveau 2 · Ne jamais pratiquer sans formation certifiée.</p>
+  </div>
+
+  <div class="illus-card">
+    <div class="illus-title">Obstruction Nourrisson — Technique Dos/Ventre</div>
+    <span class="ref">DEAP 2021 · AFGSU Niveau 2 · Mannequin pédiatrique</span>
+    <img src="obstruction-nourrisson.webp" alt="Obstruction nourrisson technique dos ventre">
+    <p>⚠️ Support de mémorisation des étapes.<br>
+    Les gestes techniques précis sont validés en formation AFGSU avec votre formateur certifié.<br>
+    Réf. DEAP 2021 · AFGSU Niveau 2 · Ne jamais pratiquer sans formation certifiée.</p>
+  </div>
+
+  <div class="section-title">MODULE 04 · BLOC 2 · SOINS DU NOUVEAU-NÉ</div>
+
+  <div class="illus-card">
+    <div class="illus-title">Bain du Nouveau-né — 6 Étapes Essentielles</div>
+    <span class="ref">DEAP 2021 · Module 04 · Bloc 2 · Mannequin pédiatrique</span>
+    <img src="bain-nouveau-ne.webp" alt="Bain du nouveau-né 6 étapes">
+    <p>⚠️ Support de mémorisation des étapes.<br>
+    Les gestes techniques précis sont validés en formation avec votre formateur certifié DEAP.<br>
+    Réf. DEAP 2021 · Module 04 · Bloc 2</p>
+  </div>
+
+</div>
+
+<footer>
+  contact@praxiscare.fr · Réf. DEAP 2021 · AFGSU Niveau 2
+</footer>
+
+<script>
+window.PRAXIS_APP='SimAP';
+window.addEventListener('load',()=>{window.parent&&window.parent.postMessage({type:'activite'},'*');});
+document.addEventListener('click',()=>window.parent&&window.parent.postMessage({type:'activite'},'*'));
+</script>
+<script src="praxiscare-feedback.js"></script>
+</body>
+</html>
