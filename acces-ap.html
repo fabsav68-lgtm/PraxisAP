@@ -33,13 +33,12 @@ input:focus{border-color:rgba(216,112,240,.4);}
   <div id="card-login">
     <h2>Acces SimAP</h2>
     <p>Entrez votre code personnel pour acceder a la suite pedagogique Auxiliaire de Puericulture.</p>
-    <input type="text" id="code-input" placeholder="PRAXIS-AP-001" maxlength="20"
+    <input type="text" id="code-input" placeholder="Votre code" maxlength="20"
       onkeydown="if(event.key==='Enter')validerCode()"
       oninput="this.value=this.value.toUpperCase()">
     <button class="btn" onclick="validerCode()">Acceder</button>
     <p class="danger" id="error-msg"></p>
     <div class="bar-wrap" id="bar-wrap"><div class="bar-fill" id="bar-fill"></div></div>
-    <p class="small">Codes : PRAXIS-AP-001 a 050 · PRAXIS-AP-FORM-01</p>
   </div>
   <div class="card-success" id="card-success">
     <h2>Bienvenue !</h2>
@@ -48,31 +47,49 @@ input:focus{border-color:rgba(216,112,240,.4);}
   </div>
 </div>
 <script>
-var CODES={};
-for(var i=1;i<=50;i++){
-  var c='PRAXIS-AP-'+(i<10?'00':i<100?'0':'')+i;
-  CODES[c]={promo:'AP 2026'};
-}
-CODES['PRAXIS-AP-FORM-01']={promo:'Formateur AP'};
-
 function validerCode(){
   var code=document.getElementById('code-input').value.trim().toUpperCase();
   var err=document.getElementById('error-msg');
   if(!code){err.textContent='Entrez votre code.';return;}
-  if(!CODES[code]){err.textContent='Code invalide. Verifiez votre code AP.';return;}
-  var info=CODES[code];
-  sessionStorage.setItem('praxisap_code',code);
-  sessionStorage.setItem('praxisap_promo',info.promo);
-  fetch("https://uhbbwtxmsomqhuvzvoxy.supabase.co/rest/v1/praxis",{
-    method:"POST",
-    headers:{"Content-Type":"application/json","apikey":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVoYmJ3dHhtc29tcWh1dnp2b3h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM1MTI2OTIsImV4cCI6MjA5OTA4ODY5Mn0.WsH1qUbwjL8eF0y5vUBqG8lvpE4UgbNd3k2JbBGVyyY","Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVoYmJ3dHhtc29tcWh1dnp2b3h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM1MTI2OTIsImV4cCI6MjA5OTA4ODY5Mn0.WsH1qUbwjL8eF0y5vUBqG8lvpE4UgbNd3k2JbBGVyyY"},
-    body:JSON.stringify({student_code:code,student_name:info.promo,app:"praxisap",module:"login",session_id:code+"_"+Date.now()})
+
+  err.textContent='Verification...';
+
+  fetch('https://fvrfiikrasezlzpaxpqz.supabase.co/functions/v1/verifier-acces',{
+    method:'POST',
+    headers:{
+      'Content-Type':'application/json',
+      'apikey':'sb_publishable_TNksbociGaWCY53M4wCAXg_faOxEqKt',
+      'Authorization':'Bearer sb_publishable_TNksbociGaWCY53M4wCAXg_faOxEqKt',
+    },
+    body:JSON.stringify({code:code,app:'SimAP'}),
+  })
+  .then(function(r){return r.json();})
+  .then(function(data){
+    if(!data.valide){
+      err.textContent=data.message||'Code invalide. Verifiez votre code AP.';
+      return;
+    }
+    err.textContent='';
+    var promo='AP 2026';
+
+    sessionStorage.setItem('praxisap_code',code);
+    sessionStorage.setItem('praxisap_promo',promo);
+
+    fetch("https://uhbbwtxmsomqhuvzvoxy.supabase.co/rest/v1/praxis",{
+      method:"POST",
+      headers:{"Content-Type":"application/json","apikey":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVoYmJ3dHhtc29tcWh1dnp2b3h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM1MTI2OTIsImV4cCI6MjA5OTA4ODY5Mn0.WsH1qUbwjL8eF0y5vUBqG8lvpE4UgbNd3k2JbBGVyyY","Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVoYmJ3dHhtc29tcWh1dnp2b3h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM1MTI2OTIsImV4cCI6MjA5OTA4ODY5Mn0.WsH1qUbwjL8eF0y5vUBqG8lvpE4UgbNd3k2JbBGVyyY"},
+      body:JSON.stringify({student_code:code,student_name:promo,app:"praxisap",module:"login",session_id:code+"_"+Date.now()})
+    }).catch(function(){});
+
+    document.getElementById('card-login').style.display='none';
+    document.getElementById('card-success').style.display='block';
+    document.getElementById('success-msg').textContent='Bienvenue '+promo+' ! Redirection...';
+    var fill=document.getElementById('bar-fill2'),pct=0;
+    var iv=setInterval(function(){pct+=2;fill.style.width=pct+'%';if(pct>=100){clearInterval(iv);window.location.replace('index.html');}},20);
+  })
+  .catch(function(){
+    err.textContent='Erreur de connexion, reessaie.';
   });
-  document.getElementById('card-login').style.display='none';
-  document.getElementById('card-success').style.display='block';
-  document.getElementById('success-msg').textContent='Bienvenue '+info.promo+' ! Redirection...';
-  var fill=document.getElementById('bar-fill2'),pct=0;
-  var iv=setInterval(function(){pct+=2;fill.style.width=pct+'%';if(pct>=100){clearInterval(iv);window.location.replace('index.html');}},20);
 }
 </script>
 </body>
