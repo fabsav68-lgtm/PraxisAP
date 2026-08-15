@@ -41,19 +41,9 @@ footer{border-top:1px solid rgba(255,255,255,.07);padding:24px 20px;text-align:c
 </style>
 <script>
 (function(){
-  var CODES=['PRAXIS-AP-001','PRAXIS-AP-002','PRAXIS-AP-003','PRAXIS-AP-004','PRAXIS-AP-005',
-    'PRAXIS-AP-006','PRAXIS-AP-007','PRAXIS-AP-008','PRAXIS-AP-009','PRAXIS-AP-010',
-    'PRAXIS-AP-011','PRAXIS-AP-012','PRAXIS-AP-013','PRAXIS-AP-014','PRAXIS-AP-015',
-    'PRAXIS-AP-016','PRAXIS-AP-017','PRAXIS-AP-018','PRAXIS-AP-019','PRAXIS-AP-020',
-    'PRAXIS-AP-021','PRAXIS-AP-022','PRAXIS-AP-023','PRAXIS-AP-024','PRAXIS-AP-025',
-    'PRAXIS-AP-026','PRAXIS-AP-027','PRAXIS-AP-028','PRAXIS-AP-029','PRAXIS-AP-030',
-    'PRAXIS-AP-031','PRAXIS-AP-032','PRAXIS-AP-033','PRAXIS-AP-034','PRAXIS-AP-035',
-    'PRAXIS-AP-036','PRAXIS-AP-037','PRAXIS-AP-038','PRAXIS-AP-039','PRAXIS-AP-040',
-    'PRAXIS-AP-041','PRAXIS-AP-042','PRAXIS-AP-043','PRAXIS-AP-044','PRAXIS-AP-045',
-    'PRAXIS-AP-046','PRAXIS-AP-047','PRAXIS-AP-048','PRAXIS-AP-049','PRAXIS-AP-050',
-    'PRAXIS-AP-FORM-01'];
   var code=sessionStorage.getItem('praxisap_code');
-  if(!code||CODES.indexOf(code)===-1)window.location.replace('acces-ap.html');
+  var promo=sessionStorage.getItem('praxisap_promo');
+  if(!code||!promo)window.location.replace('acces-ap.html');
 })();
 document.addEventListener('visibilitychange',function(){
   if(document.visibilityState==='hidden'){
@@ -320,17 +310,6 @@ document.addEventListener('touchstart',resetInactivityTimer);
 document.addEventListener('keypress',resetInactivityTimer);
 resetInactivityTimer();
 
-var CODES_AP=['PRAXIS-AP-001','PRAXIS-AP-002','PRAXIS-AP-003','PRAXIS-AP-004','PRAXIS-AP-005',
-  'PRAXIS-AP-006','PRAXIS-AP-007','PRAXIS-AP-008','PRAXIS-AP-009','PRAXIS-AP-010',
-  'PRAXIS-AP-011','PRAXIS-AP-012','PRAXIS-AP-013','PRAXIS-AP-014','PRAXIS-AP-015',
-  'PRAXIS-AP-016','PRAXIS-AP-017','PRAXIS-AP-018','PRAXIS-AP-019','PRAXIS-AP-020',
-  'PRAXIS-AP-021','PRAXIS-AP-022','PRAXIS-AP-023','PRAXIS-AP-024','PRAXIS-AP-025',
-  'PRAXIS-AP-026','PRAXIS-AP-027','PRAXIS-AP-028','PRAXIS-AP-029','PRAXIS-AP-030',
-  'PRAXIS-AP-031','PRAXIS-AP-032','PRAXIS-AP-033','PRAXIS-AP-034','PRAXIS-AP-035',
-  'PRAXIS-AP-036','PRAXIS-AP-037','PRAXIS-AP-038','PRAXIS-AP-039','PRAXIS-AP-040',
-  'PRAXIS-AP-041','PRAXIS-AP-042','PRAXIS-AP-043','PRAXIS-AP-044','PRAXIS-AP-045',
-  'PRAXIS-AP-046','PRAXIS-AP-047','PRAXIS-AP-048','PRAXIS-AP-049','PRAXIS-AP-050'];
-
 function ouvrirBinome(){
   document.getElementById('binome-overlay').style.display='flex';
   var b=localStorage.getItem('praxisap_binome');
@@ -345,11 +324,20 @@ function lierBinome(){
   var msg=document.getElementById('binome-msg');
   if(!cb){msg.style.color='#e84040';msg.textContent='Entrez un code binome.';return;}
   if(cb===monCode){msg.style.color='#e84040';msg.textContent='Vous ne pouvez pas vous lier a vous-meme !';return;}
-  if(CODES_AP.indexOf(cb)===-1){msg.style.color='#e84040';msg.textContent='Ce code n\'est pas un abonne actif.';return;}
-  localStorage.setItem('praxisap_binome',cb);
-  sbPost({student_code:monCode,app:"praxisap",module:"binome",step:cb,session_id:monCode+"_binome_"+Date.now()});
-  msg.style.color='#40c878';msg.textContent='Binome '+cb+' lie avec succes !';
-  document.getElementById('binome-actuel').textContent='Binome actuel : '+cb;
+  msg.style.color='#4a3060';msg.textContent='Verification...';
+  fetch('https://fvrfiikrasezlzpaxpqz.supabase.co/functions/v1/verifier-acces',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','apikey':'sb_publishable_TNksbociGaWCY53M4wCAXg_faOxEqKt','Authorization':'Bearer sb_publishable_TNksbociGaWCY53M4wCAXg_faOxEqKt'},
+    body:JSON.stringify({code:cb,app:'SimAP'}),
+  }).then(function(r){return r.json();}).then(function(data){
+    if(!data.valide){msg.style.color='#e84040';msg.textContent='Ce code n\'est pas un abonne actif.';return;}
+    localStorage.setItem('praxisap_binome',cb);
+    sbPost({student_code:monCode,app:"praxisap",module:"binome",step:cb,session_id:monCode+"_binome_"+Date.now()});
+    msg.style.color='#40c878';msg.textContent='Binome '+cb+' lie avec succes !';
+    document.getElementById('binome-actuel').textContent='Binome actuel : '+cb;
+  }).catch(function(){
+    msg.style.color='#e84040';msg.textContent='Erreur de verification, reessayez.';
+  });
 }
 function voirScoreBinome(){
   var monCode=sessionStorage.getItem('praxisap_code');
