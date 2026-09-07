@@ -247,10 +247,10 @@ document.addEventListener('visibilitychange',function(){
 
 <script>
 var _moduleStart=null,_moduleNom=null;
-const SB_URL="https://uhbbwtxmsomqhuvzvoxy.supabase.co";
-const SB_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVoYmJ3dHhtc29tcWh1dnp2b3h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM1MTI2OTIsImV4cCI6MjA5OTA4ODY5Mn0.WsH1qUbwjL8eF0y5vUBqG8lvpE4UgbNd3k2JbBGVyyY";
+const SB_URL="https://fvrfiikrasezlzpaxpqz.supabase.co";
+const SB_KEY="sb_publishable_TNksbociGaWCY53M4wCAXg_faOxEqKt";
 
-function sbPost(data){fetch(SB_URL+"/rest/v1/praxis",{method:"POST",headers:{"Content-Type":"application/json","apikey":SB_KEY,"Authorization":"Bearer "+SB_KEY},body:JSON.stringify(data)});}
+function sbPost(data){fetch(SB_URL+"/rest/v1/connexions_historique",{method:"POST",headers:{"Content-Type":"application/json","apikey":SB_KEY,"Authorization":"Bearer "+SB_KEY},body:JSON.stringify(data)});}
 
 function trackModule(nom){var s=JSON.parse(localStorage.getItem('praxisap_stats')||'{}');if(!s.modules)s.modules={};s.modules[nom]=(s.modules[nom]||0)+1;localStorage.setItem('praxisap_stats',JSON.stringify(s));}
 
@@ -346,7 +346,7 @@ function voirScoreBinome(){
   var msg=document.getElementById('binome-msg');
   if(!cb){msg.style.color='#e84040';msg.textContent='Liez d\'abord un binome.';return;}
   msg.style.color='#4a3060';msg.textContent='Chargement...';
-  fetch(SB_URL+"/rest/v1/praxis?student_code=in.("+monCode+","+cb+")&step=eq.ouverture&select=student_code,module",{
+  fetch(SB_URL+"/rest/v1/connexions_historique?student_code=in.("+monCode+","+cb+")&step=eq.ouverture&select=student_code,module",{
     headers:{"apikey":SB_KEY,"Authorization":"Bearer "+SB_KEY}
   }).then(function(r){return r.json();}).then(function(data){
     var moi=data.filter(function(d){return d.student_code===monCode;}).map(function(d){return d.module;});
