@@ -27,6 +27,16 @@ h1{font-family:Georgia,serif;font-size:24px;color:#f8a838;margin-bottom:4px;}
 .btn-audio{position:fixed;bottom:16px;right:16px;background:#f8a838;color:#0a0d0f;padding:10px 18px;border-radius:24px;font-size:13px;font-weight:700;cursor:pointer;z-index:1000;box-shadow:0 4px 16px rgba(0,0,0,.4);}
 
 
+
+.qz-section{margin-bottom:16px}
+.qcard{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px;margin-bottom:12px}
+.qcard .qz-q{font-size:13px;font-weight:700;margin-bottom:10px;line-height:1.5}
+.qz-opt{display:block;width:100%;text-align:left;padding:10px 12px;margin-bottom:7px;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:inherit;font-size:12.5px;cursor:pointer;font-family:inherit}
+.qz-opt.good{background:rgba(74,222,128,.15);border-color:#4ade80}
+.qz-opt.bad{background:rgba(248,113,113,.15);border-color:#f87171}
+.qz-explic{display:none;font-size:12px;line-height:1.6;padding:10px 12px;margin-top:6px;border-radius:8px;background:rgba(255,255,255,.04)}
+.qz-explic.show{display:block}
+.qz-score-box{text-align:center;padding:14px;border-radius:12px;margin-top:10px}
 </style></head>
   <button class="btn-audio" id="btn-audio" onclick="lireOnglet()">🔊 Écouter</button>
 
@@ -75,6 +85,39 @@ h1{font-family:Georgia,serif;font-size:24px;color:#f8a838;margin-bottom:4px;}
 <li>Pas de mots a 18 mois → signaler</li>
 <li>Perte d'acquisitions deja acquises → signaler en urgence</li></ul></div></div>
 
+<div class="section qz-section"><h2 style="color:#f8a838">🎯 Quiz — Vérifiez vos connaissances</h2>
+<p style="font-size:12px;color:var(--txt2);margin-bottom:12px">5 questions sur ce module. Score : <span id="qz-score-val">0</span>/5</p>
+<div class="qcard"><div class="qz-q">1. À quel âge apparaît généralement le sourire social chez le nourrisson ?</div>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Eveil-q0')">Dès la naissance</button>
+<button class="qz-opt" data-ok="true" onclick="qzRep(this,true,'SimAP-Eveil-q0')">Vers 6 semaines</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Eveil-q0')">Vers 6 mois</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Eveil-q0')">Vers 12 mois</button>
+<div class="qz-explic" id="SimAP-Eveil-q0">✅ Le sourire social apparaît généralement vers 6 semaines, un jalon important du développement.</div></div>
+<div class="qcard"><div class="qz-q">2. Que caractérise le développement psychomoteur entre 12 et 24 mois ?</div>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Eveil-q1')">Aucune acquisition motrice notable</button>
+<button class="qz-opt" data-ok="true" onclick="qzRep(this,true,'SimAP-Eveil-q1')">Marche, 10-20 mots, jeux symboliques</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Eveil-q1')">Langage élaboré et phrases complexes</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Eveil-q1')">Propreté complète acquise</button>
+<div class="qz-explic" id="SimAP-Eveil-q1">✅ Entre 12 et 24 mois, l'enfant marche, dit 10 à 20 mots et développe les jeux symboliques (faire semblant).</div></div>
+<div class="qcard"><div class="qz-q">3. Quels objets sont interdits pour un enfant de moins de 3 ans par mesure de sécurité ?</div>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Eveil-q2')">Uniquement les jouets électroniques</button>
+<button class="qz-opt" data-ok="true" onclick="qzRep(this,true,'SimAP-Eveil-q2')">Billes, petites pièces, cordons de plus de 22 cm</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Eveil-q2')">Tous les jouets en tissu</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Eveil-q2')">Seulement les jouets bruyants</button>
+<div class="qz-explic" id="SimAP-Eveil-q2">✅ Avant 3 ans : interdiction des billes, petites pièces (risque d'ingestion/étouffement) et cordons de plus de 22 cm (risque de strangulation).</div></div>
+<div class="qcard"><div class="qz-q">4. Comment adapter une activité d'éveil à un enfant ?</div>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Eveil-q3')">Selon son âge théorique uniquement</button>
+<button class="qz-opt" data-ok="true" onclick="qzRep(this,true,'SimAP-Eveil-q3')">Selon ses capacités réelles, pas seulement son âge théorique</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Eveil-q3')">De façon identique pour tous les enfants du même âge</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Eveil-q3')">En privilégiant la sur-stimulation constante</button>
+<div class="qz-explic" id="SimAP-Eveil-q3">✅ L'activité doit être adaptée aux capacités RÉELLES de l'enfant, qui peuvent différer de son âge théorique.</div></div>
+<div class="qcard"><div class="qz-q">5. La sur-stimulation de l'enfant est-elle recommandée ?</div>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Eveil-q4')">Oui, plus l'enfant est stimulé, mieux c'est</button>
+<button class="qz-opt" data-ok="true" onclick="qzRep(this,true,'SimAP-Eveil-q4')">Non, le silence et le repos sont aussi nécessaires</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Eveil-q4')">Uniquement le soir</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Eveil-q4')">Seulement pour les enfants agités</button>
+<div class="qz-explic" id="SimAP-Eveil-q4">✅ Il faut éviter la sur-stimulation : le silence et les temps de repos sont aussi indispensables au développement.</div></div>
+</div>
 <div class="section"><h2 style="color:#f8a838">🏷️ Mots cles</h2>
 <div style="padding:8px 0">
 <span class="tag" style="background:rgba(248,168,56,.1);color:#f8a838;border:1px solid rgba(248,168,56,.2)">Eveil sensoriel</span>
@@ -84,6 +127,26 @@ h1{font-family:Georgia,serif;font-size:24px;color:#f8a838;margin-bottom:4px;}
 <span class="tag" style="background:rgba(248,168,56,.1);color:#f8a838;border:1px solid rgba(248,168,56,.2)">Sur-stimulation</span>
 <span class="tag" style="background:rgba(248,168,56,.1);color:#f8a838;border:1px solid rgba(248,168,56,.2)">Signaux alarme</span></div></div>
 
+<script>
+var _qzReponses = {};
+var _qzScore = 0;
+function qzRep(btn, ok, qid){
+  if(_qzReponses[qid]) return;
+  _qzReponses[qid] = true;
+  var card = btn.closest('.qcard');
+  card.querySelectorAll('.qz-opt').forEach(function(o){ o.style.pointerEvents='none'; });
+  if(ok){ btn.classList.add('good'); _qzScore++; }
+  else {
+    btn.classList.add('bad');
+    card.querySelectorAll('.qz-opt').forEach(function(o){
+      if(o.getAttribute('data-ok') === 'true') o.classList.add('good');
+    });
+  }
+  document.getElementById(qid).classList.add('show');
+  var sb = document.getElementById('qz-score-val');
+  if(sb) sb.textContent = _qzScore;
+}
+</script>
 <script>document.addEventListener('click',function(){window.parent.postMessage({type:'activite'},'*');});</script>
 <script>window.PRAXIS_AUDIO_SELECTOR = "h1, h2, h3, p, li, .norme, .alert, .tag";</script>
 <script src="praxis-audio.js"></script>
