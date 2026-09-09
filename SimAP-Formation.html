@@ -22,6 +22,16 @@ h1{font-family:Georgia,serif;font-size:24px;margin-bottom:4px;}
   .norme{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--bdr);font-size:12px;}
 .norme:last-child{border-bottom:none;}
 .norme-val{font-family:monospace;font-weight:700;}
+
+.qz-section{margin-bottom:16px}
+.qcard{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px;margin-bottom:12px}
+.qcard .qz-q{font-size:13px;font-weight:700;margin-bottom:10px;line-height:1.5}
+.qz-opt{display:block;width:100%;text-align:left;padding:10px 12px;margin-bottom:7px;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:inherit;font-size:12.5px;cursor:pointer;font-family:inherit}
+.qz-opt.good{background:rgba(74,222,128,.15);border-color:#4ade80}
+.qz-opt.bad{background:rgba(248,113,113,.15);border-color:#f87171}
+.qz-explic{display:none;font-size:12px;line-height:1.6;padding:10px 12px;margin-top:6px;border-radius:8px;background:rgba(255,255,255,.04)}
+.qz-explic.show{display:block}
+.qz-score-box{text-align:center;padding:14px;border-radius:12px;margin-top:10px}
 </style></head>
 <body><button class="retour-btn" onclick="window.parent.postMessage({type:'retour'},'*')">← Retour</button>
   <button class="btn-audio" id="btn-audio" onclick="lireOnglet()">🔊 Écouter</button>
@@ -43,12 +53,59 @@ h1{font-family:Georgia,serif;font-size:24px;margin-bottom:4px;}
 <li>B - Background : "Hospitalise depuis J2, sous O2 a 1L/min"</li>
 <li>A - Assessment : "FR a 52/min ce matin, tirage sous-costal visible, SpO2 a 93%"</li>
 <li>R - Recommandation : "Je pense qu'il faudrait revoir son debit d'O2 et appeler le medecin"</li></ul></div></div>
+<div class="section qz-section"><h2 style="color:#50c8f8">🎯 Quiz — Vérifiez vos connaissances</h2>
+<p style="font-size:12px;color:var(--txt2);margin-bottom:12px">4 questions sur ce module. Score : <span id="qz-score-val">0</span>/4</p>
+<div class="qcard"><div class="qz-q">1. Que signifie la lettre S dans la méthode de transmission SBAR ?</div>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Formation-q0')">Sécurité</button>
+<button class="qz-opt" data-ok="true" onclick="qzRep(this,true,'SimAP-Formation-q0')">Situation</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Formation-q0')">Surveillance</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Formation-q0')">Soins</button>
+<div class="qz-explic" id="SimAP-Formation-q0">✅ S = Situation : présenter en une phrase la situation actuelle du patient (ex. « Matteo, 8 mois, hospitalisé pour bronchiolite »).</div></div>
+<div class="qcard"><div class="qz-q">2. Dans SBAR, à quoi correspond la lettre R ?</div>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Formation-q1')">Repos</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Formation-q1')">Résultat</button>
+<button class="qz-opt" data-ok="true" onclick="qzRep(this,true,'SimAP-Formation-q1')">Recommandation</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Formation-q1')">Rythme</button>
+<div class="qz-explic" id="SimAP-Formation-q1">✅ R = Recommandation : l'avis ou la suggestion d'action à l'issue de la transmission.</div></div>
+<div class="qcard"><div class="qz-q">3. Comment se déroule un encadrement progressif de stagiaire ?</div>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Formation-q2')">Laisser faire dès le premier jour sans supervision</button>
+<button class="qz-opt" data-ok="true" onclick="qzRep(this,true,'SimAP-Formation-q2')">Montrer, faire faire sous surveillance, puis laisser faire</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Formation-q2')">Uniquement de la théorie sans pratique</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Formation-q2')">Faire à sa place systématiquement</button>
+<div class="qz-explic" id="SimAP-Formation-q2">✅ L'encadrement progressif suit trois étapes : montrer le geste, le faire réaliser sous surveillance, puis laisser faire en autonomie.</div></div>
+<div class="qcard"><div class="qz-q">4. À quel moment le portfolio du stagiaire est-il validé ?</div>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Formation-q3')">Dès le premier jour de stage</button>
+<button class="qz-opt" data-ok="true" onclick="qzRep(this,true,'SimAP-Formation-q3')">En fin de stage</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Formation-q3')">Seulement si le stagiaire le demande</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Formation-q3')">Il n'est jamais formellement validé</button>
+<div class="qz-explic" id="SimAP-Formation-q3">✅ Les compétences du portfolio sont validées en fin de stage, après les entretiens d'accueil et de mi-stage.</div></div>
+</div>
 <div class="section"><h2 style="color:#50c8f8">Mots cles</h2>
 <div style="padding:8px 0">
 <span class="tag" style="background:rgba(80,200,248,.1);color:#50c8f8;border:1px solid rgba(80,200,248,.2)">Tutorat</span>
 <span class="tag" style="background:rgba(80,200,248,.1);color:#50c8f8;border:1px solid rgba(80,200,248,.2)">Portfolio</span>
 <span class="tag" style="background:rgba(80,200,248,.1);color:#50c8f8;border:1px solid rgba(80,200,248,.2)">SBAR pediatrique</span>
 <span class="tag" style="background:rgba(80,200,248,.1);color:#50c8f8;border:1px solid rgba(80,200,248,.2)">Entretien stage</span></div></div>
+<script>
+var _qzReponses = {};
+var _qzScore = 0;
+function qzRep(btn, ok, qid){
+  if(_qzReponses[qid]) return;
+  _qzReponses[qid] = true;
+  var card = btn.closest('.qcard');
+  card.querySelectorAll('.qz-opt').forEach(function(o){ o.style.pointerEvents='none'; });
+  if(ok){ btn.classList.add('good'); _qzScore++; }
+  else {
+    btn.classList.add('bad');
+    card.querySelectorAll('.qz-opt').forEach(function(o){
+      if(o.getAttribute('data-ok') === 'true') o.classList.add('good');
+    });
+  }
+  document.getElementById(qid).classList.add('show');
+  var sb = document.getElementById('qz-score-val');
+  if(sb) sb.textContent = _qzScore;
+}
+</script>
 <script>document.addEventListener('click',function(){window.parent.postMessage({type:'activite'},'*');});</script>
 <script>window.PRAXIS_AUDIO_SELECTOR = "h1, h2, h3, p, li, .alert, .tag";</script>
 <script src="praxis-audio.js"></script>
