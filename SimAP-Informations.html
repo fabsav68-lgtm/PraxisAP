@@ -22,6 +22,16 @@ h1{font-family:Georgia,serif;font-size:24px;margin-bottom:4px;}
   .norme{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--bdr);font-size:12px;}
 .norme:last-child{border-bottom:none;}
 .norme-val{font-family:monospace;font-weight:700;}
+
+.qz-section{margin-bottom:16px}
+.qcard{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px;margin-bottom:12px}
+.qcard .qz-q{font-size:13px;font-weight:700;margin-bottom:10px;line-height:1.5}
+.qz-opt{display:block;width:100%;text-align:left;padding:10px 12px;margin-bottom:7px;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:inherit;font-size:12.5px;cursor:pointer;font-family:inherit}
+.qz-opt.good{background:rgba(74,222,128,.15);border-color:#4ade80}
+.qz-opt.bad{background:rgba(248,113,113,.15);border-color:#f87171}
+.qz-explic{display:none;font-size:12px;line-height:1.6;padding:10px 12px;margin-top:6px;border-radius:8px;background:rgba(255,255,255,.04)}
+.qz-explic.show{display:block}
+.qz-score-box{text-align:center;padding:14px;border-radius:12px;margin-top:10px}
 </style></head>
 <body><button class="retour-btn" onclick="window.parent.postMessage({type:'retour'},'*')">← Retour</button>
 <button class="btn-audio" id="btn-audio" onclick="lireOnglet()">🔊 Écouter</button>
@@ -42,6 +52,33 @@ h1{font-family:Georgia,serif;font-size:24px;margin-bottom:4px;}
 <li>Verifier qui a l'autorite parentale en cas de separation ou divorce</li>
 <li>Respecter le droit a l'image de l'enfant : photos interdites sans autorisation parentale ecrite</li>
 <li>RGPD : les donnees de l'enfant sont des donnees sensibles a protection renforcee</li></ul></div></div>
+<div class="section qz-section"><h2 style="color:#f8a838">🎯 Quiz — Vérifiez vos connaissances</h2>
+<p style="font-size:12px;color:var(--txt2);margin-bottom:12px">4 questions sur ce module. Score : <span id="qz-score-val">0</span>/4</p>
+<div class="qcard"><div class="qz-q">1. Le secret professionnel s'applique-t-il aux informations concernant l'enfant et sa famille ?</div>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Informations-q0')">Non, ces informations peuvent être partagées librement</button>
+<button class="qz-opt" data-ok="true" onclick="qzRep(this,true,'SimAP-Informations-q0')">Oui, elles sont confidentielles</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Informations-q0')">Seulement pour les informations médicales</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Informations-q0')">Uniquement si la famille le demande</button>
+<div class="qz-explic" id="SimAP-Informations-q0">✅ Les informations sur l'enfant et sa famille sont couvertes par le secret professionnel.</div></div>
+<div class="qcard"><div class="qz-q">2. Peut-on publier une photo d'un enfant accueilli sans autorisation ?</div>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Informations-q1')">Oui, si la photo est jolie</button>
+<button class="qz-opt" data-ok="true" onclick="qzRep(this,true,'SimAP-Informations-q1')">Non, une autorisation parentale écrite est obligatoire</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Informations-q1')">Oui, sur un compte privé uniquement</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Informations-q1')">Cela dépend de l'âge de l'enfant</button>
+<div class="qz-explic" id="SimAP-Informations-q1">✅ Le droit à l'image de l'enfant impose une autorisation parentale écrite avant toute photo.</div></div>
+<div class="qcard"><div class="qz-q">3. En cas de séparation des parents, que doit vérifier le professionnel ?</div>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Informations-q2')">Rien, les deux parents ont toujours les mêmes droits</button>
+<button class="qz-opt" data-ok="true" onclick="qzRep(this,true,'SimAP-Informations-q2')">Qui détient l'autorité parentale</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Informations-q2')">Seul le parent qui vient chercher l'enfant compte</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Informations-q2')">La question ne se pose jamais en pratique</button>
+<div class="qz-explic" id="SimAP-Informations-q2">✅ En cas de séparation ou divorce, il faut vérifier qui détient l'autorité parentale sur l'enfant.</div></div>
+<div class="qcard"><div class="qz-q">4. Que dit le RGPD sur les données concernant l'enfant ?</div>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Informations-q3')">Elles ne sont pas concernées par le RGPD</button>
+<button class="qz-opt" data-ok="true" onclick="qzRep(this,true,'SimAP-Informations-q3')">Ce sont des données sensibles à protection renforcée</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Informations-q3')">Seules les données médicales sont protégées</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Informations-q3')">Le RGPD ne s'applique qu'aux adultes</button>
+<div class="qz-explic" id="SimAP-Informations-q3">✅ Les données de l'enfant sont des données sensibles nécessitant une protection renforcée au titre du RGPD.</div></div>
+</div>
 <div class="section"><h2 style="color:#f8a838">Mots cles</h2>
 <div style="padding:8px 0">
 <span class="tag" style="background:rgba(248,168,56,.1);color:#f8a838;border:1px solid rgba(248,168,56,.2)">Cahier de liaison</span>
@@ -49,6 +86,26 @@ h1{font-family:Georgia,serif;font-size:24px;margin-bottom:4px;}
 <span class="tag" style="background:rgba(248,168,56,.1);color:#f8a838;border:1px solid rgba(248,168,56,.2)">Autorite parentale</span>
 <span class="tag" style="background:rgba(248,168,56,.1);color:#f8a838;border:1px solid rgba(248,168,56,.2)">Droit a l'image</span>
 <span class="tag" style="background:rgba(248,168,56,.1);color:#f8a838;border:1px solid rgba(248,168,56,.2)">RGPD</span></div></div>
+<script>
+var _qzReponses = {};
+var _qzScore = 0;
+function qzRep(btn, ok, qid){
+  if(_qzReponses[qid]) return;
+  _qzReponses[qid] = true;
+  var card = btn.closest('.qcard');
+  card.querySelectorAll('.qz-opt').forEach(function(o){ o.style.pointerEvents='none'; });
+  if(ok){ btn.classList.add('good'); _qzScore++; }
+  else {
+    btn.classList.add('bad');
+    card.querySelectorAll('.qz-opt').forEach(function(o){
+      if(o.getAttribute('data-ok') === 'true') o.classList.add('good');
+    });
+  }
+  document.getElementById(qid).classList.add('show');
+  var sb = document.getElementById('qz-score-val');
+  if(sb) sb.textContent = _qzScore;
+}
+</script>
 <script>document.addEventListener('click',function(){window.parent.postMessage({type:'activite'},'*');});</script>
 <script>window.PRAXIS_AUDIO_SELECTOR = "h1, h2, h3, p, li, .alert, .tag";</script>
 <script src="praxis-audio.js"></script>
