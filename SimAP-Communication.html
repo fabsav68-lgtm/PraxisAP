@@ -25,6 +25,16 @@ h1{font-family:Georgia,serif;font-size:24px;color:#a078ff;margin-bottom:4px;}
 .tag{display:inline-block;padding:2px 8px;border-radius:12px;font-size:10px;font-family:monospace;margin:2px;}
 .retour-btn{position:fixed;top:12px;left:12px;background:rgba(10,8,16,.9);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:6px 14px;color:var(--txt2);font-size:12px;cursor:pointer;z-index:100;}
 .btn-audio{position:fixed;bottom:16px;right:16px;background:#a078ff;color:#0a0d0f;padding:10px 18px;border-radius:24px;font-size:13px;font-weight:700;cursor:pointer;z-index:1000;box-shadow:0 4px 16px rgba(0,0,0,.4);}
+
+.qz-section{margin-bottom:16px}
+.qcard{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px;margin-bottom:12px}
+.qcard .qz-q{font-size:13px;font-weight:700;margin-bottom:10px;line-height:1.5}
+.qz-opt{display:block;width:100%;text-align:left;padding:10px 12px;margin-bottom:7px;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:inherit;font-size:12.5px;cursor:pointer;font-family:inherit}
+.qz-opt.good{background:rgba(74,222,128,.15);border-color:#4ade80}
+.qz-opt.bad{background:rgba(248,113,113,.15);border-color:#f87171}
+.qz-explic{display:none;font-size:12px;line-height:1.6;padding:10px 12px;margin-top:6px;border-radius:8px;background:rgba(255,255,255,.04)}
+.qz-explic.show{display:block}
+.qz-score-box{text-align:center;padding:14px;border-radius:12px;margin-top:10px}
 </style></head>
 <body>
 <button class="retour-btn" onclick="window.parent.postMessage({type:'retour'},'*')">← Retour</button>
@@ -59,6 +69,39 @@ h1{font-family:Georgia,serif;font-size:24px;color:#a078ff;margin-bottom:4px;}
 <li>Transmissions aux parents le soir : sommeil, repas, jeux, humeur de la journee</li>
 <li>Cahier de liaison creche : outil de communication quotidien</li></ul></div></div>
 
+<div class="section qz-section"><h2 style="color:#a078ff">🎯 Quiz — Vérifiez vos connaissances</h2>
+<p style="font-size:12px;color:var(--txt2);margin-bottom:12px">5 questions sur ce module. Score : <span id="qz-score-val">0</span>/5</p>
+<div class="qcard"><div class="qz-q">1. Comment adapter sa communication avec un nouveau-né ?</div>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Communication-q0')">Éviter tout contact visuel pour ne pas le stimuler</button>
+<button class="qz-opt" data-ok="true" onclick="qzRep(this,true,'SimAP-Communication-q0')">Voix douce, contact visuel, peau à peau</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Communication-q0')">Communiquer uniquement par gestes</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Communication-q0')">Attendre qu'il puisse parler pour interagir</button>
+<div class="qz-explic" id="SimAP-Communication-q0">✅ Avec le nouveau-né, la communication passe par la voix douce, le contact visuel et le peau à peau.</div></div>
+<div class="qcard"><div class="qz-q">2. Quelle posture privilégier pour communiquer avec un jeune enfant ?</div>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Communication-q1')">Rester debout pour garder de l'autorité</button>
+<button class="qz-opt" data-ok="true" onclick="qzRep(this,true,'SimAP-Communication-q1')">Se mettre à sa hauteur (s'accroupir)</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Communication-q1')">Parler fort pour capter son attention</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Communication-q1')">Éviter le contact direct</button>
+<div class="qz-explic" id="SimAP-Communication-q1">✅ Se mettre à la hauteur de l'enfant (s'accroupir) facilite une communication respectueuse et rassurante.</div></div>
+<div class="qcard"><div class="qz-q">3. Quelle attitude adopter envers les compétences parentales ?</div>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Communication-q2')">Se substituer aux parents dès que possible</button>
+<button class="qz-opt" data-ok="true" onclick="qzRep(this,true,'SimAP-Communication-q2')">Reconnaître que les parents connaissent mieux leur enfant que quiconque, et les accompagner sans les remplacer</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Communication-q2')">Ignorer les observations des parents</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Communication-q2')">Décider seul de ce qui est bon pour l'enfant</button>
+<div class="qz-explic" id="SimAP-Communication-q2">✅ Les parents connaissent mieux leur enfant : le rôle de l'AP est d'accompagner, jamais de se substituer à eux.</div></div>
+<div class="qcard"><div class="qz-q">4. Comment interpréter les pleurs de séparation d'un enfant accueilli en crèche ?</div>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Communication-q3')">Il faut les minimiser pour rassurer l'enfant</button>
+<button class="qz-opt" data-ok="true" onclick="qzRep(this,true,'SimAP-Communication-q3')">C'est un signe de santé psychique, à ne pas minimiser</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Communication-q3')">C'est toujours le signe d'un problème à la maison</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Communication-q3')">Ils doivent cesser en quelques secondes sinon c'est anormal</button>
+<div class="qz-explic" id="SimAP-Communication-q3">✅ Les pleurs de séparation sont un signe de santé psychique (attachement) — ils ne doivent pas être minimisés.</div></div>
+<div class="qcard"><div class="qz-q">5. Quel outil assure la transmission quotidienne d'informations aux parents en crèche ?</div>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Communication-q4')">Le dossier médical hospitalier</button>
+<button class="qz-opt" data-ok="true" onclick="qzRep(this,true,'SimAP-Communication-q4')">Le cahier de liaison crèche</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Communication-q4')">Un simple message oral parfois oublié</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Communication-q4')">Aucun outil n'est nécessaire</button>
+<div class="qz-explic" id="SimAP-Communication-q4">✅ Le cahier de liaison crèche est l'outil quotidien de transmission (repas, sommeil, jeux, humeur).</div></div>
+</div>
 <div class="section"><h2 style="color:#a078ff">🏷️ Mots cles</h2>
 <div style="padding:8px 0">
 <span class="tag" style="background:rgba(160,120,255,.1);color:#a078ff;border:1px solid rgba(160,120,255,.2)">Parentalite</span>
@@ -68,6 +111,26 @@ h1{font-family:Georgia,serif;font-size:24px;color:#a078ff;margin-bottom:4px;}
 <span class="tag" style="background:rgba(160,120,255,.1);color:#a078ff;border:1px solid rgba(160,120,255,.2)">Transmissions parents</span>
 <span class="tag" style="background:rgba(160,120,255,.1);color:#a078ff;border:1px solid rgba(160,120,255,.2)">PMI</span></div></div>
 
+<script>
+var _qzReponses = {};
+var _qzScore = 0;
+function qzRep(btn, ok, qid){
+  if(_qzReponses[qid]) return;
+  _qzReponses[qid] = true;
+  var card = btn.closest('.qcard');
+  card.querySelectorAll('.qz-opt').forEach(function(o){ o.style.pointerEvents='none'; });
+  if(ok){ btn.classList.add('good'); _qzScore++; }
+  else {
+    btn.classList.add('bad');
+    card.querySelectorAll('.qz-opt').forEach(function(o){
+      if(o.getAttribute('data-ok') === 'true') o.classList.add('good');
+    });
+  }
+  document.getElementById(qid).classList.add('show');
+  var sb = document.getElementById('qz-score-val');
+  if(sb) sb.textContent = _qzScore;
+}
+</script>
 <script>document.addEventListener('click',function(){window.parent.postMessage({type:'activite'},'*');});</script>
   <script>window.PRAXIS_AUDIO_SELECTOR = "h1, h2, h3, p, li, .alert, .tag";</script>
 <script src="praxis-audio.js"></script>
