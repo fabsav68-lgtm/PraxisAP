@@ -22,6 +22,16 @@ h1{font-family:Georgia,serif;font-size:24px;margin-bottom:4px;}
   .norme{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--bdr);font-size:12px;}
 .norme:last-child{border-bottom:none;}
 .norme-val{font-family:monospace;font-weight:700;}
+
+.qz-section{margin-bottom:16px}
+.qcard{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px;margin-bottom:12px}
+.qcard .qz-q{font-size:13px;font-weight:700;margin-bottom:10px;line-height:1.5}
+.qz-opt{display:block;width:100%;text-align:left;padding:10px 12px;margin-bottom:7px;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:inherit;font-size:12.5px;cursor:pointer;font-family:inherit}
+.qz-opt.good{background:rgba(74,222,128,.15);border-color:#4ade80}
+.qz-opt.bad{background:rgba(248,113,113,.15);border-color:#f87171}
+.qz-explic{display:none;font-size:12px;line-height:1.6;padding:10px 12px;margin-top:6px;border-radius:8px;background:rgba(255,255,255,.04)}
+.qz-explic.show{display:block}
+.qz-score-box{text-align:center;padding:14px;border-radius:12px;margin-top:10px}
 </style></head>
 <body><button class="retour-btn" onclick="window.parent.postMessage({type:'retour'},'*')">← Retour</button>
 <button class="btn-audio" id="btn-audio" onclick="lireOnglet()">🔊 Écouter</button>
@@ -50,6 +60,39 @@ h1{font-family:Georgia,serif;font-size:24px;margin-bottom:4px;}
 <li>Changement des gants entre chaque enfant</li>
 <li>DASRI pediatriques : memes regles que pour adulte</li>
 <li>Signaler toute epidemie a la directrice et PMI</li></ul></div></div>
+<div class="section qz-section"><h2 style="color:#40c878">🎯 Quiz — Vérifiez vos connaissances</h2>
+<p style="font-size:12px;color:var(--txt2);margin-bottom:12px">5 questions sur ce module. Score : <span id="qz-score-val">0</span>/5</p>
+<div class="qcard"><div class="qz-q">1. Combien de moments d'hygiène des mains recommande l'OMS ?</div>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Hygiene-q0')">3 moments</button>
+<button class="qz-opt" data-ok="true" onclick="qzRep(this,true,'SimAP-Hygiene-q0')">5 moments</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Hygiene-q0')">7 moments</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Hygiene-q0')">10 moments</button>
+<div class="qz-explic" id="SimAP-Hygiene-q0">✅ L'OMS recommande 5 moments clés pour l'hygiène des mains.</div></div>
+<div class="qcard"><div class="qz-q">2. Comment stériliser un biberon avant 6 mois ?</div>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Hygiene-q1')">Simple rinçage à l'eau froide suffit</button>
+<button class="qz-opt" data-ok="true" onclick="qzRep(this,true,'SimAP-Hygiene-q1')">Vapeur (20 min) ou stérilisateur électrique</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Hygiene-q1')">Passage au lave-vaisselle uniquement</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Hygiene-q1')">Aucune stérilisation n'est nécessaire</button>
+<div class="qz-explic" id="SimAP-Hygiene-q1">✅ Avant 6 mois, la stérilisation se fait à la vapeur (20 minutes) ou au stérilisateur électrique.</div></div>
+<div class="qcard"><div class="qz-q">3. Quelle eau utiliser pour préparer le lait infantile ?</div>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Hygiene-q2')">N'importe quelle eau du robinet</button>
+<button class="qz-opt" data-ok="true" onclick="qzRep(this,true,'SimAP-Hygiene-q2')">Une eau minérale pauvre en sodium, à 37°C</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Hygiene-q2')">De l'eau bouillante versée directement</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Hygiene-q2')">De l'eau gazeuse</button>
+<div class="qz-explic" id="SimAP-Hygiene-q2">✅ Le lait se prépare avec une eau minérale pauvre en sodium, à une température de 37°C.</div></div>
+<div class="qcard"><div class="qz-q">4. Peut-on réchauffer un biberon au micro-ondes ?</div>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Hygiene-q3')">Oui, c'est la méthode la plus rapide</button>
+<button class="qz-opt" data-ok="true" onclick="qzRep(this,true,'SimAP-Hygiene-q3')">Non, jamais — risque de points chauds dangereux</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Hygiene-q3')">Oui, mais seulement 10 secondes</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Hygiene-q3')">Cela dépend du biberon utilisé</button>
+<div class="qz-explic" id="SimAP-Hygiene-q3">✅ Le micro-ondes ne doit jamais être utilisé : il crée des points chauds dangereux pouvant brûler l'enfant.</div></div>
+<div class="qcard"><div class="qz-q">5. Combien de temps un lait reconstitué non utilisé peut-il être conservé à température ambiante ?</div>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Hygiene-q4')">24 heures</button>
+<button class="qz-opt" data-ok="true" onclick="qzRep(this,true,'SimAP-Hygiene-q4')">Maximum 1 heure</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Hygiene-q4')">Il ne se conserve jamais</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Hygiene-q4')">Jusqu'au repas suivant</button>
+<div class="qz-explic" id="SimAP-Hygiene-q4">✅ Un lait reconstitué non utilisé doit être jeté après 1 heure à température ambiante — risque de prolifération bactérienne majeur.</div></div>
+</div>
 <div class="section"><h2 style="color:#40c878">Mots cles</h2>
 <div style="padding:8px 0">
 <span class="tag" style="background:rgba(64,200,120,.1);color:#40c878;border:1px solid rgba(64,200,120,.2)">Sterilisation biberons</span>
@@ -57,6 +100,26 @@ h1{font-family:Georgia,serif;font-size:24px;margin-bottom:4px;}
 <span class="tag" style="background:rgba(64,200,120,.1);color:#40c878;border:1px solid rgba(64,200,120,.2)">SHA</span>
 <span class="tag" style="background:rgba(64,200,120,.1);color:#40c878;border:1px solid rgba(64,200,120,.2)">Isolement</span>
 <span class="tag" style="background:rgba(64,200,120,.1);color:#40c878;border:1px solid rgba(64,200,120,.2)">DASRI</span></div></div>
+<script>
+var _qzReponses = {};
+var _qzScore = 0;
+function qzRep(btn, ok, qid){
+  if(_qzReponses[qid]) return;
+  _qzReponses[qid] = true;
+  var card = btn.closest('.qcard');
+  card.querySelectorAll('.qz-opt').forEach(function(o){ o.style.pointerEvents='none'; });
+  if(ok){ btn.classList.add('good'); _qzScore++; }
+  else {
+    btn.classList.add('bad');
+    card.querySelectorAll('.qz-opt').forEach(function(o){
+      if(o.getAttribute('data-ok') === 'true') o.classList.add('good');
+    });
+  }
+  document.getElementById(qid).classList.add('show');
+  var sb = document.getElementById('qz-score-val');
+  if(sb) sb.textContent = _qzScore;
+}
+</script>
 <script>document.addEventListener('click',function(){window.parent.postMessage({type:'activite'},'*');});</script>
 <script>window.PRAXIS_AUDIO_SELECTOR = "h1, h2, h3, p, li, .alert, .tag";</script>
 <script src="praxis-audio.js"></script>
