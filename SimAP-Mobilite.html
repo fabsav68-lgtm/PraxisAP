@@ -25,6 +25,16 @@ h1{font-family:Georgia,serif;font-size:24px;color:#f8c840;margin-bottom:4px;}
 .tag{display:inline-block;padding:2px 8px;border-radius:12px;font-size:10px;font-family:monospace;margin:2px;}
 .retour-btn{position:fixed;top:12px;left:12px;background:rgba(10,8,16,.9);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:6px 14px;color:var(--txt2);font-size:12px;cursor:pointer;z-index:100;}
 .btn-audio{position:fixed;bottom:16px;right:16px;background:#50a8f8;color:#0a0d0f;padding:10px 18px;border-radius:24px;font-size:13px;font-weight:700;cursor:pointer;z-index:1000;box-shadow:0 4px 16px rgba(0,0,0,.4);}
+
+.qz-section{margin-bottom:16px}
+.qcard{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px;margin-bottom:12px}
+.qcard .qz-q{font-size:13px;font-weight:700;margin-bottom:10px;line-height:1.5}
+.qz-opt{display:block;width:100%;text-align:left;padding:10px 12px;margin-bottom:7px;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:inherit;font-size:12.5px;cursor:pointer;font-family:inherit}
+.qz-opt.good{background:rgba(74,222,128,.15);border-color:#4ade80}
+.qz-opt.bad{background:rgba(248,113,113,.15);border-color:#f87171}
+.qz-explic{display:none;font-size:12px;line-height:1.6;padding:10px 12px;margin-top:6px;border-radius:8px;background:rgba(255,255,255,.04)}
+.qz-explic.show{display:block}
+.qz-score-box{text-align:center;padding:14px;border-radius:12px;margin-top:10px}
 </style></head>
 <body>
 <button class="retour-btn" onclick="window.parent.postMessage({type:'retour'},'*')">← Retour</button>
@@ -61,6 +71,33 @@ h1{font-family:Georgia,serif;font-size:24px;color:#f8c840;margin-bottom:4px;}
 <li>1-2 ans : encourager la marche avec soutien puis autonome, tapis moelleux</li>
 <li>Role AP : securiser l'environnement et laisser explorer</li></ul></div></div>
 
+<div class="section qz-section"><h2 style="color:#f8c840">🎯 Quiz — Vérifiez vos connaissances</h2>
+<p style="font-size:12px;color:var(--txt2);margin-bottom:12px">4 questions sur ce module. Score : <span id="qz-score-val">0</span>/4</p>
+<div class="qcard"><div class="qz-q">1. Jusqu'à quel âge faut-il impérativement soutenir la tête du nourrisson ?</div>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Mobilite-q0')">1 mois</button>
+<button class="qz-opt" data-ok="true" onclick="qzRep(this,true,'SimAP-Mobilite-q0')">3-4 mois</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Mobilite-q0')">6 mois</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Mobilite-q0')">12 mois</button>
+<div class="qz-explic" id="SimAP-Mobilite-q0">✅ Les muscles cervicaux du nourrisson restent immatures jusqu'à 3-4 mois : la tête doit être soutenue jusqu'à cet âge.</div></div>
+<div class="qcard"><div class="qz-q">2. Que risque-t-on si la tête d'un nourrisson reste « ballante » sans soutien ?</div>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Mobilite-q1')">Aucun risque particulier</button>
+<button class="qz-opt" data-ok="true" onclick="qzRep(this,true,'SimAP-Mobilite-q1')">Une lésion cervicale</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Mobilite-q1')">Une simple gêne passagère</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Mobilite-q1')">Un risque uniquement esthétique</button>
+<div class="qz-explic" id="SimAP-Mobilite-q1">✅ Une tête ballante sans soutien expose à un risque de lésion cervicale chez le nourrisson.</div></div>
+<div class="qcard"><div class="qz-q">3. Jusqu'à quel âge un enfant doit-il être installé dos à la route en siège auto ?</div>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Mobilite-q2')">6 mois</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Mobilite-q2')">12 mois</button>
+<button class="qz-opt" data-ok="true" onclick="qzRep(this,true,'SimAP-Mobilite-q2')">15 mois</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Mobilite-q2')">3 ans</button>
+<div class="qz-explic" id="SimAP-Mobilite-q2">✅ Le siège auto dos à la route est obligatoire jusqu'à 15 mois minimum — jamais face à la route avant cet âge.</div></div>
+<div class="qcard"><div class="qz-q">4. Le portage ventral face au monde est-il recommandé avant la tenue de tête ?</div>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Mobilite-q3')">Oui, c'est la position idéale dès la naissance</button>
+<button class="qz-opt" data-ok="true" onclick="qzRep(this,true,'SimAP-Mobilite-q3')">Non, il est déconseillé avant la tenue de tête</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Mobilite-q3')">Cela dépend du poids de l'enfant</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Mobilite-q3')">Uniquement en extérieur</button>
+<div class="qz-explic" id="SimAP-Mobilite-q3">✅ Le portage ventral face au monde est déconseillé tant que l'enfant ne tient pas sa tête seul.</div></div>
+</div>
 <div class="section"><h2 style="color:#f8c840">🏷️ Mots cles</h2>
 <div style="padding:8px 0">
 <span class="tag" style="background:rgba(248,200,64,.1);color:#f8c840;border:1px solid rgba(248,200,64,.2)">Portage</span>
@@ -70,6 +107,26 @@ h1{font-family:Georgia,serif;font-size:24px;color:#f8c840;margin-bottom:4px;}
 <span class="tag" style="background:rgba(248,200,64,.1);color:#f8c840;border:1px solid rgba(248,200,64,.2)">Motricite</span>
 <span class="tag" style="background:rgba(248,200,64,.1);color:#f8c840;border:1px solid rgba(248,200,64,.2)">Table a langer</span></div></div>
 
+<script>
+var _qzReponses = {};
+var _qzScore = 0;
+function qzRep(btn, ok, qid){
+  if(_qzReponses[qid]) return;
+  _qzReponses[qid] = true;
+  var card = btn.closest('.qcard');
+  card.querySelectorAll('.qz-opt').forEach(function(o){ o.style.pointerEvents='none'; });
+  if(ok){ btn.classList.add('good'); _qzScore++; }
+  else {
+    btn.classList.add('bad');
+    card.querySelectorAll('.qz-opt').forEach(function(o){
+      if(o.getAttribute('data-ok') === 'true') o.classList.add('good');
+    });
+  }
+  document.getElementById(qid).classList.add('show');
+  var sb = document.getElementById('qz-score-val');
+  if(sb) sb.textContent = _qzScore;
+}
+</script>
 <script>document.addEventListener('click',function(){window.parent.postMessage({type:'activite'},'*');});</script>
   <script>window.PRAXIS_AUDIO_SELECTOR = "h1, h2, h3, p, li, .alert, .tag";</script>
 <script src="praxis-audio.js"></script>
