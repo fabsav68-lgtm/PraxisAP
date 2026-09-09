@@ -26,6 +26,16 @@ h1{font-family:Georgia,serif;font-size:24px;color:#e85050;margin-bottom:4px;}
 .retour-btn{position:fixed;top:12px;left:12px;background:rgba(10,8,16,.9);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:6px 14px;color:var(--txt2);font-size:12px;cursor:pointer;z-index:100;}
 .btn-audio{position:fixed;bottom:16px;right:16px;background:#f8a838;color:#0a0d0f;padding:10px 18px;border-radius:24px;font-size:13px;font-weight:700;cursor:pointer;z-index:1000;box-shadow:0 4px 16px rgba(0,0,0,.4);}
       
+
+.qz-section{margin-bottom:16px}
+.qcard{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px;margin-bottom:12px}
+.qcard .qz-q{font-size:13px;font-weight:700;margin-bottom:10px;line-height:1.5}
+.qz-opt{display:block;width:100%;text-align:left;padding:10px 12px;margin-bottom:7px;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:inherit;font-size:12.5px;cursor:pointer;font-family:inherit}
+.qz-opt.good{background:rgba(74,222,128,.15);border-color:#4ade80}
+.qz-opt.bad{background:rgba(248,113,113,.15);border-color:#f87171}
+.qz-explic{display:none;font-size:12px;line-height:1.6;padding:10px 12px;margin-top:6px;border-radius:8px;background:rgba(255,255,255,.04)}
+.qz-explic.show{display:block}
+.qz-score-box{text-align:center;padding:14px;border-radius:12px;margin-top:10px}
 </style></head>
 <body>
   <button class="btn-audio" id="btn-audio" onclick="lireOnglet()">🔊 Écouter</button>
@@ -71,6 +81,39 @@ h1{font-family:Georgia,serif;font-size:24px;color:#e85050;margin-bottom:4px;}
 <li>Intoxication : medicaments, produits menagers hors de portee</li>
 <li>Brulure : verifier temperature des aliments et du bain</li></ul></div></div>
 
+<div class="section qz-section"><h2 style="color:#e85050">🎯 Quiz — Vérifiez vos connaissances</h2>
+<p style="font-size:12px;color:var(--txt2);margin-bottom:12px">5 questions sur ce module. Score : <span id="qz-score-val">0</span>/5</p>
+<div class="qcard"><div class="qz-q">1. Quel est le pic de fréquence de la mort subite du nourrisson (MSN) ?</div>
+<button class="qz-opt" data-ok="true" onclick="qzRep(this,true,'SimAP-Risques-q0')">Entre 2 et 4 mois</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Risques-q0')">Dès la naissance</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Risques-q0')">Après 12 mois</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Risques-q0')">Aucun pic identifié</button>
+<div class="qz-explic" id="SimAP-Risques-q0">✅ Le pic de fréquence de la MSN se situe entre 2 et 4 mois. La prévention repose sur le couchage dorsal systématique.</div></div>
+<div class="qcard"><div class="qz-q">2. Un bébé pleure sans discontinuer depuis 40 minutes et vous sentez l'exaspération monter. Que faire ?</div>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Risques-q1')">Le bercer plus fort pour qu'il s'arrête</button>
+<button class="qz-opt" data-ok="true" onclick="qzRep(this,true,'SimAP-Risques-q1')">Le poser en sécurité, souffler, passer le relais</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Risques-q1')">Continuer coûte que coûte dans vos bras</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Risques-q1')">Le laisser pleurer seul sans surveillance</button>
+<div class="qz-explic" id="SimAP-Risques-q1">✅ Poser l'enfant en sécurité et passer le relais est LA conduite professionnelle — le syndrome du bébé secoué naît d'un adulte épuisé resté seul avec des pleurs.</div></div>
+<div class="qcard"><div class="qz-q">3. Quels signes doivent faire suspecter un syndrome du bébé secoué ?</div>
+<button class="qz-opt" data-ok="true" onclick="qzRep(this,true,'SimAP-Risques-q2')">Enfant mou, regard vague, vomissements, convulsions après une secousse</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Risques-q2')">Simple fatigue en fin de journée</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Risques-q2')">Appétit légèrement diminué</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Risques-q2')">Sommeil plus long que d'habitude</button>
+<div class="qz-explic" id="SimAP-Risques-q2">✅ Le syndrome du bébé secoué provoque des lésions cérébrales graves : enfant mou, regard vague, vomissements, convulsions.</div></div>
+<div class="qcard"><div class="qz-q">4. Face à une suspicion de maltraitance, quelle est la conduite de l'AP ?</div>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Risques-q3')">Enquêter soi-même pour confirmer</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Risques-q3')">Promettre le secret à l'enfant pour le rassurer</button>
+<button class="qz-opt" data-ok="true" onclick="qzRep(this,true,'SimAP-Risques-q3')">Observer et signaler, sans enquêter ni promettre le secret</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Risques-q3')">Ne rien faire sans preuve formelle</button>
+<div class="qz-explic" id="SimAP-Risques-q3">✅ Le rôle de l'AP est d'OBSERVER et de SIGNALER (IDE, puéricultrice, direction, PMI) — jamais d'enquêter ni de promettre le secret.</div></div>
+<div class="qcard"><div class="qz-q">5. Concernant la prévention des accidents domestiques chez le nourrisson, que faut-il retenir ?</div>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Risques-q4')">Un léger surveillance suffit près de l'eau</button>
+<button class="qz-opt" data-ok="true" onclick="qzRep(this,true,'SimAP-Risques-q4')">Ne jamais laisser seul près de l'eau, en hauteur, ou avec de petits objets à portée</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Risques-q4')">Les risques sont surestimés avant 1 an</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Risques-q4')">Seule la noyade est un vrai risque</button>
+<div class="qz-explic" id="SimAP-Risques-q4">✅ Noyade, chute en hauteur, suffocation par petits objets, intoxication : la vigilance doit être constante et sur tous ces fronts.</div></div>
+</div>
 <div class="section"><h2 style="color:#e85050">🏷️ Mots cles</h2>
 <div style="padding:8px 0">
 <span class="tag" style="background:rgba(232,80,80,.1);color:#e85050;border:1px solid rgba(232,80,80,.2)">MSN</span>
@@ -80,6 +123,26 @@ h1{font-family:Georgia,serif;font-size:24px;color:#e85050;margin-bottom:4px;}
 <span class="tag" style="background:rgba(232,80,80,.1);color:#e85050;border:1px solid rgba(232,80,80,.2)">Signalement</span>
 <span class="tag" style="background:rgba(232,80,80,.1);color:#e85050;border:1px solid rgba(232,80,80,.2)">Accidents domestiques</span></div></div>
 
+<script>
+var _qzReponses = {};
+var _qzScore = 0;
+function qzRep(btn, ok, qid){
+  if(_qzReponses[qid]) return;
+  _qzReponses[qid] = true;
+  var card = btn.closest('.qcard');
+  card.querySelectorAll('.qz-opt').forEach(function(o){ o.style.pointerEvents='none'; });
+  if(ok){ btn.classList.add('good'); _qzScore++; }
+  else {
+    btn.classList.add('bad');
+    card.querySelectorAll('.qz-opt').forEach(function(o){
+      if(o.getAttribute('data-ok') === 'true') o.classList.add('good');
+    });
+  }
+  document.getElementById(qid).classList.add('show');
+  var sb = document.getElementById('qz-score-val');
+  if(sb) sb.textContent = _qzScore;
+}
+</script>
 <script>document.addEventListener('click',function(){window.parent.postMessage({type:'activite'},'*');});</script>
   <script>window.PRAXIS_AUDIO_SELECTOR = "h1, h2, h3, p, li, .alert, .tag";</script>
 <script src="praxis-audio.js"></script>
