@@ -25,6 +25,16 @@ h1{font-family:Georgia,serif;font-size:24px;color:#50a8f8;margin-bottom:4px;}
 .tag{display:inline-block;padding:2px 8px;border-radius:12px;font-size:10px;font-family:monospace;margin:2px;}
 .retour-btn{position:fixed;top:12px;left:12px;background:rgba(10,8,16,.9);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:6px 14px;color:var(--txt2);font-size:12px;cursor:pointer;z-index:100;}
 .btn-audio{position:fixed;bottom:16px;right:16px;background:#50a8f8;color:#0a0d0f;padding:10px 18px;border-radius:24px;font-size:13px;font-weight:700;cursor:pointer;z-index:1000;box-shadow:0 4px 16px rgba(0,0,0,.4);}
+
+.qz-section{margin-bottom:16px}
+.qcard{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px;margin-bottom:12px}
+.qcard .qz-q{font-size:13px;font-weight:700;margin-bottom:10px;line-height:1.5}
+.qz-opt{display:block;width:100%;text-align:left;padding:10px 12px;margin-bottom:7px;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:inherit;font-size:12.5px;cursor:pointer;font-family:inherit}
+.qz-opt.good{background:rgba(74,222,128,.15);border-color:#4ade80}
+.qz-opt.bad{background:rgba(248,113,113,.15);border-color:#f87171}
+.qz-explic{display:none;font-size:12px;line-height:1.6;padding:10px 12px;margin-top:6px;border-radius:8px;background:rgba(255,255,255,.04)}
+.qz-explic.show{display:block}
+.qz-score-box{text-align:center;padding:14px;border-radius:12px;margin-top:10px}
 </style></head>
 <body>
 <button class="retour-btn" onclick="window.parent.postMessage({type:'retour'},'*')">← Retour</button>
@@ -74,6 +84,39 @@ h1{font-family:Georgia,serif;font-size:24px;color:#50a8f8;margin-bottom:4px;}
 <li>Enfant inconsolable ou au contraire anormalement calme</li>
 <li>Vomissements en jet repetes</li></ul></div></div>
 
+<div class="section qz-section"><h2 style="color:#50a8f8">🎯 Quiz — Vérifiez vos connaissances</h2>
+<p style="font-size:12px;color:var(--txt2);margin-bottom:12px">5 questions sur ce module. Score : <span id="qz-score-val">0</span>/5</p>
+<div class="qcard"><div class="qz-q">1. Quelle est la fréquence cardiaque normale d'un nouveau-né ?</div>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-EtatClinique-q0')">60-100 bpm</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-EtatClinique-q0')">80-120 bpm</button>
+<button class="qz-opt" data-ok="true" onclick="qzRep(this,true,'SimAP-EtatClinique-q0')">120-160 bpm</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-EtatClinique-q0')">160-200 bpm</button>
+<div class="qz-explic" id="SimAP-EtatClinique-q0">✅ La fréquence cardiaque normale du nouveau-né est de 120 à 160 bpm, plus rapide que chez l'enfant plus grand.</div></div>
+<div class="qcard"><div class="qz-q">2. Quelle échelle est adaptée à l'évaluation de la douleur chez un enfant de 1 à 4 ans ?</div>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-EtatClinique-q1')">EVA (échelle visuelle analogique)</button>
+<button class="qz-opt" data-ok="true" onclick="qzRep(this,true,'SimAP-EtatClinique-q1')">FLACC (Visage, Jambes, Activité, Cris, Consolabilité)</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-EtatClinique-q1')">EN (échelle numérique)</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-EtatClinique-q1')">Aucune échelle n'est utilisable à cet âge</button>
+<div class="qz-explic" id="SimAP-EtatClinique-q1">✅ L'échelle FLACC est adaptée aux enfants de 1 à 4 ans, basée sur l'observation comportementale.</div></div>
+<div class="qcard"><div class="qz-q">3. Quel seuil de température définit la fièvre chez l'enfant ?</div>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-EtatClinique-q2')">> 37°C</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-EtatClinique-q2')">> 37,5°C</button>
+<button class="qz-opt" data-ok="true" onclick="qzRep(this,true,'SimAP-EtatClinique-q2')">> 38°C</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-EtatClinique-q2')">> 39°C</button>
+<div class="qz-explic" id="SimAP-EtatClinique-q2">✅ On parle de fièvre chez l'enfant au-delà de 38°C.</div></div>
+<div class="qcard"><div class="qz-q">4. Quels signes respiratoires chez un enfant doivent être transmis en urgence ?</div>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-EtatClinique-q3')">Une respiration légèrement plus rapide après un effort</button>
+<button class="qz-opt" data-ok="true" onclick="qzRep(this,true,'SimAP-EtatClinique-q3')">Geignement, battement des ailes du nez, tirage</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-EtatClinique-q3')">Un léger ronflement pendant le sommeil</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-EtatClinique-q3')">Une respiration par la bouche occasionnelle</button>
+<div class="qz-explic" id="SimAP-EtatClinique-q3">✅ Geignement, battement des ailes du nez et tirage sont des signes de détresse respiratoire à transmettre immédiatement.</div></div>
+<div class="qcard"><div class="qz-q">5. Pourquoi le suivi des courbes de croissance est-il important ?</div>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-EtatClinique-q4')">Il ne sert qu'à remplir le carnet de santé</button>
+<button class="qz-opt" data-ok="true" onclick="qzRep(this,true,'SimAP-EtatClinique-q4')">Tout fléchissement brutal doit être signalé à l'IDE/puéricultrice</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-EtatClinique-q4')">Seul le poids compte réellement</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-EtatClinique-q4')">Ce suivi est facultatif après 1 an</button>
+<div class="qz-explic" id="SimAP-EtatClinique-q4">✅ Un fléchissement brutal des courbes de croissance (poids, taille, périmètre crânien) doit toujours être signalé.</div></div>
+</div>
 <div class="section"><h2 style="color:#50a8f8">🏷️ Mots cles</h2>
 <div style="padding:8px 0">
 <span class="tag" style="background:rgba(80,168,248,.1);color:#50a8f8;border:1px solid rgba(80,168,248,.2)">Constantes pediatriques</span>
@@ -83,6 +126,26 @@ h1{font-family:Georgia,serif;font-size:24px;color:#50a8f8;margin-bottom:4px;}
 <span class="tag" style="background:rgba(80,168,248,.1);color:#50a8f8;border:1px solid rgba(80,168,248,.2)">Cyanose</span>
 <span class="tag" style="background:rgba(80,168,248,.1);color:#50a8f8;border:1px solid rgba(80,168,248,.2)">Fontanelle</span></div></div>
 
+<script>
+var _qzReponses = {};
+var _qzScore = 0;
+function qzRep(btn, ok, qid){
+  if(_qzReponses[qid]) return;
+  _qzReponses[qid] = true;
+  var card = btn.closest('.qcard');
+  card.querySelectorAll('.qz-opt').forEach(function(o){ o.style.pointerEvents='none'; });
+  if(ok){ btn.classList.add('good'); _qzScore++; }
+  else {
+    btn.classList.add('bad');
+    card.querySelectorAll('.qz-opt').forEach(function(o){
+      if(o.getAttribute('data-ok') === 'true') o.classList.add('good');
+    });
+  }
+  document.getElementById(qid).classList.add('show');
+  var sb = document.getElementById('qz-score-val');
+  if(sb) sb.textContent = _qzScore;
+}
+</script>
 <script>document.addEventListener('click',function(){window.parent.postMessage({type:'activite'},'*');});</script>
 <script>window.PRAXIS_AUDIO_SELECTOR = "h1, h2, h3, p, li, .norme, .alert, .tag";</script>
 <script src="praxis-audio.js"></script>
