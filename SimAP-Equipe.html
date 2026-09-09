@@ -22,6 +22,16 @@ h1{font-family:Georgia,serif;font-size:24px;margin-bottom:4px;}
   .norme{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--bdr);font-size:12px;}
 .norme:last-child{border-bottom:none;}
 .norme-val{font-family:monospace;font-weight:700;}
+
+.qz-section{margin-bottom:16px}
+.qcard{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px;margin-bottom:12px}
+.qcard .qz-q{font-size:13px;font-weight:700;margin-bottom:10px;line-height:1.5}
+.qz-opt{display:block;width:100%;text-align:left;padding:10px 12px;margin-bottom:7px;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:inherit;font-size:12.5px;cursor:pointer;font-family:inherit}
+.qz-opt.good{background:rgba(74,222,128,.15);border-color:#4ade80}
+.qz-opt.bad{background:rgba(248,113,113,.15);border-color:#f87171}
+.qz-explic{display:none;font-size:12px;line-height:1.6;padding:10px 12px;margin-top:6px;border-radius:8px;background:rgba(255,255,255,.04)}
+.qz-explic.show{display:block}
+.qz-score-box{text-align:center;padding:14px;border-radius:12px;margin-top:10px}
 </style></head>
 <body><button class="retour-btn" onclick="window.parent.postMessage({type:'retour'},'*')">← Retour</button>
 <button class="btn-audio" id="btn-audio" onclick="lireOnglet()">🔊 Écouter</button>
@@ -44,6 +54,39 @@ h1{font-family:Georgia,serif;font-size:24px;margin-bottom:4px;}
 <li>Obstruction voies aeriennes enfant : Heimlich si > 1 an et conscient</li>
 <li>DAE : utiliser des que disponible avec les electrodes pediatriques si < 8 ans</li></ul>
 <div class="alert">⚠️ RCP nourrisson : JAMAIS de compressions abdominales (Heimlich). Compressions sternales uniquement. Electrodes pediatriques obligatoires au DAE.</div></div></div>
+<div class="section qz-section"><h2 style="color:#d870f0">🎯 Quiz — Vérifiez vos connaissances</h2>
+<p style="font-size:12px;color:var(--txt2);margin-bottom:12px">5 questions sur ce module. Score : <span id="qz-score-val">0</span>/5</p>
+<div class="qcard"><div class="qz-q">1. Sous la responsabilité de qui l'AP travaille-t-il en crèche ?</div>
+<button class="qz-opt" data-ok="true" onclick="qzRep(this,true,'SimAP-Equipe-q0')">De la directrice (puéricultrice ou infirmière)</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Equipe-q0')">Il est totalement autonome</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Equipe-q0')">Uniquement du médecin traitant</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Equipe-q0')">Des parents de l'enfant</button>
+<div class="qz-explic" id="SimAP-Equipe-q0">✅ En crèche, l'AP travaille sous la responsabilité de la directrice, puéricultrice ou infirmière.</div></div>
+<div class="qcard"><div class="qz-q">2. Le champ de compétences de l'AP inclut-il les soins techniques ?</div>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Equipe-q1')">Oui, systématiquement</button>
+<button class="qz-opt" data-ok="true" onclick="qzRep(this,true,'SimAP-Equipe-q1')">Non — soins de confort, hygiène, éveil, surveillance, mais pas les soins techniques</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Equipe-q1')">Seulement en cas d'urgence</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Equipe-q1')">Cela dépend de l'ancienneté de l'AP</button>
+<div class="qz-explic" id="SimAP-Equipe-q1">✅ Le champ de compétences AP couvre confort, hygiène, éveil et surveillance — pas les soins techniques, qui relèvent de l'IDE.</div></div>
+<div class="qcard"><div class="qz-q">3. Quelle est la technique correcte de RCP chez le nourrisson ?</div>
+<button class="qz-opt" data-ok="true" onclick="qzRep(this,true,'SimAP-Equipe-q2')">2 doigts sur le sternum, 30 compressions pour 2 insufflations</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Equipe-q2')">Une seule main, 15 compressions pour 1 insufflation</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Equipe-q2')">Compressions abdominales type Heimlich</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Equipe-q2')">Bouche-à-bouche uniquement, sans compression</button>
+<div class="qz-explic" id="SimAP-Equipe-q2">✅ La RCP nourrisson utilise 2 doigts sur le sternum, rythme 30 compressions / 2 insufflations.</div></div>
+<div class="qcard"><div class="qz-q">4. Quel geste est formellement interdit lors d'une obstruction des voies aériennes chez le nourrisson ?</div>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Equipe-q3')">Les claques dans le dos</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Equipe-q3')">Les compressions sternales</button>
+<button class="qz-opt" data-ok="true" onclick="qzRep(this,true,'SimAP-Equipe-q3')">Les compressions abdominales (Heimlich)</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Equipe-q3')">L'appel aux secours</button>
+<div class="qz-explic" id="SimAP-Equipe-q3">✅ Chez le nourrisson, les compressions abdominales (Heimlich) sont interdites — seules les claques dans le dos et compressions sternales sont utilisées.</div></div>
+<div class="qcard"><div class="qz-q">5. Quelle est la conduite à tenir en cas de doute sur un geste à réaliser ?</div>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Equipe-q4')">Agir selon son intuition</button>
+<button class="qz-opt" data-ok="true" onclick="qzRep(this,true,'SimAP-Equipe-q4')">Toujours demander à l'IDE avant d'agir</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Equipe-q4')">Attendre que le doute se dissipe seul</button>
+<button class="qz-opt" data-ok="false" onclick="qzRep(this,false,'SimAP-Equipe-q4')">Demander à un autre enfant présent</button>
+<div class="qz-explic" id="SimAP-Equipe-q4">✅ En cas de doute, l'AP doit toujours demander à l'IDE avant d'agir — jamais improviser sur un soin incertain.</div></div>
+</div>
 <div class="section"><h2 style="color:#d870f0">Mots cles</h2>
 <div style="padding:8px 0">
 <span class="tag" style="background:rgba(216,112,240,.1);color:#d870f0;border:1px solid rgba(216,112,240,.2)">Puericultrice</span>
@@ -51,6 +94,26 @@ h1{font-family:Georgia,serif;font-size:24px;margin-bottom:4px;}
 <span class="tag" style="background:rgba(216,112,240,.1);color:#d870f0;border:1px solid rgba(216,112,240,.2)">RCP nourrisson</span>
 <span class="tag" style="background:rgba(216,112,240,.1);color:#d870f0;border:1px solid rgba(216,112,240,.2)">DAE pediatrique</span>
 <span class="tag" style="background:rgba(216,112,240,.1);color:#d870f0;border:1px solid rgba(216,112,240,.2)">Champ de competences</span></div></div>
+<script>
+var _qzReponses = {};
+var _qzScore = 0;
+function qzRep(btn, ok, qid){
+  if(_qzReponses[qid]) return;
+  _qzReponses[qid] = true;
+  var card = btn.closest('.qcard');
+  card.querySelectorAll('.qz-opt').forEach(function(o){ o.style.pointerEvents='none'; });
+  if(ok){ btn.classList.add('good'); _qzScore++; }
+  else {
+    btn.classList.add('bad');
+    card.querySelectorAll('.qz-opt').forEach(function(o){
+      if(o.getAttribute('data-ok') === 'true') o.classList.add('good');
+    });
+  }
+  document.getElementById(qid).classList.add('show');
+  var sb = document.getElementById('qz-score-val');
+  if(sb) sb.textContent = _qzScore;
+}
+</script>
 <script>document.addEventListener('click',function(){window.parent.postMessage({type:'activite'},'*');});</script>
 <script>window.PRAXIS_AUDIO_SELECTOR = "h1, h2, h3, p, li, .alert, .tag";</script>
 <script src="praxis-audio.js"></script>
