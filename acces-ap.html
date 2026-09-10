@@ -39,19 +39,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:16px 2
 .module-btn{display:block;text-align:center;padding:9px;border-radius:8px;font-size:12px;font-weight:700;border:1.5px solid transparent;}
 footer{border-top:1px solid rgba(255,255,255,.07);padding:24px 20px;text-align:center;font-size:11px;color:#4a3060;font-family:monospace;}
 </style>
-<script>
-(function(){
-  var code=sessionStorage.getItem('praxisap_code');
-  var promo=sessionStorage.getItem('praxisap_promo');
-  if(!code||!promo)window.location.replace('acces-ap.html');
-})();
-document.addEventListener('visibilitychange',function(){
-  if(document.visibilityState==='hidden'){
-    sessionStorage.removeItem('praxisap_code');
-    sessionStorage.removeItem('praxisap_promo');
-  }
-});
-</script>
+
 </head>
 <body>
 <button id="btn-retour" onclick="retourAccueil()">PraxisAP</button>
@@ -366,3 +354,4 @@ function voirScoreBinome(){
 </div>
 </body>
 </html>
+  
