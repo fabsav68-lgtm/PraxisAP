@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PraxisExamen · Mode chronométré</title>
+<style>
+:root{
+  --bg:#080c14; --bg2:#0d1525; --card:rgba(255,255,255,.03); --bdr:rgba(255,255,255,.08);
+  --txt:#e0e8f8; --txt2:#3a5070; --em:#60a8f8; --green:#4ade80; --red:#f87171; --amber:#fbbf24;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:linear-gradient(160deg,var(--bg) 0%,var(--bg2) 55%,var(--bg) 100%);color:var(--txt);min-height:100vh;padding-bottom:40px}
+.wrap{max-width:600px;margin:0 auto;padding:0 20px}
+header{padding:24px 0 16px;text-align:center}
+.badge{display:inline-block;background:rgba(96,168,248,.1);border:1px solid rgba(96,168,248,.25);color:var(--em);padding:4px 14px;border-radius:20px;font-size:11px;letter-spacing:2px;font-family:monospace;margin-bottom:12px}
+h1{font-family:Georgia,serif;font-size:26px;font-weight:300}
+h1 em{font-style:italic;color:var(--em)}
+
+/* Selection de mission */
+.mission-card{background:var(--card);border:1px solid var(--bdr);border-radius:16px;padding:18px;margin-bottom:12px;cursor:pointer}
+.mission-card:active{border-color:var(--em)}
+.mission-name{font-size:16px;font-weight:700;margin-bottom:4px}
+.mission-desc{font-size:12.5px;color:var(--txt2);line-height:1.5;margin-bottom:8px}
+.mission-meta{display:flex;gap:12px;font-size:11px;color:var(--txt2)}
+
+/* Timer bar */
+.timer-bar-container{height:6px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden;margin-bottom:16px}
+.timer-bar{height:100%;background:var(--green);border-radius:3px;transition:width .1s linear,background .3s}
+.timer-bar.warning{background:var(--amber)}
+.timer-bar.danger{background:var(--red)}
+
+.progress{font-size:13px;color:var(--txt2);text-align:center;margin-bottom:12px}
+.progress b{color:var(--em)}
+
+.question-card{background:var(--card);border:1px solid var(--bdr);border-radius:16px;padding:20px;margin-bottom:16px}
+.module-tag{font-size:10.5px;color:var(--txt2);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+.question-text{font-size:16px;font-weight:600;line-height:1.5;margin-bottom:16px}
+
+.option{display:flex;align-items:flex-start;gap:10px;padding:12px;border-radius:12px;border:1px solid var(--bdr);margin-bottom:8px;cursor:pointer;font-size:14px;line-height:1.5}
+.option:active{border-color:var(--em)}
+.option.correct{background:rgba(74,222,128,.1);border-color:var(--green)}
+.option.incorrect{background:rgba(248,113,113,.1);border-color:var(--red)}
+.option-letter{width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+
+.explanation{display:none;background:rgba(96,168,248,.06);border:1px solid rgba(96,168,248,.2);border-radius:12px;padding:14px;margin-top:12px;font-size:13.5px;line-height:1.6}
+.explanation.show{display:block}
+
+.nav-btn{padding:12px;border-radius:12px;border:1px solid var(--bdr);background:var(--em);color:#04121f;font-weight:700;font-size:14px;cursor:pointer;text-align:center;margin-top:16px}
+
+.score-final{text-align:center;padding:40px 20px}
+.score-final .big{font-size:48px;font-weight:800;color:var(--em)}
+.timeout-msg{color:var(--red);font-weight:700;text-align:center;padding:20px;font-size:15px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="badge">EXAMEN CHRONOMÉTRÉ</div>
+    <h1>Praxis<em>Examen</em></h1>
+  </header>
+
+  <div id="selection-container"></div>
+  <div id="progress" style="display:none"></div>
+  <div id="timer-container" style="display:none"><div class="timer-bar-container"><div class="timer-bar" id="timer-bar"></div></div></div>
+  <div id="quiz-container"></div>
+</div>
+
+<script src="banque-examen-ap.js"></script>
+<script>
+const MISSIONS = [
+  { nom: 'Échauffement', desc: '15 questions au hasard, temps confortable qui se resserre progressivement.', nb: 15, tempsDebut: 45, tempsFin: 30 },
+  { nom: 'Rythme examen', desc: '20 questions, rythme soutenu comparable à une épreuve réelle.', nb: 20, tempsDebut: 35, tempsFin: 20 },
+  { nom: 'Épreuve complète', desc: '30 questions, tous modules confondus, temps serré.', nb: 30, tempsDebut: 30, tempsFin: 15 },
+];
+
+let questionsMission = [];
+let indexActuel = 0;
+let score = 0;
+let repondu = false;
+let timerInterval = null;
+let tempsRestant = 0;
+let tempsMax = 0;
+
+function melanger(arr){
+  const copie = [...arr];
+  for(let i = copie.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [copie[i], copie[j]] = [copie[j], copie[i]];
+  }
+  return copie;
+}
+
+function afficherSelection(){
+  const modulesUniques = [...new Set(BANQUE_EXAMEN_AP.map(q => q.module))];
+  let html = MISSIONS.map((m, i) => `
+    <div class="mission-card" onclick="demarrerMission(${i})">
+      <div class="mission-name">🎯 ${m.nom}</div>
+      <div class="mission-desc">${m.desc}</div>
+      <div class="mission-meta"><span>${m.nb} questions</span><span>⏱️ ${m.tempsDebut}s → ${m.tempsFin}s</span></div>
+    </div>
+  `).join('');
+
+  html += `<div style="margin:20px 0 10px;font-size:12px;color:var(--txt2);text-transform:uppercase;letter-spacing:1px">Par module</div>`;
+  modulesUniques.forEach(mod => {
+    const nbQ = BANQUE_EXAMEN_AP.filter(q => q.module === mod).length;
+    html += `
+      <div class="mission-card" onclick="demarrerModule('${mod.replace(/'/g, "\\'")}')">
+        <div class="mission-name">📘 ${mod}</div>
+        <div class="mission-meta"><span>${nbQ} questions</span><span>⏱️ 30s par question</span></div>
+      </div>
+    `;
+  });
+  document.getElementById('selection-container').innerHTML = html;
+}
+
+function demarrerMission(i){
+  const m = MISSIONS[i];
+  questionsMission = melanger(BANQUE_EXAMEN_AP).slice(0, m.nb);
+  tempsMax = m.tempsDebut;
+  window._tempsDebut = m.tempsDebut;
+  window._tempsFin = m.tempsFin;
+  window._nbTotal = m.nb;
+  lancerExamen();
+}
+
+function demarrerModule(mod){
+  questionsMission = melanger(BANQUE_EXAMEN_AP.filter(q => q.module === mod));
+  window._tempsDebut = 30;
+  window._tempsFin = 30;
+  window._nbTotal = questionsMission.length;
+  lancerExamen();
+}
+
+function lancerExamen(){
+  indexActuel = 0;
+  score = 0;
+  document.getElementById('selection-container').style.display = 'none';
+  document.getElementById('progress').style.display = 'block';
+  document.getElementById('timer-container').style.display = 'block';
+  afficherQuestion();
+}
+
+function calculerTempsQuestion(){
+  const progression = window._nbTotal > 1 ? indexActuel / (window._nbTotal - 1) : 0;
+  return Math.round(window._tempsDebut - (window._tempsDebut - window._tempsFin) * progression);
+}
+
+function afficherQuestion(){
+  if(indexActuel >= questionsMission.length){
+    afficherScoreFinal();
+    return;
+  }
+  clearInterval(timerInterval);
+  repondu = false;
+  const q = questionsMission[indexActuel];
+  tempsMax = calculerTempsQuestion();
+  tempsRestant = tempsMax;
+
+  document.getElementById('progress').innerHTML = `Question <b>${indexActuel + 1}</b> / ${questionsMission.length} — Score : <b>${score}</b>`;
+
+  const lettres = ['A','B','C','D'];
+  document.getElementById('quiz-container').innerHTML = `
+    <div class="question-card">
+      <div class="module-tag">${q.module}</div>
+      <div class="question-text">${q.q}</div>
+      <div id="options">
+        ${q.opts.map((opt, i) => `
+          <div class="option" id="opt-${i}" onclick="repondre(${i})">
+            <div class="option-letter">${lettres[i]}</div>
+            <div>${opt}</div>
+          </div>
+        `).join('')}
+      </div>
+      <div class="explanation" id="explanation">${q.expl}</div>
+      <button class="nav-btn" id="btn-suivant" onclick="questionSuivante()" style="display:none">Question suivante →</button>
+    </div>
+  `;
+
+  demarrerTimer();
+}
+
+function demarrerTimer(){
+  const bar = document.getElementById('timer-bar');
+  bar.style.width = '100%';
+  bar.classList.remove('warning', 'danger');
+  timerInterval = setInterval(() => {
+    tempsRestant -= 0.1;
+    const pct = Math.max(0, (tempsRestant / tempsMax) * 100);
+    bar.style.width = pct + '%';
+    if(pct < 50) bar.classList.add('warning');
+    if(pct < 20) bar.classList.add('danger');
+    if(tempsRestant <= 0){
+      clearInterval(timerInterval);
+      tempsEcoule();
+    }
+  }, 100);
+}
+
+function tempsEcoule(){
+  if(repondu) return;
+  repondu = true;
+  const q = questionsMission[indexActuel];
+  const options = document.querySelectorAll('.option');
+  options.forEach((opt, idx) => { if(idx === q.rep) opt.classList.add('correct'); });
+  document.getElementById('explanation').innerHTML = '⏱️ Temps écoulé ! ' + q.expl;
+  document.getElementById('explanation').classList.add('show');
+  document.getElementById('btn-suivant').style.display = 'block';
+}
+
+function repondre(i){
+  if(repondu) return;
+  repondu = true;
+  clearInterval(timerInterval);
+  const q = questionsMission[indexActuel];
+  const options = document.querySelectorAll('.option');
+  options.forEach((opt, idx) => {
+    if(idx === q.rep) opt.classList.add('correct');
+    else if(idx === i) opt.classList.add('incorrect');
+  });
+  if(i === q.rep) score++;
+  document.getElementById('explanation').classList.add('show');
+  document.getElementById('btn-suivant').style.display = 'block';
+  document.getElementById('progress').innerHTML = `Question <b>${indexActuel + 1}</b> / ${questionsMission.length} — Score : <b>${score}</b>`;
+}
+
+function questionSuivante(){
+  indexActuel++;
+  afficherQuestion();
+}
+
+function afficherScoreFinal(){
+  clearInterval(timerInterval);
+  document.getElementById('timer-container').style.display = 'none';
+  const pct = Math.round((score / questionsMission.length) * 100);
+  document.getElementById('quiz-container').innerHTML = `
+    <div class="question-card score-final">
+      <div class="big">${score}/${questionsMission.length}</div>
+      <p style="color:var(--txt2);margin-top:8px">${pct}% de bonnes réponses</p>
+      <button class="nav-btn" onclick="retourSelection()" style="display:inline-block;margin-top:20px">Choisir une autre mission</button>
+    </div>
+  `;
+  document.getElementById('progress').innerHTML = '';
+}
+
+function retourSelection(){
+  document.getElementById('selection-container').style.display = 'block';
+  document.getElementById('progress').style.display = 'none';
+  document.getElementById('timer-container').style.display = 'none';
+  document.getElementById('quiz-container').innerHTML = '';
+  afficherSelection();
+}
+
+afficherSelection();
+</script>
+</body>
+</html>
