@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PraxisLexique · PraxisAP</title>
+<style>
+:root{
+  --bg:#0a0810; --bg2:#150d20; --card:rgba(255,255,255,.03); --bdr:rgba(255,255,255,.08);
+  --txt:#e8edf5; --txt2:#5a6478; --em:#d870f0;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:linear-gradient(160deg,var(--bg) 0%,var(--bg2) 55%,var(--bg) 100%);color:var(--txt);min-height:100vh;padding-bottom:40px}
+.wrap{max-width:600px;margin:0 auto;padding:0 20px}
+header{padding:24px 0 16px;text-align:center}
+.badge{display:inline-block;background:rgba(255,255,255,.06);border:1px solid var(--bdr);color:var(--em);padding:4px 14px;border-radius:20px;font-size:11px;letter-spacing:2px;font-family:monospace;margin-bottom:12px}
+h1{font-family:Georgia,serif;font-size:26px;font-weight:300}
+h1 em{font-style:italic;color:var(--em)}
+.sub{color:var(--txt2);font-size:12.5px;margin-top:6px}
+
+.search-box{position:sticky;top:0;background:var(--bg);padding:12px 0;z-index:10}
+.search-input{width:100%;padding:12px 16px;border-radius:14px;border:1px solid var(--bdr);background:var(--card);color:var(--txt);font-size:14px}
+.search-input::placeholder{color:var(--txt2)}
+.search-input:focus{outline:none;border-color:var(--em)}
+
+.count{font-size:12px;color:var(--txt2);margin:10px 0}
+
+.terme-card{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:16px;margin-bottom:10px}
+.terme-nom{font-size:15px;font-weight:700;color:var(--em);margin-bottom:6px}
+.terme-def{font-size:13.5px;line-height:1.6;color:var(--txt)}
+
+.no-result{text-align:center;color:var(--txt2);padding:40px 20px;font-size:13px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="badge">GLOSSAIRE</div>
+    <h1>Praxis<em>Lexique</em></h1>
+    <p class="sub">Vocabulaire auxiliaire de puériculture — 20 termes essentiels</p>
+  </header>
+
+  <div class="search-box">
+    <input type="text" class="search-input" id="search" placeholder="Rechercher un terme..." oninput="filtrer()">
+  </div>
+  <div class="count" id="count"></div>
+  <div id="liste"></div>
+</div>
+
+<script>
+const TERMES = [{"terme": "Autorité parentale", "def": "Ensemble des droits et devoirs des parents envers leur enfant. En principe conjointe entre les deux parents, à vérifier en cas de séparation."}, {"terme": "Cahier de liaison", "def": "Outil de communication quotidienne entre la crèche et les parents (repas, sommeil, selles, humeur)."}, {"terme": "Cordon ombilical (soins)", "def": "Le cordon doit sécher à l'air libre, sans être recouvert par la couche. Sa chute survient en moyenne entre J7 et J15."}, {"terme": "Cyanose", "def": "Coloration bleutée de la peau ou des lèvres, traduisant un manque d'oxygénation — signe d'alerte chez le nourrisson."}, {"terme": "DAE pédiatrique", "def": "Défibrillateur automatisé externe équipé d'électrodes pédiatriques, adapté à l'enfant."}, {"terme": "FLACC (échelle)", "def": "Échelle d'évaluation de la douleur pour l'enfant de 1 à 4 ans (Visage, Jambes, Activité, Cris, Consolabilité)."}, {"terme": "Fontanelle", "def": "Espace membraneux entre les os du crâne du nourrisson. Une fontanelle bombée ou très creusée est un signe d'alerte."}, {"terme": "MSN (mort subite du nourrisson)", "def": "Décès brutal et inexpliqué d'un enfant de moins d'un an, avec un pic de fréquence entre 2 et 4 mois. Prévention : couchage dorsal systématique."}, {"terme": "Norme CE (jouets)", "def": "Marquage obligatoire garantissant la sécurité d'un jouet, avec des règles renforcées avant 3 ans (interdiction des petites pièces)."}, {"terme": "Omphalite", "def": "Infection du cordon ombilical (rougeur, chaleur, suintement) — urgence médicale chez le nouveau-né."}, {"terme": "Peau à peau", "def": "Contact direct entre la peau du nouveau-né et celle d'un parent, favorisant l'attachement et la régulation thermique."}, {"terme": "Portage", "def": "Fait de porter un nourrisson (bras, écharpe, porte-bébé), en veillant toujours au soutien de la tête avant 3-4 mois."}, {"terme": "RGPD", "def": "Règlement Général sur la Protection des Données — les données de l'enfant sont des données sensibles à protection renforcée."}, {"terme": "SBAR", "def": "Méthode de transmission structurée : Situation, Background (antécédents), Assessment (évaluation), Recommandation."}, {"terme": "SBS (syndrome du bébé secoué)", "def": "Lésions cérébrales graves causées par la secousse violente d'un nourrisson, souvent lors de pleurs intenses. Prévention : ne jamais secouer, poser l'enfant en sécurité si besoin."}, {"terme": "Secret professionnel", "def": "Obligation de confidentialité sur les informations concernant l'enfant et sa famille."}, {"terme": "SHA (solution hydro-alcoolique)", "def": "Produit de friction pour l'hygiène des mains, utilisé entre chaque enfant en collectivité."}, {"terme": "Stérilisation biberon", "def": "Élimination des micro-organismes d'un biberon, par vapeur (20 min) ou stérilisateur électrique, recommandée jusqu'à 6 mois."}, {"terme": "Tenue de tête", "def": "Capacité du nourrisson à maintenir sa tête seul, acquise vers 3-4 mois — avant cet âge, la tête doit toujours être soutenue."}, {"terme": "Test de Guthrie", "def": "Dépistage néonatal réalisé par prélèvement au talon, recherchant plusieurs maladies métaboliques."}];
+
+function filtrer(){
+  const q = document.getElementById('search').value.toLowerCase().trim();
+  const filtres = q ? TERMES.filter(t => t.terme.toLowerCase().includes(q) || t.def.toLowerCase().includes(q)) : TERMES;
+  afficher(filtres);
+}
+
+function afficher(liste){
+  document.getElementById('count').textContent = liste.length + ' terme' + (liste.length > 1 ? 's' : '');
+  if(liste.length === 0){
+    document.getElementById('liste').innerHTML = '<div class="no-result">Aucun terme trouvé</div>';
+    return;
+  }
+  document.getElementById('liste').innerHTML = liste.map(t => `
+    <div class="terme-card">
+      <div class="terme-nom">${t.terme}</div>
+      <div class="terme-def">${t.def}</div>
+    </div>
+  `).join('');
+}
+
+afficher(TERMES);
+</script>
+</body>
+</html>
