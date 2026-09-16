@@ -260,7 +260,71 @@ h2.rouge{color:#e88a8a}
     <button class="opt" onclick="rep(this,false,'q7')">Minimiser ses inquiétudes en disant que « ce n'est rien »</button>
     <div class="explic" id="q7">✅ Préparer positivement et concrètement l'enfant à la transition (jeux de rôle, discussion) réduit l'anxiété bien mieux que le silence ou la minimisation de ses émotions.</div>
   </div>
-</div>
+
+  
+<div class="qcard">
+    <p class="profil"><b>Théo, 2 ans, fiévreux depuis ce matin.</b> Soudain il se raidit, ses yeux se révulsent et son corps est parcouru de secousses.</p>
+    <button class="opt" onclick="rep(this,false,'q8')">Le maintenir fermement pour l'empêcher de bouger</button>
+    <button class="opt" onclick="rep(this,true,'q8')">Le mettre en sécurité, protéger sa tête, écarter les objets dangereux</button>
+    <button class="opt" onclick="rep(this,false,'q8')">Lui donner immédiatement à boire pour le calmer</button>
+    <div class="explic" id="q8">✅ Face à une convulsion, on protège l'enfant des chocs (tête, chutes, objets) sans jamais le contenir de force ni tenter de le faire boire.</div>
+  </div>
+
+  <div class="qcard">
+    <p class="profil"><b>Pendant la crise</b>, un collègue propose de glisser une cuillère dans la bouche de Théo pour qu'il ne se morde pas la langue.</p>
+    <button class="opt" onclick="rep(this,false,'q9')">Bonne idée, c'est le réflexe à avoir</button>
+    <button class="opt" onclick="rep(this,true,'q9')">Ne jamais rien mettre dans la bouche pendant une convulsion</button>
+    <button class="opt" onclick="rep(this,false,'q9')">Seulement si c'est un objet mou</button>
+    <div class="explic" id="q9">✅ Il ne faut jamais rien introduire dans la bouche pendant une convulsion — ni objet, ni doigt, ni médicament — au risque de blesser l'enfant ou d'obstruer ses voies respiratoires.</div>
+  </div>
+
+  <div class="qcard">
+    <p class="profil"><b>La convulsion de Théo</b> dure depuis plus de 5 minutes.</p>
+    <button class="opt" onclick="rep(this,false,'q10')">Attendre encore un peu, c'est normal</button>
+    <button class="opt" onclick="rep(this,true,'q10')">Appeler le 15 sans délai</button>
+    <button class="opt" onclick="rep(this,false,'q10')">Attendre le retour des parents avant d'agir</button>
+    <div class="explic" id="q10">✅ Au-delà de 5 minutes, une convulsion devient une urgence médicale — il faut appeler le 15 immédiatement, sans attendre.</div>
+  </div>
+
+  <div class="qcard">
+    <p class="profil"><b>La convulsion de Théo vient de s'arrêter.</b> Il est somnolent.</p>
+    <button class="opt" onclick="rep(this,false,'q11')">Le laisser sur le dos pour qu'il se repose</button>
+    <button class="opt" onclick="rep(this,true,'q11')">Le mettre en position latérale de sécurité</button>
+    <button class="opt" onclick="rep(this,false,'q11')">Le faire asseoir immédiatement</button>
+    <div class="explic" id="q11">✅ Une fois la convulsion terminée, l'enfant est installé en position latérale de sécurité, tête légèrement plus basse que le corps.</div>
+  </div>
+
+  <div class="qcard">
+    <p class="profil"><b>Pourquoi installe-t-on l'enfant en position latérale de sécurité</b> après une convulsion fébrile ?</p>
+    <button class="opt" onclick="rep(this,false,'q12')">Pour le réveiller plus vite</button>
+    <button class="opt" onclick="rep(this,true,'q12')">Pour éviter une fausse route en cas de vomissement</button>
+    <button class="opt" onclick="rep(this,false,'q12')">Pour faire baisser la fièvre plus vite</button>
+    <div class="explic" id="q12">✅ Les vomissements sont fréquents après une convulsion fébrile — la position latérale de sécurité laisse la salive et les vomissures s'écouler, évitant une fausse route.</div>
+  </div>
+
+  <div class="qcard">
+    <p class="profil"><b>Vingt minutes après la fin de la convulsion</b>, Théo est encore somnolent et un peu confus.</p>
+    <button class="opt" onclick="rep(this,false,'q13')">C'est anormal, il faut paniquer immédiatement</button>
+    <button class="opt" onclick="rep(this,true,'q13')">La récupération après une convulsion fébrile est normalement lente et progressive</button>
+    <button class="opt" onclick="rep(this,false,'q13')">Il faut absolument le réveiller de force</button>
+    <div class="explic" id="q13">✅ La récupération après une convulsion fébrile est lente et progressive, pouvant prendre 20 à 30 minutes — la somnolence à ce stade est habituelle, sans forcer le réveil.</div>
+  </div>
+
+  <div class="qcard">
+    <p class="profil"><b>Les parents de Théo, très inquiets,</b> vous demandent si leur enfant est épileptique.</p>
+    <button class="opt" onclick="rep(this,false,'q14')">Leur affirmer que oui, c'est de l'épilepsie</button>
+    <button class="opt" onclick="rep(this,true,'q14')">Ne pas poser de diagnostic, transmettre les observations à l'équipe soignante</button>
+    <button class="opt" onclick="rep(this,false,'q14')">Leur dire que ce n'est jamais grave, sans plus d'explication</button>
+    <div class="explic" id="q14">✅ Poser un diagnostic ne relève pas du rôle de l'AP — on transmet les observations précises (durée, déroulement) à l'équipe soignante ou au médecin, seul habilité à se prononcer.</div>
+  </div>
+
+  <div class="qcard">
+    <p class="profil"><b>En dehors de la convulsion elle-même</b>, quelle prise en charge de la fièvre de Théo reste recommandée ?</p>
+    <button class="opt" onclick="rep(this,true,'q15')">Le découvrir, l'hydrater, avis médical pour un éventuel antipyrétique</button>
+    <button class="opt" onclick="rep(this,false,'q15')">Le couvrir davantage pour faire transpirer la fièvre</button>
+    <button class="opt" onclick="rep(this,false,'q15')">Lui donner un bain glacé immédiatement</button>
+    <div class="explic" id="q15">✅ La prise en charge habituelle de la fièvre reste de mise : découvrir l'enfant, l'hydrater, et solliciter un avis médical pour l'antipyrétique — le fait de couvrir davantage ou un bain glacé sont à proscrire.</div>
+  </div>
 
 <!-- ================= SECURITE ================= -->
 <div class="panel" id="secu">
