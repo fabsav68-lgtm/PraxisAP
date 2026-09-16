@@ -296,7 +296,70 @@ h2.rouge{color:#e88a8a}
     <button class="opt" onclick="rep(this,false,'q7')">La porter face au monde pour qu'elle regarde</button>
     <div class="explic" id="q7">✅ Avant 3-4 mois, un nourrisson ne tient pas sa tête : elle doit être soutenue en permanence — creux du coude ou main derrière la nuque. Une tête qui bascule, c'est un risque cervical et respiratoire.</div>
   </div>
-</div>
+  <div class="qcard">
+    <p class="profil"><b>Léo, 4 mois, bronchiolite diagnostiquée hier.</b> Il est très encombré et a du mal à téter son biberon.</p>
+    <button class="opt" onclick="rep(this,false,'q8')">Le faire boire directement, sans perdre de temps</button>
+    <button class="opt" onclick="rep(this,true,'q8')">Réaliser un lavage de nez au sérum physiologique avant le biberon</button>
+    <button class="opt" onclick="rep(this,false,'q8')">Attendre qu'il pleure pour le nourrir de force</button>
+    <div class="explic" id="q8">✅ Le lavage de nez avant le repas dégage les voies respiratoires et facilite la prise du biberon — geste de base recommandé face à une bronchiolite.</div>
+  </div>
+
+  <div class="qcard">
+    <p class="profil"><b>Vous installez Léo pour la sieste.</b> Sa bronchiolite rend sa respiration difficile.</p>
+    <button class="opt" onclick="rep(this,false,'q9')">L'allonger complètement à plat sur le dos</button>
+    <button class="opt" onclick="rep(this,true,'q9')">L'installer en position proclive à environ 30°, tête surélevée</button>
+    <button class="opt" onclick="rep(this,false,'q9')">Le coucher sur le ventre pour qu'il respire mieux</button>
+    <div class="explic" id="q9">✅ La position proclive à environ 30°, tête surélevée, facilite la respiration pendant le sommeil. Jamais sur le ventre, quelle que soit la situation respiratoire.</div>
+  </div>
+
+  <div class="qcard">
+    <p class="profil"><b>Nathan, 5 mois, bronchiolite en cours.</b> Vous constatez qu'il refuse le biberon depuis ce matin et respire très vite.</p>
+    <button class="opt" onclick="rep(this,false,'q10')">Continuer à essayer de le nourrir sans rien dire</button>
+    <button class="opt" onclick="rep(this,true,'q10')">Alerter l'infirmière ou le médecin immédiatement</button>
+    <button class="opt" onclick="rep(this,false,'q10')">Attendre le prochain repas pour voir si ça s'améliore</button>
+    <div class="explic" id="q10">✅ Refus de boire et polypnée sont des signes de gravité de la bronchiolite : ils imposent une alerte sans délai, pas une simple surveillance.</div>
+  </div>
+
+  <div class="qcard">
+    <p class="profil"><b>Léo se fatigue vite en tétant à cause de sa bronchiolite.</b> Quelle adaptation proposer pour ses repas ?</p>
+    <button class="opt" onclick="rep(this,true,'q11')">Des repas plus petits mais plus fréquents (fractionnés)</button>
+    <button class="opt" onclick="rep(this,false,'q11')">Un seul gros repas pour qu'il n'ait plus faim ensuite</button>
+    <button class="opt" onclick="rep(this,false,'q11')">Supprimer un repas sur deux</button>
+    <div class="explic" id="q11">✅ Le fractionnement des repas évite l'épuisement de l'enfant, dont l'effort respiratoire est déjà augmenté par la bronchiolite.</div>
+  </div>
+
+  <div class="qcard">
+    <p class="profil"><b>La maman de Léo</b> vous demande si elle doit lui faire des tapotements dans le dos (clapping) pour l'aider à respirer.</p>
+    <button class="opt" onclick="rep(this,false,'q12')">Oui, c'est recommandé systématiquement</button>
+    <button class="opt" onclick="rep(this,true,'q12')">Non, cette technique n'est pas recommandée en routine</button>
+    <button class="opt" onclick="rep(this,false,'q12')">Oui, mais seulement le soir</button>
+    <div class="explic" id="q12">✅ Le clapping et le drainage postural ne sont pas recommandés en routine dans la bronchiolite — une information utile à transmettre avec tact aux familles.</div>
+  </div>
+
+  <div class="qcard">
+    <p class="profil"><b>Le papa de Nathan fume dans le salon</b>, fenêtre fermée, pendant que le bébé dort dans la pièce d'à côté.</p>
+    <button class="opt" onclick="rep(this,false,'q13')">Ce n'est pas votre rôle d'en parler</button>
+    <button class="opt" onclick="rep(this,true,'q13')">Profiter d'un moment adapté pour informer sur le risque du tabagisme passif</button>
+    <button class="opt" onclick="rep(this,false,'q13')">Ne rien dire, ce n'est qu'une fois</button>
+    <div class="explic" id="q13">✅ Le tabagisme passif est un facteur de risque reconnu de bronchiolite et de forme sévère — une information bienveillante fait partie du rôle éducatif de l'AP.</div>
+  </div>
+
+  <div class="qcard">
+    <p class="profil"><b>Vous vous occupez de plusieurs nourrissons de la section</b>, dont un en bronchiolite.</p>
+    <button class="opt" onclick="rep(this,false,'q14')">Le lavage des mains n'est pas nécessaire entre chaque bébé</button>
+    <button class="opt" onclick="rep(this,true,'q14')">Se laver les mains soigneusement entre chaque nourrisson</button>
+    <button class="opt" onclick="rep(this,false,'q14')">Utiliser le même linge pour tous les bébés</button>
+    <div class="explic" id="q14">✅ Le virus responsable de la bronchiolite (VRS) se transmet facilement par les mains — l'hygiène des mains entre chaque enfant limite sa propagation dans la section.</div>
+  </div>
+
+  <div class="qcard">
+    <p class="profil"><b>Malgré le lavage de nez et le repositionnement</b>, Léo présente une respiration de plus en plus difficile et de courtes pauses respiratoires.</p>
+    <button class="opt" onclick="rep(this,false,'q15')">Continuer la surveillance habituelle</button>
+    <button class="opt" onclick="rep(this,true,'q15')">Alerter immédiatement — cela peut être un signe de gravité (apnée)</button>
+    <button class="opt" onclick="rep(this,false,'q15')">Attendre le relais de l'équipe suivante</button>
+    <div class="explic" id="q15">✅ Des pauses respiratoires (apnées) constituent un signe de gravité majeur de la bronchiolite, imposant une alerte immédiate, sans délai.</div>
+  </div>
+
 
 <!-- ================= SECURITE ================= -->
 <div class="panel" id="secu">
