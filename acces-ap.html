@@ -58,6 +58,65 @@ input.success{border-color:#d870f0;}
 </div>
 
 <script>
+// ═══════════════════════════════════════════════════════════
+//  Vérification d'accès avec cache quotidien (mode hors-ligne)
+//  Revérifie auprès de Supabase seulement si la dernière
+//  vérification réussie date de plus de 24h ; sinon (y compris
+//  hors-ligne) on réutilise le résultat déjà validé.
+// ═══════════════════════════════════════════════════════════
+var VERIF_CACHE_KEY = 'praxisap_verif_cache';
+var VERIF_CACHE_DUREE_MS = 24 * 60 * 60 * 1000; // 24h
+
+function lireVerifCache(code){
+  try{
+    var brut = localStorage.getItem(VERIF_CACHE_KEY);
+    if(!brut) return null;
+    var data = JSON.parse(brut);
+    if(data.code !== code) return null;
+    return data;
+  }catch(e){ return null; }
+}
+
+function ecrireVerifCache(code, resultat){
+  try{
+    localStorage.setItem(VERIF_CACHE_KEY, JSON.stringify({
+      code: code, resultat: resultat, verifiedAt: Date.now(),
+    }));
+  }catch(e){ /* stockage indisponible : on continue sans cache */ }
+}
+
+function verifierAccesAvecCache(code, app){
+  var cache = lireVerifCache(code);
+  var cacheEncoreValide = cache && (Date.now() - cache.verifiedAt) < VERIF_CACHE_DUREE_MS;
+
+  if(cacheEncoreValide){
+    console.log('Accès vérifié depuis le cache local (moins de 24h)');
+    return Promise.resolve(cache.resultat);
+  }
+
+  return fetch('https://fvrfiikrasezlzpaxpqz.supabase.co/functions/v1/verifier-acces', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'apikey': 'sb_publishable_TNksbociGaWCY53M4wCAXg_faOxEqKt',
+      'Authorization': 'Bearer sb_publishable_TNksbociGaWCY53M4wCAXg_faOxEqKt',
+    },
+    body: JSON.stringify({ code: code, app: app }),
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(resultat){
+    if(resultat.valide) ecrireVerifCache(code, resultat);
+    return resultat;
+  })
+  .catch(function(erreurReseau){
+    if(cache){
+      console.log('Hors-ligne : reprise du dernier résultat connu, vérification différée');
+      return cache.resultat;
+    }
+    return { valide:false, message:'Connexion requise pour la première vérification de ce code' };
+  });
+}
+
 function validerCode(){
   var code = document.getElementById('code-input').value.trim().toUpperCase();
   var err = document.getElementById('error-msg');
@@ -65,16 +124,7 @@ function validerCode(){
 
   err.textContent = 'Vérification...';
 
-  fetch('https://fvrfiikrasezlzpaxpqz.supabase.co/functions/v1/verifier-acces', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'apikey': 'sb_publishable_TNksbociGaWCY53M4wCAXg_faOxEqKt',
-      'Authorization': 'Bearer sb_publishable_TNksbociGaWCY53M4wCAXg_faOxEqKt',
-    },
-    body: JSON.stringify({ code: code, app: 'SimAP' }),
-  })
-  .then(function(r){ return r.json(); })
+  verifierAccesAvecCache(code, 'SimAP')
   .then(function(data){
     if(!data.valide){
       err.textContent = data.message || 'Code invalide. Verifiez votre code AP.';
