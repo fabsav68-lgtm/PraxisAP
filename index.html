@@ -8,6 +8,7 @@
 <link rel="apple-touch-icon-precomposed" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="apple-touch-icon.png">
 <meta name="apple-mobile-web-app-title" content="PraxisAP">
+  <link rel="manifest" href="manifest.json">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#0a0810">
@@ -310,15 +311,11 @@ document.getElementById('module-frame').addEventListener('load',function(){
   try{var u=this.contentWindow.location.href;if(u&&u!=='about:blank')document.getElementById('btn-retour').style.display='block';}catch(e){}
 });
 
-<link rel="manifest" href="manifest.json">
-<script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('service-worker.js');
   });
 }
-</script>
-if('caches'in window)caches.keys().then(function(k){k.forEach(function(x){caches.delete(x);});});
 
 var _inactivityTimer=null;
 function resetInactivityTimer(){
